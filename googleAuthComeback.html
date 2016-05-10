@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Youtube Sexy - Home</title>
+	
+		<link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+		<link type="text/css" rel="stylesheet" href="css/materialize.min.css" media="screen,projection" />
+		<link rel="icon" href="img/favicon.png" type="image/x-icon"/>
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		
+		<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+		
+		<style>
+			.center{
+				position: absolute;
+				margin: auto;
+				top: 0;
+				right: 0;
+				bottom: 0;
+				left: 0;
+				width: 300px;
+				height: 96px;
+			}
+			
+			.hidden{
+				display: none;
+			}
+			
+			@keyframes fadeIn{
+				0% {
+					opacity: 0.0;
+					transform: scale(0.95, 0.95); 
+					-webkit-transform: scale(0.95, 0.95);
+				}
+				100% {
+					opacity: 1.0;
+					transform: scale(1, 1); 
+					-webkit-transform: scale(1, 1);
+				}
+			}
+			
+			@-webkit-keyframes fadeIn{
+				0% {
+					opacity: 0.0;
+					transform: scale(0.95, 0.95); 
+					-webkit-transform: scale(0.95, 0.95);
+				}
+				100% {
+					opacity: 1.0;
+					transform: scale(1, 1); 
+					-webkit-transform: scale(1, 1);
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<p id="deleteMePlz">Yo, do you have one of those cool browsers with HTML 5 and Javascript? You should though, atleast to actually load this page.</p>
+		
+		<script>
+			document.body.removeChild(document.getElementById("deleteMePlz"));
+		</script>
+		<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+		<script src="js/materialize.min.js"></script>
+		
+		<div class="hidden">
+			<div class="center">
+				<div class="row">
+					<h3 class="black-text">Redirecting...</h3>
+				</div>
+				<div class="row">
+					<h5 class="black-text">Please wait...</h5>
+				</div>
+			</div>
+		</div>
+		
+		<script>
+			$(document).ready(function(){
+				$(".hidden").css({'display': 'block', 'margin-top': '30px', 'opacity': '0.0'});
+				$(".hidden").animate({'margin-top': '0px', 'opacity': '1.0'});
+			});
+		</script>
+	</body>
+</html>
