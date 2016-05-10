@@ -8,7 +8,7 @@ $(document).ready(function(){
 
 function checkScripts(callback){
 
-	
+	getScript("cookieManagement", "cookies");
 	
 }
 
@@ -72,12 +72,12 @@ function getScript(scriptID, scriptName, loadHandler){
 	
 	if(!hasScript(scriptID)){
 		var script = document.createElement("script");
-		script.id = scriptId;
+		script.id = scriptId + "Script";
 		
 		if(loadHandler)
 			script.addEventListener("load", loadHandler, false);
 		
-		script.src = scriptName;
+		script.src = "js/" + scriptName + ".js";
 	}
 		
 }
