@@ -2,9 +2,15 @@ $(document).ready(function(){
 	
 	var spinner = makeStartSpinner();
 	
-	$(spinner).remove();	
+	
 	
 });
+
+function checkScripts(callback){
+
+	
+	
+}
 
 function makeStartSpinner(){
 	
@@ -59,5 +65,26 @@ function newSuperDiv(className, superObject){
 	superObject.appendChild(div);
 	
 	return div;
+	
+}
+
+function getScript(scriptID, scriptName, loadHandler){
+	
+	if(!hasScript(scriptID)){
+		var script = document.createElement("script");
+		script.id = scriptId;
+		
+		if(loadHandler)
+			script.addEventListener("load", loadHandler, false);
+		
+		script.src = scriptName;
+	}
+		
+}
+
+function hasScript(scriptID){
+	
+	if($(scriptID).length > 0) return true;
+	return false;
 	
 }
