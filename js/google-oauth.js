@@ -17,7 +17,7 @@ function doAuth(){
 	}, false);
 	
 	googleModal.addElementContent(spinnerWrapper);
-	iframe.src = getURL(nonce);
+	iframe.src = getURL();
 	
 	window.addEventListener("message", receiveMessage, false);
 	googleModal.open();
@@ -34,7 +34,7 @@ function getNonce(){
 	
 }
 
-function getURL(nonce){
+function getURL(){
 
 	return "https://accounts.google.com/o/oauth2/v2/auth?response_type=token&scope=" + getScope() + "&client_id=143036117535-r44koj2e0bf9emon2k6kc18g6pkgorh1.apps.googleusercontent.com&redirect_url=https://https://deprilula28.github.io/projectPages/youtubeSexy/googleAuthComeback.html";
 
