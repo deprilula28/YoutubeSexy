@@ -22,7 +22,9 @@ $(document).ready(function(){
 
 function loadWebsite(authenticationKey){
 	
-	
+	getScript("youtubeSexyWebsite", "website", function(){
+		load(authenticationKey);
+	});
 	
 }
 
