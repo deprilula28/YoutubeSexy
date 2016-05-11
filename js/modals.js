@@ -4,9 +4,9 @@ var Modal = function(){
 	this.divModalContent = newDiv("modal-content");
 	this.divModalFooter = newDiv("modal-footer");
 	
-	this.divModal.appendChild(divModalContent);
-	this.divModal.appendChild(divModalFooter);
-	document.body.appendChild(divModal);
+	this.divModal.appendChild(this.divModalContent);
+	this.divModal.appendChild(this.divModalFooter);
+	document.body.appendChild(this.divModal);
 	
 }
 
