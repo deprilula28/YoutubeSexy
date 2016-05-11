@@ -10,25 +10,25 @@ var Modal = function(){
 	
 }
 
-Modal.prototype.open(){
+Modal.prototype.open = function(){
 	
 	$(divModal).openModal();
 	
 }
 
-Modal.prototype.close(){
+Modal.prototype.close = function(){
 	
 	$(divModal).closeModal();
 	
 }
 
-Modal.prototype.addElementContent(element){
+Modal.prototype.addElementContent = function(element){
 	
 	divModalContent.appendChild(element);
 	
 }
 
-Modal.prototype.destroy(){
+Modal.prototype.destroy = function(){
 	
 	delete this;
 	
