@@ -4,27 +4,27 @@ var Modal = function(){
 	this.divModalContent = newDiv("modal-content");
 	this.divModalFooter = newDiv("modal-footer");
 	
-	divModal.appendChild(divModalContent);
-	divModal.appendChild(divModalFooter);
+	this.divModal.appendChild(divModalContent);
+	this.divModal.appendChild(divModalFooter);
 	document.body.appendChild(divModal);
 	
 }
 
 Modal.prototype.open = function(){
 	
-	$(divModal).openModal();
+	$(this.divModal).openModal();
 	
 }
 
 Modal.prototype.close = function(){
 	
-	$(divModal).closeModal();
+	$(this.divModal).closeModal();
 	
 }
 
 Modal.prototype.addElementContent = function(element){
 	
-	divModalContent.appendChild(element);
+	this.divModalContent.appendChild(element);
 	
 }
 
