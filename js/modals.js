@@ -46,7 +46,7 @@ Modal.prototype.addFooterButton = function(left, text, buttonHandler){
 	element.appendChild(txtNode);
 	
 	$(element).css({'color': '#000000'});
-	addElementContent(element);
+	this.addElementContent(element);
 	
 	if(buttonHandler){
 		a.addEventListener("click", buttonHandler, false);
