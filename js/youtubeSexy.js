@@ -37,7 +37,7 @@ function setupQuestionModal(){
 		
 		var h5Header = document.createElement("h5");
 		var textNodeHeader = document.createTextNode("Do you want to give permissions from Google?");
-		h5Header.appendChild(textNode);
+		h5Header.appendChild(textNodeHeader);
 		divRowHeader.appendChild(h5Header);
 		
 		questionModal.addElementContent(divRowHeader);
@@ -47,7 +47,7 @@ function setupQuestionModal(){
 		var aBelowText = document.createElement("a");
 		$(aBelowText).attr("class", "black-text");
 		var textNodeA = document.createTextNode("You can give Youtube Sexy permission to use Google API with your information, to rate, comment, post videos and much more.");
-		aBelowText.appendChild(textNode);
+		aBelowText.appendChild(textNodeA);
 		divRowText.appendChild(aBelowText);
 		
 		questionModal.addElementContent(divRowText);
