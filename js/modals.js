@@ -1,5 +1,6 @@
-var Modal = function(){
+var Modal = function(undismissible){
 	
+	this.undismissible = dismissible;
 	this.divModal = newDiv("modal");
 	this.divModalContent = newDiv("modal-content");
 	this.divModalFooter = newDiv("modal-footer");
@@ -12,7 +13,11 @@ var Modal = function(){
 
 Modal.prototype.open = function(){
 	
-	$(this.divModal).openModal();
+	if(this.undismissible){
+		$(this.divModal).leanModel({'dismissible': false});
+	}else{
+		$(this.divModal).openModal();
+	}
 	
 }
 

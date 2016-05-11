@@ -32,7 +32,7 @@ function loadWebsite(authenticationKey){
 function setupQuestionModal(){
 	
 	getScript("modalManager", "modals", function(){
-		var questionModal = new Modal();
+		var questionModal = new Modal(true);
 		
 		var divRowHeader = newDiv("row");
 		
