@@ -1,6 +1,6 @@
 var Modal = function(undismissible){
 	
-	this.undismissible = dismissible;
+	this.undismissible = undismissible;
 	this.divModal = newDiv("modal");
 	this.divModalContent = newDiv("modal-content");
 	this.divModalFooter = newDiv("modal-footer");
