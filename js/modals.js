@@ -49,7 +49,7 @@ Modal.prototype.addFooterButton = function(left, text, buttonHandler){
 	this.addElementContent(element);
 	
 	if(buttonHandler){
-		a.addEventListener("click", buttonHandler, false);
+		element.addEventListener("click", buttonHandler, false);
 	}
 	
 }
