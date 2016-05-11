@@ -34,7 +34,7 @@ Modal.prototype.destroy = function(){
 	
 }
 
-Modal.prototype.addFooterButton(left, text, buttonHandler){
+Modal.prototype.addFooterButton = function(left, text, buttonHandler){
 	
 	var side = "right";
 	if(left) side = "left";
