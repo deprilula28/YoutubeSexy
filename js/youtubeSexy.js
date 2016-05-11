@@ -2,20 +2,21 @@ $(document).ready(function(){
 	
 	var spinner = makeStartSpinner();
 	
-	getScript("cookieManagement", "cookies", function(){
-		
-		var auth = getCookie("googleAuthenticate");
-		
-		if(auth == "true"){
-			getScript("googleOAuth", "google-oauth", function(){
-				doAuth();
+	getScript("googleOAuth", "google-oauth", function(){
+		checkGoogleAuthenticated(function(){
+			getScript("cookieManagement", "cookies", function(){
+				
+				var auth = getCookie("googleAuthenticate");
+				
+				if(auth == "true"){
+					doAuth();
+				}else if(auth == "false"){
+					loadWebsite();
+				}else{
+					setupQuestionModal();
+				}
 			});
-		}else if(auth == "false"){
-			loadWebsite();
-		}else{
-			setupQuestionModal();
-		}
-		
+		});
 	});
 	
 });
