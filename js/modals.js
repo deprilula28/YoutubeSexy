@@ -15,9 +15,10 @@ Modal.prototype.open = function(){
 	
 	if(this.undismissible){
 		$(this.divModal).leanModal({'dismissible': false});
-	}else{
-		$(this.divModal).openModal();
 	}
+	
+	$(this.divModal).openModal();
+	
 	
 }
 
