@@ -69,18 +69,12 @@ function getHeaderSearchColumnDesktop(){
 	var topRowSearchColumn = newDiv("col s12 hide-on-med-and-down");
 	$(topRowSearchColumn).css({'margin-left': '70px'});
 	
-	var searchColumnBarLeft = newDiv("");
-	$(searchColumnBarLeft).css({"height": "100%", "border-left": "1px solid"});
-	
 	var inputRow = newDiv("row");
 	
 	var inputColumnInputWrapper = newDiv("col s12");
 	var inputInput = document.createElement("input");
 	$(inputInput).attr({'class': 'black-text'})
 	var inputIcon = getIcon("search", true);
-	
-	var searchColumnBarRight = newDiv("");
-	$(searchColumnBarRight).css({"height": "100%", "border-left": "1px solid"});
 	
 	//Search column
 	inputColumnInputWrapper.appendChild(inputInput);
@@ -89,9 +83,7 @@ function getHeaderSearchColumnDesktop(){
 	inputRow.appendChild(inputColumnInputWrapper);
 	inputRow.appendChild(inputIcon);
 	
-	topRowSearchColumn.appendChild(searchColumnBarLeft);
 	topRowSearchColumn.appendChild(inputRow);
-	topRowSearchColumn.appendChild(searchColumnBarRight);
 	
 	return topRowSearchColumn;
 	
