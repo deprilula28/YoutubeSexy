@@ -55,7 +55,9 @@ function setupQuestionModal(){
 		
 		questionModal.addFooterButton(true, "Yes", function(){
 			
-			setCookie("googleAuthenticate", "true");
+			getScript("cookieManagement", "cookies", function(){
+				setCookie("googleAuthenticate", "true");
+			});
 			getScript("googleOAuth", "google-oauth", function(){
 				doAuth();
 			});
@@ -63,9 +65,13 @@ function setupQuestionModal(){
 		});
 		
 		questionModal.addFooterButton(true, "No", function(){
-
-			setCookie("googleAuthenticate", "false");
+			
+			getScript("cookieManagement", "cookies", function(){
+				setCookie("googleAuthenticate", "false");
+			});
 			loadWebsite();
+			questionModal.close();
+			questionModal.destroy();
 			
 		});
 		

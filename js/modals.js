@@ -36,6 +36,7 @@ Modal.prototype.addElementContent = function(element){
 
 Modal.prototype.destroy = function(){
 	
+	document.body.removeChild(this.divModal);
 	delete this;
 	
 }
