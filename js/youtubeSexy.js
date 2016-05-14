@@ -1,6 +1,8 @@
+var spinner;
+
 $(document).ready(function(){
 	
-	var spinner = makeStartSpinner();
+	spinner = makeStartSpinner();
 	
 	getScript("googleOAuth", "google-oauth", function(){
 		checkGoogleAuthenticated(function(){

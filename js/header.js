@@ -1,62 +1,54 @@
-function getHeader(){
+var header = undefined;
+
+function Header(){
 	
-	var navbarFixed = newDiv("navbar-fixed");
-	$(navbarFixed).css({'height': '128px', 'height-min': '128px'});
+	this.tabsInitialized = false;
+	this.tabsUl = undefined;
+	this.breadcrumbsDiv = undefined;
 	
-	var nav = document.createElement("nav");
+	var navbarFixed = newDiv("white z-depth-2");
+	$(navbarFixed).css({'height': '128px', 'height-min': '128px', 'width': '100%', 'position': 'fixed'});
 	
-	var navWrapper = newDiv("nav-wrapper white");
+	var navWrapper = newDiv("");
 	
-	var topRow = getHeaderTopRow();
-	var bottomRow = getHeaderBottomRow();
+	var topRow = this.getHeaderTopRow();
+	var bottomRow = this.getHeaderBottomRow();
 
 	//NAV
 	navWrapper.appendChild(topRow);
 	navWrapper.appendChild(bottomRow);
-	nav.appendChild(navWrapper);
-	navbarFixed.appendChild(nav);
+	navbarFixed.appendChild(navWrapper);
 	document.body.appendChild(navbarFixed);
+	
+	header = navbarFixed;
 	
 }
 
-function getHeaderTopRow(){
+Header.prototype.getHeaderTopRow = function(){
 	
 	var topRow = newDiv("row");
-
-	var topRowBrandLogoColumn = newDiv("col s2");
+	$(topRow).css({'margin-bottom': '0px'});
 	
-	var brandLogoWrapper = document.createElement("a");
-	$(brandLogoWrapper).attr("class", "brand-logo");
-	var brandLogo = document.createElement("img");
-	
-	//Brand column
-	brandLogoWrapper.appendChild(brandLogo);
-	topRowBrandLogoColumn.appendChild(brandLogoWrapper);
-	topRow.appendChild(topRowBrandLogoColumn);
-	topRow.appendChild(getHeaderSearchColumnDesktop());	
-
-	brandLogo.addEventListener("load", function(){
-		$(brandLogo).css({'height': '64px', 'width': '64px'});
-	}, false);
-	
-	brandLogo.src = "img/YtLogo.png";
+	topRow.appendChild(this.getHeaderSearchColumnDesktop());
 	
 	return topRow;
 	
 }
 
-function getHeaderBottomRow(){
+Header.prototype.getHeaderBottomRow = function(){
 	
 	var bottomRow = newDiv("row");
 	
-	var breadcumbsColumn = newDiv("col s6 hide-on-med-and-down");
+	var breadcrumbsColumn = newDiv("col s6 hide-on-med-and-down");
+	this.breadcrumbsDiv = breadcrumbsColumn;
 	
 	var tabsColumn = newDiv("col s12 m8 offset-m2");
 	var tabs = document.createElement("ul");
+	this.tabsUl = tabs;
 	$(tabs).attr("class", "tabs white");
 	
 	//Bottom row
-	bottomRow.appendChild(breadcumbsColumn);
+	bottomRow.appendChild(breadcrumbsColumn);
 	tabsColumn.appendChild(tabs);
 	bottomRow.appendChild(tabsColumn);
 	
@@ -64,24 +56,34 @@ function getHeaderBottomRow(){
 	
 }
 
-function getHeaderSearchColumnDesktop(){
+Header.prototype.getHeaderSearchColumnDesktop = function(){
 	
-	var topRowSearchColumn = newDiv("col s12 hide-on-med-and-down");
-	$(topRowSearchColumn).css({'margin-left': '70px'});
+	var topRowSearchColumn = newDiv("col s12 hide-on-small-only");
 	
 	var inputRow = newDiv("row");
 	
-	var inputColumnInputWrapper = newDiv("col s12");
+	var inputColumnInputWrapper = newDiv("col s10 l11");
 	var inputInput = document.createElement("input");
-	$(inputInput).attr({'class': 'black-text'})
+	$(inputInput).attr({'class': 'black-text validate', 'type': 'text'});
+	inputInput.id = "searchTextInput";
+	
+	var inputColumnIconWrapper = newDiv("center-align col s2 l1");
+	$(inputColumnIconWrapper).height = "100%";
+	
+	var inputGoButton = document.createElement("a");
+	$(inputGoButton).attr('class', 'waves-effect waves-light btn red');
+	$(inputGoButton).css({'margin-top': '5px'});
+	
 	var inputIcon = getIcon("search", true);
 	
-	//Search column
+	//Search column	
+	inputGoButton.appendChild(inputIcon);
+	
 	inputColumnInputWrapper.appendChild(inputInput);
-	inputColumnInputWrapper.appendChild(inputIcon);
+	inputColumnIconWrapper.appendChild(inputGoButton);
 	
 	inputRow.appendChild(inputColumnInputWrapper);
-	inputRow.appendChild(inputIcon);
+	inputRow.appendChild(inputColumnIconWrapper);
 	
 	topRowSearchColumn.appendChild(inputRow);
 	
@@ -89,7 +91,7 @@ function getHeaderSearchColumnDesktop(){
 	
 }
 
-function getIcon(iconName, black){
+Header.prototype.getIcon = function(iconName, black){
 	
 	if(black){
 		var inputIcon = document.createElement("i");
@@ -111,13 +113,36 @@ function getIcon(iconName, black){
 	
 }
 
-function updateHeaderTabs(tabs){
+Header.prototype.updateHeaderTabs = function(tabs, selected){
+	
+	var tabLis = tabsUl.childNodes;
+	
+	for(i = 0; i < tabLis.length; i ++){
+		tabsUl.removeChild(tabLis[i]);
+	}
+	
+	for(i = 0; i < tabs.length; i++){
+		var curLi = tabLis[i];
+		
+		tabsUl.appendChild(curLi);	
+		
+		if(curLi.id == selected){
+			$(curLi).attr({'class': 'active'});
+		}
+	}
+	
+	$(tabsUl).tabs('select-tab', selected);
+	
+	if(!this.tabsInitialized){
+		$(tabsUl).tabs();
+		this.tabsInitialized = true;
+	}
 	
 }
 
-function updateHeaderBreadcumbs(breadcumbs){
+Header.prototype.updateHeaderBreadcrumbs = function(breadcrumbs){
 	
-	if(breadcumbs){
+	if(breadcrumbs){
 		
 	}else{
 		
