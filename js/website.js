@@ -1,7 +1,7 @@
 var auth = undefined;
 
 function load(authentication){
-
+	
 	if(authentication){
 		auth = authentication;
 	}
@@ -13,7 +13,7 @@ function load(authentication){
 	
 	getScript("youtubeAPIv3", "youtubeAPIv3", function(){
 		getScript("headerUtils", "header", function(){
-			getHeader();
+			new Header();
 			var page = readQuery();			
 		});
 	});
@@ -31,11 +31,13 @@ function readQuery(){
 		params[decodeURIComponent(m[1])] = decodeURIComponent(m[2]);
 	}
 	
-	if(params.hasOwnProperty('channel')){
-		return getChannelPage(params['channel'], params);
-	}else{
-		return getPage(params);
-	}
+	getScript('pages', 'pages', function(){
+		if(params.hasOwnProperty('channel')){
+			return getChannelPage(params['channel'], params);
+		}else{
+			return getPage(params);
+		}
+	});
 	
 }
 

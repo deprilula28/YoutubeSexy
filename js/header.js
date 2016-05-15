@@ -74,7 +74,7 @@ Header.prototype.getHeaderSearchColumnDesktop = function(){
 	$(inputGoButton).attr('class', 'waves-effect waves-light btn red');
 	$(inputGoButton).css({'margin-top': '5px'});
 	
-	var inputIcon = getIcon("search", true);
+	var inputIcon = this.getIcon("search", true);
 	
 	//Search column	
 	inputGoButton.appendChild(inputIcon);
