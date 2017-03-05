@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>YoutubeSexy</title>
+
+		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+		<link type="text/css" rel="stylesheet" href="css/materialize.css" media="screen,projection" />
+		<link rel="icon" href="img/favicon.png" type="image/x-icon"/>
+
+		<meta name="viewport" content="user-scalable=0"/>
+		<link type="text/css" rel="stylesheet" href="css/youtubeSexy.css" />
+
+		<script src="https://apis.google.com/js/platform.js"></script>
+		<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+  </head>
+  <body class="grey darken-3">
+		<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+    <script src="js/materialize.js"></script>
+    <script src="js/youtubeSexy.js"></script>
+
+    <noscript>Please enable JavaScript.</noscript>
+
+    <div class="content">
+      <ul id="sidebar" class="side-nav">
+      </ul>
+
+      <div id="top-bar z-depth-4">
+        <nav class="indigo">
+          <div class="nav-wrapper">
+            <!-- Menu Button -->
+            <a class="btn-floating btn-large btn-flat waves-effect waves-light indigo">
+              <i class="material-icons white-text">menu</i>
+            </a>
+
+            <div class="right nav-wrapper-right-align">
+              <div class="chip waves-effect large grey darken-2">
+                <img src="img/UserPic.jpg" />
+                <a class="white-text" onclick="authReq();">Authenticate</a>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+
+      <div id="main-page" class="container">
+
+      </div>
+
+      <footer class="page-footer indigo lighten-2">
+        <div class="container">
+          <div class="row">
+            <div class="col l6 s12">
+              <h5 class="white-text">YoutubeSexy</h5>
+
+              <a class="white-text waves-effect" onclick="toggleTheme();">Toogle Theme</a>
+            </div>
+            <div class="col l4 offset-l2 s12">
+              <h5 class="white-text">Links</h5>
+              <ul>
+                <li><a class="grey-text text-lighten-3" href="http://materializecss.com">Materialize Framework</a></li>
+                <li><a class="grey-text text-lighten-3" href="https://youtube.com">Youtube</a></li>
+                <li><a class="grey-text text-lighten-3" href="https://developers.google.com/youtube/v3/docs/">YT API Docs</a></li>
+                <li><a class="grey-text text-lighten-3" href="https://github.com/deprilula28/YoutubeSexy">Github Src</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="footer-copyright indigo lighten-1">
+          <div class="container">
+          by <a class="blue-text text-lighten-3" href="https://deprilula28.github.io">deprilula28</a>
+          </div>
+        </div>
+      </footer>
+    </div>
+
+  </body>
+</html>
