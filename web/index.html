@@ -17,6 +17,8 @@
 		<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
     <script src="js/materialize.js"></script>
+    <script src="https://apis.google.com/js/client.js"></script>
+    <script src="js/ytDataAPIv3.js"></script>
     <script src="js/youtubeSexy.js"></script>
 
     <noscript>Please enable JavaScript.</noscript>
@@ -33,10 +35,22 @@
               <i data-activates="sidebar" class="material-icons white-text button-collapse">menu</i>
             </a>
 
+            <!-- Breadcrumbs -->
+            <a href="#home" class="breadcrumb waves-effect waves-light">Home</a>
+
+            <!-- Right Side of the bar -->
             <div class="right nav-wrapper-right-align">
+              <!-- Upload Button -->
+              <img style="display: none;" class="upload-button btn-floating btn-flat waves-effect waves-light" src="img/Upload.png" class="circle" />
+
+              <!-- Search Icon -->
+              <a class="search-button btn-floating btn-large btn-flat waves-effect waves-light">
+                <i class="material-icons white-text">search</i>
+              </a>
+
               <div class="chip waves-effect large grey darken-2">
                 <img src="img/UserPic.jpg" />
-                <a class="white-text" onclick="authReq();">Authenticate</a>
+                <a class="white-text" onclick="alert('Authenticate not implemented yet');">Authenticate</a>
               </div>
             </div>
           </div>
@@ -45,6 +59,20 @@
 
       <div id="main-page" class="container">
 
+      </div>
+
+      <div class="center-align">
+        <div class="preloader-wrapper big active loadingcircle">
+          <div class="spinner-layer spinner-blue-only">
+            <div class="circle-clipper left">
+              <div class="circle"></div>
+            </div><div class="gap-patch">
+              <div class="circle"></div>
+            </div><div class="circle-clipper right">
+              <div class="circle"></div>
+            </div>
+          </div>
+        </div>
       </div>
 
       <footer class="page-footer indigo lighten-2">

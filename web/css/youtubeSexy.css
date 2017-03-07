@@ -5,3 +5,20 @@
 .nav-wrapper-right-align{
   margin-right: 20px;
 }
+
+.upload-button{
+  margin-right: 10px;
+}
+
+.search-button{
+  margin-right: 10px;
+}
+
+.loadingcircle{
+  margin-top: 60px;
+  margin-bottom: 60px;
+}
+
+.mainPageSection{
+  margin-top: 120px;
+}
