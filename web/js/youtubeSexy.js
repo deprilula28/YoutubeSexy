@@ -17,6 +17,13 @@ function YoutubeSexy(){
 
   this.ui = new UIManager();
   this.ytDataAPI = new YTDataAPI();
+  this.video = undefined;
+
+}
+
+YoutubeSexy.prototype.gotoHome = function(){
+
+
 
 }
 
@@ -54,13 +61,13 @@ YoutubeSexy.prototype.loadMainMenuPage = function(activitiesResponse){
     rowTitle.appendChild(columnTitle);
 
     var h4 = document.createElement("h4");
-    $(h4).addClass("white-text");
+    $(h4).addClass("videoNameTextComponent").addClass(this.ui.darkThemed ? "white-text" : "black-text");
     $(h4).css({"margin-bottom": "0px"});
     h4.textContent = "Trending Videos";
     columnTitle.appendChild(h4);
 
     var a = document.createElement("a");
-    $(a).addClass("white-text");
+    $(a).addClass("videoNameTextComponent").addClass(this.ui.darkThemed ? "white-text" : "black-text");
     a.textContent = "Authenticate to view videos recommended for you.";
     div.appendChild(a);
 
@@ -78,6 +85,18 @@ YoutubeSexy.prototype.loadMainMenuPage = function(activitiesResponse){
 }
 
 YoutubeSexy.prototype.playVideo = function(videoId){
+
+
+
+}
+
+YoutubeSexy.prototype.showChannelPreview = function(channelId){
+
+
+
+}
+
+YoutubeSexy.prototype.showChannelPage = function(channelId){
 
 
 
