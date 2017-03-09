@@ -22,3 +22,11 @@
 .mainPageSection{
   margin-top: 60px;
 }
+
+.channelBanner{
+  margin: 0 0 0 -50%;
+}
+
+.circular{
+  border-radius: 50%;
+}

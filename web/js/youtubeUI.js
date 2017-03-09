@@ -19,7 +19,7 @@ UIManager.prototype.getUserIcon = function(channelId, widthShow){
   var textNodeSubs = this.generateNewElement("a", ["black-text", "truncate"], "Loading...", columnSubs, undefined);
 
   youtubeSexy.ytDataAPI.googleAPIGet("https://www.googleapis.com/youtube/v3/channels", {
-    "part": "snippet,statistics",
+    "part": "snippet,brandingSettings,statistics",
     "id": channelId
   }, (result) => {
     for(var channelIndex in result.items){
@@ -30,7 +30,7 @@ UIManager.prototype.getUserIcon = function(channelId, widthShow){
       img.src = channel.snippet.thumbnails.high.url;
 
       chip.onmouseover = () => {
-        youtubeSexy.showChannelPreview(result, chip);
+        youtubeSexy.showChannelPreview(channel, chip);
       };
       chip.onmouseout = () => {
         youtubeSexy.hideChannelPreviews();
@@ -93,40 +93,40 @@ UIManager.prototype.createFullVideoDIV = function(video){
   var column = this.generateNewElement("div", ["col", "s6", "l3"], undefined, undefined, {"height": "240px", "max-height": "240px", "width": "214px", "max-width": "214px", "overflow": "none",
     "margin-right": "20px"});
 
-  var imgDiv = this.generateNewElement("div", undefined, undefined, column, {"width": "214px", "height": "120px"});
+  var imgDiv = this.generateNewElement("div", ["waves-effect", "waves-light"], undefined, column, {"width": "214px", "height": "120px"});
   var img = this.generateNewElement("img", ["waves-effect", "waves-light", "center-align"], undefined, imgDiv,
     {"width": "100%", "height": "100%"});
   img.src = video.snippet.thumbnails.high.url;
   img.onClick = (event) => {
-    playVideo(video);
+    youtubeSexy.playVideo(video);
   };
 
   var rowVideoName = this.generateNewElement("div", ["row"], undefined, column, {"margin-bottom": "0px"});
   var columnVideoName = this.generateNewElement("div", ["col", "s12"], undefined, rowVideoName, undefined);
   var videoNameTextComp = this.generateNewElement("a", ["videoNameTextComponent", "truncate", this.darkThemed ? "white-text"
     : "black-text"], "Loading...", columnVideoName, undefined);
-  videoNameTextComp.href = "";
   videoNameTextComp.onclick = (event) => {
-    playVideo(video);
+    youtubeSexy.playVideo(video);
   };
 
-  //Video Info
-  var rowVideoInfo = this.generateNewElement("div", ["row"], undefined, column, {"margin-bottom": "0px"});
-
   //Views
-  var columnViews = this.generateNewElement("div", ["col", "s4"], undefined, rowVideoInfo, {"padding-right": "0px"});
+  var rowVideoViews = this.generateNewElement("div", ["row"], undefined, column, {"margin-bottom": "0px"});
+  var columnViews = this.generateNewElement("div", ["col", "s6"], undefined, rowVideoViews, {"padding-right": "0px"});
   var viewsTextComp = this.generateNewElement("a", ["videoNameTextComponent", "truncate", this.darkThemed ? "white-text"
   : "black-text"], "Loading...", columnViews, {"font-size": "10px"});
 
   //Like/Dislike
-  var columnLike = this.generateNewElement("div", ["col", "s4"], undefined, rowVideoInfo, {"padding": "0px"});
-  var likeChip = this.generateNewElement("div", ["chip", "small"], undefined, columnLike, {"margin": "0px"});
+  var rowVideoInfo = this.generateNewElement("div", ["row"], undefined, column, {"margin-bottom": "10px"});
+  var columnLike = this.generateNewElement("div", ["col", "s6"], undefined, rowVideoInfo, {"padding-right": "0px"});
+  var likeChip = this.generateNewElement("div", ["chip", "small", "waves-effect", "waves-teal"], undefined,
+    columnLike, {"margin": "0px"});
   var likeImg = this.generateNewElement("img", undefined, undefined, likeChip, {"margin-right": "0px"});
   likeImg.src = "img/like.png";
   var likesText = this.generateNewElement("a", ["black-text", "truncate"], "0", likeChip, undefined)
 
   var columnDislike = this.generateNewElement("div", ["col", "s4"], undefined, rowVideoInfo, {"padding": "0px"});
-  var dislikeChip = this.generateNewElement("div", ["chip", "small"], undefined, columnDislike, {"margin": "0px"});
+  var dislikeChip = this.generateNewElement("div", ["chip", "small", "waves-effect", "waves-red"], undefined,
+    columnDislike, {"margin": "0px"});
   var dislikeImg = this.generateNewElement("img", undefined, undefined, dislikeChip, {"margin-right": "0px"});
   dislikeImg.src = "img/dislike.png";
   var dislikesText = this.generateNewElement("a", ["black-text", "truncate"], "0", dislikeChip, undefined)

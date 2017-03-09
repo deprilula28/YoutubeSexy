@@ -1,0 +1,44 @@
+{
+  "kind": "youtube#channelListResponse",
+  "etag": "\"uQc-MPTsstrHkQcRXL3IWLmeNsM/jLg2R4OvkvGPGGwv_f7hwAlFQ0I\"",
+  "pageInfo": {
+    "totalResults": 1,
+    "resultsPerPage": 1
+  },
+  "items": [
+    {
+      "kind": "youtube#channel",
+      "etag": "\"uQc-MPTsstrHkQcRXL3IWLmeNsM/BkXIWPOGoiGJ6A-e8kfKkZrYlmo\"",
+      "id": "UCd8_HyWNvLELqVg2QIoXPAA",
+      "snippet": {
+        "title": "Bingocat",
+        "description": "I love comedy, technology, design, games, and the internet! I make mainly tech and gaming themed videos. If you have questions about the software I use or the games I play, feel free to ask!\n\nI don't really have an upload schedule; I just upload when I have ideas and time.\n\nFeel free to check out my gaming channel too!\n\nComputer Specs:\n-CPU: Intel Core i7-4790K 4.0GHz Quad-Core\n-CPU Cooler: Corsair H60 Liquid Cooler\n-Motherboard: Asus Z97-P ATX LGA1150\n-Memory: Kingston HyperX Fury Black 32GB (4 x 8GB) DDR3-1600\n-Storage: Samsung SSD 960 PRO M.2 1TB, Samsung 840 EVO 1TB 2.5\" Solid State Drive, Seagate Barracuda 2TB 3.5\" 7200RPM Internal Hard Drive\n-Video Card: EVGA GeForce GTX 1070 SC GAMING ACX 3.0, 8GB GDDR5, LED, DX12 OSD Support (PXOC) Graphics Card 08G-P4-6173-KR\n-Case: Rosewill Challenger-U3 ATX Mid Tower\n-Power Supply: Rosewill Capstone 750W 80+ Gold Certified Semi-Modular ATX\n-Operating System: Windows 10 Pro Anniversary Edition 64-bit",
+        "customUrl": "bingocat1994",
+        "publishedAt": "2014-01-29T02:18:05.000Z",
+        "thumbnails": {
+          "default": {
+            "url": "https://yt3.ggpht.com/-5hQDVrkXB4k/AAAAAAAAAAI/AAAAAAAAAAA/rQWQRGagj0A/s88-c-k-no-mo-rj-c0xffffff/photo.jpg"
+          },
+          "medium": {
+            "url": "https://yt3.ggpht.com/-5hQDVrkXB4k/AAAAAAAAAAI/AAAAAAAAAAA/rQWQRGagj0A/s240-c-k-no-mo-rj-c0xffffff/photo.jpg"
+          },
+          "high": {
+            "url": "https://yt3.ggpht.com/-5hQDVrkXB4k/AAAAAAAAAAI/AAAAAAAAAAA/rQWQRGagj0A/s240-c-k-no-mo-rj-c0xffffff/photo.jpg"
+          }
+        },
+        "localized": {
+          "title": "Bingocat",
+          "description": "I love comedy, technology, design, games, and the internet! I make mainly tech and gaming themed videos. If you have questions about the software I use or the games I play, feel free to ask!\n\nI don't really have an upload schedule; I just upload when I have ideas and time.\n\nFeel free to check out my gaming channel too!\n\nComputer Specs:\n-CPU: Intel Core i7-4790K 4.0GHz Quad-Core\n-CPU Cooler: Corsair H60 Liquid Cooler\n-Motherboard: Asus Z97-P ATX LGA1150\n-Memory: Kingston HyperX Fury Black 32GB (4 x 8GB) DDR3-1600\n-Storage: Samsung SSD 960 PRO M.2 1TB, Samsung 840 EVO 1TB 2.5\" Solid State Drive, Seagate Barracuda 2TB 3.5\" 7200RPM Internal Hard Drive\n-Video Card: EVGA GeForce GTX 1070 SC GAMING ACX 3.0, 8GB GDDR5, LED, DX12 OSD Support (PXOC) Graphics Card 08G-P4-6173-KR\n-Case: Rosewill Challenger-U3 ATX Mid Tower\n-Power Supply: Rosewill Capstone 750W 80+ Gold Certified Semi-Modular ATX\n-Operating System: Windows 10 Pro Anniversary Edition 64-bit"
+        },
+        "country": "US"
+      },
+      "statistics": {
+        "viewCount": "1289579",
+        "commentCount": "0",
+        "subscriberCount": "8297",
+        "hiddenSubscriberCount": false,
+        "videoCount": "104"
+      }
+    }
+  ]
+}
