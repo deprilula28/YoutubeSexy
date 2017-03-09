@@ -1,40 +1,113 @@
 
+var API_KEY = "AIzaSyBlV48q70B0bP3URvRVw_7-uW0YhXZA8GE";
+var authenticated = false;
+
 function startAPILib(){
 
-  gapi.load("client", startGAPI);
+  if(authenticated){
+    googleAPIGet("https://www.googleapis.com/youtube/v3/activities", {
+      "part": "snippet",
+      "maxResults": 50,
+      "home": true
+    }, (json) => loadMainMenuPage(json));
+  }else{
+    googleAPIGet("https://www.googleapis.com/youtube/v3/videos", {
+      "part": "snippet",
+      "chart": "mostPopular",
+      "maxResults": 50
+    }, (json) => loadMainMenuPage(json))
+  }
 
 }
 
-function startGAPI(){
+//credits: http://www.netlobo.com/url_query_string_javascript.html
+function gup(url, name){
 
-  gapi.client.init({
-    "apiKey": "AIzaSyBlV48q70B0bP3URvRVw_7-uW0YhXZA8GE",
-    "clientId": "143036117535-r44koj2e0bf9emon2k6kc18g6pkgorh1.apps.googleusercontent.com",
-    "discoveryDocs": [
-      "https://people.googleapis.com/$discovery/rest?version=v1",
-      "https://developers.google.com/apis-explorer/#s/discovery/v1/discovery.apis.getRest?api=youtube&version=v3"
-    ],
-    "scope": [
-      "https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email",
-      "https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile",
-      "https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fyoutube",
-      "https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fyoutube.force-ssl",
-      "https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fyoutube.readonly",
-      "https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fyoutube.upload",
-      "https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fyoutubepartner-channel-audit"
-    ]
-  }).then(() => {
-    console.log("Sucessfully loaded google API.");
-    gapi.client.request({
-      "path": "https://www.googleapis.com/youtube/v3/activities",
-      "params":{
-        "part": "snippet",
-        "maxResults": 50
-      }
-    }).then((result) => {
-      console.log("Request responded..")
-      loadMainMenuPage(result.result);
-    });
-  });
+  name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+
+  var regexS = "[\\#&]"+name+"=([^&#]*)";
+  var regex = new RegExp(regexS);
+  var results = regex.exec(url);
+
+  if(results == null) return "";
+  else return results[1];
+
+}
+
+function getURL(redirect){
+
+	return "https://accounts.google.com/o/oauth2/v2/auth?response_type=token&scope="
+			getScope() + "&client_id=143036117535-r44koj2e0bf9emon2k6kc18g6pkgorh1.apps.googleusercontent.com&redirect_uri=" + redirect;
+
+}
+
+function getScope(){
+
+	return "https://www.googleapis.com/auth/yt-analytics.readonly%20https://www.googleapis.com/auth/yt-analytics-monetary.readonly%20https://www.googleapis.com/auth/youtube%20https://www.googleapis.com/auth/youtube.readonly" +
+			"%20https://www.googleapis.com/auth/youtube.upload%20https://www.googleapis.com/auth/youtubepartner";
+
+}
+
+function requestAuth(){
+
+  var win = window.open("oauthFrame.html", "Authenticate", "toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width= 800, height= 600");
+  win.focus();
+  var redirect = window.document.URL;
+  win.location.href = getURL(redirect);
+
+  var pollTimer = win.setInterval(function(){
+    console.log(win.document.URL);
+    if(win.document.URL.indexOf(redirect) != -1){
+        window.clearInterval(pollTimer);
+
+        var url = win.document.URL;
+        acToken = gup(url, 'access_token');
+        tokenType = gup(url, 'token_type');
+        expiresIn = gup(url, 'expires_in');
+        win.close();
+
+        validateToken(acToken);
+    }
+  }, 100);
+
+}
+
+function googleAPIGet(path, params, completeHandler){
+
+  var url = path + "?key=" + API_KEY;
+
+  jQuery.each(params, (paramName, param) => url = url + "&" + paramName + "=" + (param + ""));
+  console.log("Requesting with URL " + url);
+
+	var request = new XMLHttpRequest();
+	var received = false;
+
+	request.open('GET', url, true);
+	request.onreadystatechange = function(e){
+
+		if(!received && request.readyState == 4){
+			received = true;
+      var json = JSON.parse(request.responseText);
+
+      if(json.hasOwnProperty("error")){
+        var errorAlert = "An error has occured while processing a Youtube API request! Error Code: " + json.error.code + "\n" +
+          "Message: " + json.error.message + "\n\nFull error log:";
+        var index = 1;
+        console.log(json.error.errors);
+
+        for(var errorIndex in json.error.errors){
+          var errorCur = json.error.errors[errorIndex];
+          errorAlert = errorAlert + "\nError #" + index + ": " + errorCur.reason + " (" + errorCur.message + ")";
+          index ++;
+        }
+
+        console.log(errorAlert);
+        alert(errorAlert);
+      }else completeHandler(JSON.parse(request.responseText));
+		}
+
+	}
+
+	request.send(null);
 
 }

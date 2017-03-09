@@ -17,13 +17,13 @@
 		<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
     <script src="js/materialize.js"></script>
-    <script src="https://apis.google.com/js/client.js"></script>
     <script src="js/ytDataAPIv3.js"></script>
     <script src="js/youtubeSexy.js"></script>
 
     <noscript>Please enable JavaScript.</noscript>
 
     <div class="content">
+      <!-- Side openable bar -->
       <ul id="sidebar" class="side-nav">
       </ul>
 
@@ -48,9 +48,9 @@
                 <i class="material-icons white-text">search</i>
               </a>
 
-              <div class="chip waves-effect large grey darken-2">
+              <div id="authenticateButton" class="chip waves-effect waves-light large grey darken-2">
                 <img src="img/UserPic.jpg" />
-                <a class="white-text" onclick="alert('Authenticate not implemented yet');">Authenticate</a>
+                <a class="white-text" onclick="requestAuth();">Authenticate</a>
               </div>
             </div>
           </div>
