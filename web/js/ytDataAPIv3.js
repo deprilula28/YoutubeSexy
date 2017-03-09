@@ -1,21 +1,26 @@
 
 var API_KEY = "AIzaSyBlV48q70B0bP3URvRVw_7-uW0YhXZA8GE";
-var authenticated = false;
 
-function startAPILib(){
+function YTDataAPI(){
 
-  if(authenticated){
-    googleAPIGet("https://www.googleapis.com/youtube/v3/activities", {
+  this.authenticated = false;
+
+}
+
+YTDataAPI.prototype.startAPILib = function(){
+
+  if(this.authenticated){
+    this.googleAPIGet("https://www.googleapis.com/youtube/v3/activities", {
       "part": "snippet",
       "maxResults": 50,
       "home": true
-    }, (json) => loadMainMenuPage(json));
+    }, (json) => youtubeSexy.loadMainMenuPage(json));
   }else{
-    googleAPIGet("https://www.googleapis.com/youtube/v3/videos", {
+    this.googleAPIGet("https://www.googleapis.com/youtube/v3/videos", {
       "part": "snippet",
       "chart": "mostPopular",
       "maxResults": 50
-    }, (json) => loadMainMenuPage(json))
+    }, (json) => youtubeSexy.loadMainMenuPage(json));
   }
 
 }
@@ -48,7 +53,7 @@ function getScope(){
 
 }
 
-function requestAuth(){
+YTDataAPI.prototype.requestAuth = function(){
 
   var win = window.open("oauthFrame.html", "Authenticate", "toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width= 800, height= 600");
   win.focus();
@@ -72,7 +77,7 @@ function requestAuth(){
 
 }
 
-function googleAPIGet(path, params, completeHandler){
+YTDataAPI.prototype.googleAPIGet = function(path, params, completeHandler){
 
   var url = path + "?key=" + API_KEY;
 
