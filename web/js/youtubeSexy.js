@@ -90,7 +90,13 @@ YoutubeSexy.prototype.playVideo = function(videoId){
 
 }
 
-YoutubeSexy.prototype.showChannelPreview = function(channelId){
+YoutubeSexy.prototype.hideChannelPreviews = function (){
+
+
+
+}
+
+YoutubeSexy.prototype.showChannelPreview = function(results, element){
 
 
 

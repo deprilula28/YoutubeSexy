@@ -1,18 +1,40 @@
-UIManager.prototype.getUserIcon = function(channelId){
+UIManager.prototype.getUserIcon = function(channelId, widthShow){
 
-  var chip = this.generateNewElement("div", ["chip"], undefined, undefined, undefined);
-  var img = this.generateNewElement("img", undefined, undefined, chip, undefined);
-  var textNode = this.generateNewElement("a", ["black-text", "truncate"], "Loading...", chip, undefined);
+  var chip = this.generateNewElement("div", ["chip", "waves-effect"], undefined, undefined, undefined);
+  chip.onClick = () => {
+    youtubeSexy.showChannelPage(channelId);
+  }
+  var img = this.generateNewElement("img", undefined, undefined, chip, {"margin-right": "0px"});
+
+  var row = this.generateNewElement("div", ["row"], undefined, chip, widthShow ? {"width": widthShow, "max-width": widthShow}
+    : undefined);
+
+  //Channel Name
+  var columnName = this.generateNewElement("div", ["col", "s6"], undefined, row, undefined);
+  var textNodeName = this.generateNewElement("a", ["black-text", "truncate"], "Loading...", columnName, {"padding-left":
+    "2px", "padding-right": "0px"});
+
+  //Channel Subscription
+  var columnSubs = this.generateNewElement("div", ["col", "s4"], undefined, row, undefined);
+  var textNodeSubs = this.generateNewElement("a", ["black-text", "truncate"], "Loading...", columnSubs, undefined);
 
   youtubeSexy.ytDataAPI.googleAPIGet("https://www.googleapis.com/youtube/v3/channels", {
-    "part": "snippet",
+    "part": "snippet,statistics",
     "id": channelId
   }, (result) => {
     for(var channelIndex in result.items){
       var channel = result.items[channelIndex];
 
-      textNode.textContent = channel.snippet.title;
+      textNodeName.textContent = channel.snippet.title;
+      textNodeSubs.textContent = simplifyNumber(channel.statistics.subscriberCount);
       img.src = channel.snippet.thumbnails.high.url;
+
+      chip.onmouseover = () => {
+        youtubeSexy.showChannelPreview(result, chip);
+      };
+      chip.onmouseout = () => {
+        youtubeSexy.hideChannelPreviews();
+      }
       return;
     }
 
@@ -71,7 +93,9 @@ UIManager.prototype.createFullVideoDIV = function(video){
   var column = this.generateNewElement("div", ["col", "s6", "l3"], undefined, undefined, {"height": "240px", "max-height": "240px", "width": "214px", "max-width": "214px", "overflow": "none",
     "margin-right": "20px"});
 
-  var img = this.generateNewElement("img", undefined, undefined, column, {"width": "214px", "height": "120px"});
+  var imgDiv = this.generateNewElement("div", undefined, undefined, column, {"width": "214px", "height": "120px"});
+  var img = this.generateNewElement("img", ["waves-effect", "waves-light", "center-align"], undefined, imgDiv,
+    {"width": "100%", "height": "100%"});
   img.src = video.snippet.thumbnails.high.url;
   img.onClick = (event) => {
     playVideo(video);
@@ -81,19 +105,37 @@ UIManager.prototype.createFullVideoDIV = function(video){
   var columnVideoName = this.generateNewElement("div", ["col", "s12"], undefined, rowVideoName, undefined);
   var videoNameTextComp = this.generateNewElement("a", ["videoNameTextComponent", "truncate", this.darkThemed ? "white-text"
     : "black-text"], "Loading...", columnVideoName, undefined);
+  videoNameTextComp.href = "";
+  videoNameTextComp.onclick = (event) => {
+    playVideo(video);
+  };
 
   //Video Info
-  var rowVideoInfo = this.generateNewElement("div", ["row"], undefined, column, undefined);
+  var rowVideoInfo = this.generateNewElement("div", ["row"], undefined, column, {"margin-bottom": "0px"});
 
   //Views
-  var columnViews = this.generateNewElement("div", ["col", "s4"], undefined, rowVideoInfo, undefined);
+  var columnViews = this.generateNewElement("div", ["col", "s4"], undefined, rowVideoInfo, {"padding-right": "0px"});
   var viewsTextComp = this.generateNewElement("a", ["videoNameTextComponent", "truncate", this.darkThemed ? "white-text"
   : "black-text"], "Loading...", columnViews, {"font-size": "10px"});
 
-  var rowUserIcon = this.generateNewElement("div", ["row"], undefined, column, undefined);
+  //Like/Dislike
+  var columnLike = this.generateNewElement("div", ["col", "s4"], undefined, rowVideoInfo, {"padding": "0px"});
+  var likeChip = this.generateNewElement("div", ["chip", "small"], undefined, columnLike, {"margin": "0px"});
+  var likeImg = this.generateNewElement("img", undefined, undefined, likeChip, {"margin-right": "0px"});
+  likeImg.src = "img/like.png";
+  var likesText = this.generateNewElement("a", ["black-text", "truncate"], "0", likeChip, undefined)
+
+  var columnDislike = this.generateNewElement("div", ["col", "s4"], undefined, rowVideoInfo, {"padding": "0px"});
+  var dislikeChip = this.generateNewElement("div", ["chip", "small"], undefined, columnDislike, {"margin": "0px"});
+  var dislikeImg = this.generateNewElement("img", undefined, undefined, dislikeChip, {"margin-right": "0px"});
+  dislikeImg.src = "img/dislike.png";
+  var dislikesText = this.generateNewElement("a", ["black-text", "truncate"], "0", dislikeChip, undefined)
+
+  //User Icon
+  var rowUserIcon = this.generateNewElement("div", ["row"], undefined, column, {"margin-bottom": "20px"});
   var columnUserIcon = this.generateNewElement("div", ["col", "s12"], undefined, rowUserIcon, undefined);
 
-  var userIcon = this.getUserIcon(video.snippet.channelId);
+  var userIcon = this.getUserIcon(video.snippet.channelId, "214px");
   columnUserIcon.appendChild(userIcon);
 
   youtubeSexy.ytDataAPI.googleAPIGet("https://www.googleapis.com/youtube/v3/videos", {
@@ -105,13 +147,9 @@ UIManager.prototype.createFullVideoDIV = function(video){
 
       videoNameTextComp.textContent = vid.snippet.title;
 
-      var viewCount = vid.statistics.viewCount;
-      var viewCountString = viewCount + "";
-      if(viewCount > 1000 && viewCount < 999999) viewCountString = Math.round(viewCount / 1000) + "K";
-      else if(viewCount > 1000000 && viewCount < 999999999) viewCountString = Math.round(viewCount / 1000000) + "M";
-      else if(viewCount > 1000000000) viewCountString = Math.round(viewCount / 1000000000) + "Bil";
-
-      viewsTextComp.textContent = viewCountString + " views";
+      viewsTextComp.textContent = simplifyNumber(vid.statistics.viewCount) + " views";
+      likesText.textContent = simplifyNumber(vid.statistics.likeCount);
+      dislikesText.textContent = simplifyNumber(vid.statistics.dislikeCount);
       return;
     }
 
