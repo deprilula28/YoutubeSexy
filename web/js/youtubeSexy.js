@@ -18,6 +18,9 @@ function YoutubeSexy(){
   this.ui = new UIManager();
   this.ytDataAPI = new YTDataAPI();
   this.video = undefined;
+  this.maxScroll = 0;
+  this.loadingPage = true;
+  this.lastPageToken = undefined;
 
 }
 
@@ -31,6 +34,9 @@ YoutubeSexy.prototype.loadMainMenuPage = function(activitiesResponse){
 
   console.log("Creating main page contents with videoset:");
   console.log(activitiesResponse);
+
+  this.lastPageToken = undefined;
+  if(activitiesResponse.nextPageToken) this.lastPageToken = activitiesResponse.nextPageToken;
 
   if(this.ytDataAPI.authenticated){
     var interpreterJSON = {};
@@ -48,32 +54,9 @@ YoutubeSexy.prototype.loadMainMenuPage = function(activitiesResponse){
       this.ui.createVideoListDIV(title, itemList);
     });
   }else{
-    var div = document.createElement("div");
-    document.getElementById("main-page").appendChild(div);
-
-    var rowTitle = document.createElement("div");
-    $(rowTitle).addClass("row");
-    $(rowTitle).css({"margin-bottom": "0px"});
-    div.appendChild(rowTitle);
-
-    var columnTitle = document.createElement("div");
-    $(columnTitle).addClass("col").addClass("s12");
-    rowTitle.appendChild(columnTitle);
-
-    var h4 = document.createElement("h4");
-    $(h4).addClass("videoNameTextComponent").addClass(this.ui.darkThemed ? "white-text" : "black-text");
-    $(h4).css({"margin-bottom": "0px"});
-    h4.textContent = "Trending Videos";
-    columnTitle.appendChild(h4);
-
-    var a = document.createElement("a");
-    $(a).addClass("videoNameTextComponent").addClass(this.ui.darkThemed ? "white-text" : "black-text");
-    a.textContent = "Authenticate to view videos recommended for you.";
-    div.appendChild(a);
-
     var rowVideos = document.createElement("div");
     $(rowVideos).addClass("row");
-    div.appendChild(rowVideos);
+    document.getElementById("main-page").appendChild(rowVideos);
 
     var items = activitiesResponse.items;
     for(var itemIndex in items){
@@ -100,6 +83,10 @@ window.onscroll = (event) => {
 
     $(channelPreview).css({"top": y, "left": x})
     $("#channelPreviewUserIMG").css({"left": (x + 118) + "px", "top": (y + 75) + "px"})
+  }
+
+  if($(document).scrollTop() >= youtubeSexy.maxScroll && !youtubeSexy.loadingPage && youtubeSexy.lastPageToken){
+    youtubeSexy.loadNewMenuMenuPage();
   }
 
 }
@@ -190,20 +177,28 @@ YoutubeSexy.prototype.showChannelPage = function(channelId){
 
 YoutubeSexy.prototype.loadNewMenuMenuPage = function(){
 
+  this.loadingPage = true;
+
   if(this.ytDataAPI.authenticated){
     this.ytDataAPI.googleAPIGet("https://www.googleapis.com/youtube/v3/activities", {
       "part": "snippet",
       "maxResults": 50,
       "home": true,
-      "pageToken": "nextPageToken"
-    }, (json) => this.loadMainMenuPage(json));
+      "pageToken": this.lastPageToken
+    }, (json) => {
+      this.loadMainMenuPage(json);
+      this.loadingPage = false;
+    });
   }else{
     this.ytDataAPI.googleAPIGet("https://www.googleapis.com/youtube/v3/videos", {
       "part": "snippet",
       "chart": "mostPopular",
       "maxResults": 50,
-      "pageToken": "nextPageToken"
-    }, (json) => this.loadMainMenuPage(json))
+      "pageToken": this.lastPageToken
+    }, (json) => {
+      this.loadMainMenuPage(json);
+      this.loadingPage = false;
+    });
   }
 
 }
