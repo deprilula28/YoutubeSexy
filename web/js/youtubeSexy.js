@@ -108,7 +108,10 @@ window.onscroll = (event) => {
 YoutubeSexy.prototype.hideChannelPreviews = function (){
 
   if(channelPreview){
-    $(channelPreview).remove();
+    var prev = $(channelPreview);
+    $(channelPreview).animate({"opacity": 0}, 100, "linear", () => {
+      prev.remove();
+    });
     channelPreview = undefined;
     channelPreviewElement = undefined;
   }
@@ -121,7 +124,10 @@ var channelPreviewElement = undefined;
 YoutubeSexy.prototype.showChannelPreview = function(results, element){
 
   if(channelPreview){
-    $(channelPreview).remove();
+    var prev = $(channelPreview);
+    $(channelPreview).animate({"opacity": 0}, 100, "linear", () => {
+      prev.remove();
+    });
     channelPreview = undefined;
     channelPreviewElement = undefined;
   }
@@ -139,9 +145,10 @@ YoutubeSexy.prototype.showChannelPreview = function(results, element){
   if(y > $(window).height() / 2) y = y - 440;
 
   var baseCSS = {"z-index": "9999", "position": "fixed", "left": x + "px", "top": y + "px", "width": sizeX + "px",
-    "height": "400px", "overflow": "hidden"};
+    "height": "400px", "overflow": "hidden", "opacity": 0};
 
   var div = this.ui.generateNewElement("div", ["card", "z-depth-5"], undefined, document.body, baseCSS);
+  $(div).animate({"opacity": 1}, 100, "linear", () => {});
 
   var banner = this.ui.generateNewElement("img", ["channelBanner"], undefined, div, {"width": "200%"});
   banner.src = results.brandingSettings.image.bannerImageUrl;
