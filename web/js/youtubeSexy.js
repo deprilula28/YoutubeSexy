@@ -22,6 +22,9 @@ function YoutubeSexy(){
   this.loadingPage = true;
   this.lastPageToken = undefined;
 
+  this.playing = undefined;
+  this.playlist = undefined;
+
 }
 
 YoutubeSexy.prototype.gotoHome = function(){
@@ -90,6 +93,7 @@ window.onscroll = (event) => {
     var sizeX = 300;
     var x = elementCenterX- sizeX / 2;
     var y = (channelPreviewElement.getBoundingClientRect().top + 25);
+    if(y > $(window).height() / 2) y = y - 440;
 
     $(channelPreview).css({"top": y, "left": x})
     $("#channelPreviewUserIMG").css({"left": (x + 118) + "px", "top": (y + 75) + "px"})
@@ -98,12 +102,6 @@ window.onscroll = (event) => {
   if($(document).scrollTop() >= youtubeSexy.maxScroll && !youtubeSexy.loadingPage && youtubeSexy.lastPageToken){
     youtubeSexy.loadNewMenuMenuPage();
   }
-
-}
-
-YoutubeSexy.prototype.playVideo = function(videoId){
-
-
 
 }
 
@@ -138,6 +136,7 @@ YoutubeSexy.prototype.showChannelPreview = function(results, element){
   var sizeX = 300;
   var x = elementCenterX- sizeX / 2;
   var y = (element.getBoundingClientRect().top + 25);
+  if(y > $(window).height() / 2) y = y - 440;
 
   var baseCSS = {"z-index": "9999", "position": "fixed", "left": x + "px", "top": y + "px", "width": sizeX + "px",
     "height": "400px", "overflow": "hidden"};
