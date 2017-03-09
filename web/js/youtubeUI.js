@@ -3,7 +3,7 @@ UIManager.prototype.getUserIcon = function(channelId, widthShow){
   var chip = this.generateNewElement("div", ["chip", "waves-effect"], undefined, undefined, undefined);
   chip.onClick = () => {
     youtubeSexy.showChannelPage(channelId);
-  }
+  };
   var img = this.generateNewElement("img", undefined, undefined, chip, {"margin-right": "0px"});
 
   var row = this.generateNewElement("div", ["row"], undefined, chip, widthShow ? {"width": widthShow, "max-width": widthShow}

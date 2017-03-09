@@ -37,6 +37,7 @@ YoutubeSexy.prototype.loadMainMenuPage = function(activitiesResponse){
 
   this.lastPageToken = undefined;
   if(activitiesResponse.nextPageToken) this.lastPageToken = activitiesResponse.nextPageToken;
+  else $("#loadingcircle").css({"display": "none"})
 
   if(this.ytDataAPI.authenticated){
     var interpreterJSON = {};
@@ -52,18 +53,27 @@ YoutubeSexy.prototype.loadMainMenuPage = function(activitiesResponse){
 
     jQuery.each(interpreterJSON, (title, itemList) => {
       this.ui.createVideoListDIV(title, itemList);
+      this.maxScroll = this.maxScroll + 240;
     });
   }else{
     var rowVideos = document.createElement("div");
     $(rowVideos).addClass("row");
     document.getElementById("main-page").appendChild(rowVideos);
+    var untilAdd = 4;
 
     var items = activitiesResponse.items;
     for(var itemIndex in items){
       var item = items[itemIndex];
       rowVideos.appendChild(this.ui.createFullVideoDIV(item));
+      untilAdd --;
+      if(untilAdd <= 0){
+        this.maxScroll = this.maxScroll + 240;
+        untilAdd = 4;
+      }
     }
   }
+
+  console.log("New max scroll: " + this.maxScroll);
 
 }
 
@@ -100,7 +110,6 @@ YoutubeSexy.prototype.playVideo = function(videoId){
 YoutubeSexy.prototype.hideChannelPreviews = function (){
 
   if(channelPreview){
-    console.log("Unloading channel preview.");
     $(channelPreview).remove();
     channelPreview = undefined;
     channelPreviewElement = undefined;
@@ -113,7 +122,6 @@ var channelPreviewElement = undefined;
 
 YoutubeSexy.prototype.showChannelPreview = function(results, element){
 
-  console.log("Showing channel preview.");
   if(channelPreview){
     $(channelPreview).remove();
     channelPreview = undefined;
@@ -171,7 +179,7 @@ YoutubeSexy.prototype.showChannelPreview = function(results, element){
 
 YoutubeSexy.prototype.showChannelPage = function(channelId){
 
-
+  console.log("Showing channel page for channel ID: " + channelId);
 
 }
 
