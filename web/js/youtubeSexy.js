@@ -142,14 +142,28 @@ YoutubeSexy.prototype.showChannelPreview = function(results, element){
   var sizeX = 300;
   var x = elementCenterX- sizeX / 2;
   var y = (element.getBoundingClientRect().top + 25);
+  var appersOnTop = false;
+
   if(y > $(window).height() / 2){
     y = y - 440;
+    appersOnTop = true;
   }
 
   var baseCSS = {"left": x + "px", "top": y + "px", "width": sizeX + "px"};
+  var animationCSS = {};
+  if(appersOnTop){
+    baseCSS.height = "0px";
+    baseCSS.top = (y + 400) + "px";
+    animationCSS.top = y + "px";
+    animationCSS.height = "400px";
+  }else{
+    baseCSS.height = "0px";
+    animationCSS.height = "400px";
+  };
 
   var div = this.ui.generateNewElement("div", ["card", "z-depth-5", "channelPreviewPopup"], undefined, document.body,
     baseCSS);
+  $(div).animate(animationCSS, 150, "linear", () => {});
 
   var banner = this.ui.generateNewElement("img", ["channelBanner"], undefined, div, {"width": "200%"});
   banner.src = results.brandingSettings.image.bannerImageUrl;

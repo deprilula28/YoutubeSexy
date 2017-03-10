@@ -34,53 +34,6 @@
 .channelPreviewPopup{
     z-index: 9999;
     position: fixed;
-    height: 400px;
     overflow: hidden;
     opacity: 1;
-
-    -webkitanimation-name: channelPreviewDisplay;
-    -webkitanimation-duration: 0.25s;
-    -mozanimation-name: channelPreviewDisplay;
-    -mozanimation-duration: 0.25s;
-    animation-name: channelPreviewDisplay;
-    animation-duration: 0.25s;
-}
-
-@keyframes channelPreviewDisplay{
-  0%{
-    border-radius: 50%;
-    transform: scale(0.1);
-    height: 300px;
-  }
-  100%{
-    border-radius: 0;
-    transform: scale(1);
-    height: 400px;
-  }
-}
-
-@-webkit-keyframes channelPreviewDisplay{
-  0%{
-    border-radius: 50%;
-    transform: scale(0.1);
-    -webkittransform: scale(0.1);
-  }
-  100%{
-    border-radius: 0;
-    transform: scale(1);
-    -webkittransform: scale(1);
-  }
-}
-
-@-moz-keyframes channelPreviewDisplay{
-  0%{
-    border-radius: 50%;
-    transform: scale(0.1);
-    -moztransform: scale(0.1);
-  }
-  100%{
-    border-radius: 0;
-    transform: scale(1);
-    -moztransform: scale(1);
-  }
 }
