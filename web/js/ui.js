@@ -1,46 +1,60 @@
 function UIManager(){
 
   this.darkThemed = true;
-  this.breadcrumbs = {"Home": () => {
-    youtubeSexy.gotoHome()}
-  };
+  this.breadcrumbs = [new Breadcrumb("Home", () => {
+    console.log("Goin home!");
+  }, undefined)];
 
 }
 
-UIManager.prototype.addToBreadcrumbs = function(handle, name){
+UIManager.prototype.addToBreadcrumbs = function(handleVisit, handleLeave, name){
 
-  this.breadcrumbs.name = handle;
+  var breadcrumbEl = new Breadcrumb(name, handleVisit, handleLeave);
+  this.breadcrumbs.push(breadcrumbEl);
   var lastBreadcrumb = $(".last-breadcrumb");
-  lastBreadcrumb.removeClass("last-breadcrumb");
 
   var newBreadcrumb = document.createElement("a");
   $(newBreadcrumb).addClass("last-breadcrumb").addClass("breadcrumb").addClass("waves-effect").addClass("waves-light");
   newBreadcrumb.textContent = name;
-  newBreadcrumb.onClick = handle;
-  lastBreadcrumb.parentNode.insertBefore(newBreadcrumb, lastBreadcrumb.nextSibling);
+  newBreadcrumb.onClick = this.onClickBreadcrumb(this.breadcrumbs.length - 1, breadcrumbEl);
+  lastBreadcrumb.get(0).parentNode.insertBefore(newBreadcrumb, lastBreadcrumb.nextSibling);
+  lastBreadcrumb.removeClass("last-breadcrumb");
 
 }
 
 UIManager.prototype.gotoBreadcrumbState = function(breadcrumbs){
 
-  $(".bredcrumb:not(.home-breadcrumb)").remove();
+  $(".breadcrumb:not(.home-breadcrumb)").remove();
   this.breadcrumbs = breadcrumbs;
 
   var lastBreadcrumb = $(".home-breadcrumb").get(0);
 
-  jQuery.each(breadcrumbs, (handle, name) => {
-    if(page == "homePage" && name == "Home") return;
+  for(var breadcrumbIndex in breadcrumbs){
+    var breadcrumb = breadcrumbs[breadcrumbIndex];
+    if(breadcrumb.name == "Home") continue;
 
     var newBreadcrumb = document.createElement("a");
     $(newBreadcrumb).addClass("breadcrumb").addClass("waves-effect").addClass("waves-light");
-    newBreadcrumb.textContent = name;
-    newBreadcrumb.onClick = handle;
+    newBreadcrumb.textContent = breadcrumb.name;
+    $(newBreadcrumb).click(this.onClickBreadcrumb(breadcrumbIndex, breadcrumb));
     lastBreadcrumb.parentNode.insertBefore(newBreadcrumb, lastBreadcrumb.nextSibling);
 
     lastBreadcrumb = newBreadcrumb;
-  });
+  }
 
   $(lastBreadcrumb).addClass("last-breadcrumb");
+
+}
+
+UIManager.prototype.onClickBreadcrumb = function(arrayIndex, breadcrumb){
+
+  console.log("Last breadcrumb:")
+  console.log(this.breadcrumbs[this.breadcrumbs.length - 1]);
+  if(this.breadcrumbs[this.breadcrumbs.length - 1].handleLeave) this.breadcrumbs[this.breadcrumbs.length - 1]
+    .handleLeave();
+  breadcrumb.handleVisit();
+  
+  this.gotoBreadcrumbState(this.breadcrumbs.slice(0, arrayIndex));
 
 }
 
@@ -86,5 +100,13 @@ UIManager.prototype.createCirclePreloaderDIV = function(color, size){
 
 
   return wrapper;
+
+}
+
+function Breadcrumb(name, handleVisit, handleLeave){
+
+  this.name = name;
+  this.handleVisit = handleVisit;
+  this.handleLeave = handleLeave;
 
 }

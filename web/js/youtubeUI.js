@@ -1,3 +1,39 @@
+UIManager.prototype.loadFeaturedPage = function(){
+
+  youtubeSexy.ytDataAPI.googleAPIGet("https://www.googleapis.com/youtube/v3/videos", {
+    "part": "snippet",
+    "chart": "mostPopular",
+    "maxResults": 50
+  }, (json) => {
+    var div = document.createElement("div");
+    document.getElementById("main-page").appendChild(div);
+
+    var rowTitle = document.createElement("div");
+    $(rowTitle).addClass("row");
+    $(rowTitle).css({"margin-bottom": "0px"});
+    div.appendChild(rowTitle);
+
+    var columnTitle = document.createElement("div");
+    $(columnTitle).addClass("col").addClass("s12");
+    rowTitle.appendChild(columnTitle);
+
+    var h4 = document.createElement("h4");
+    $(h4).addClass("videoNameTextComponent").addClass(youtubeSexy.ui.darkThemed ? "white-text" : "black-text");
+    $(h4).css({"margin-bottom": "0px"});
+    h4.textContent = "Trending Videos";
+    columnTitle.appendChild(h4);
+
+    var a = document.createElement("a");
+    $(a).addClass("videoNameTextComponent").addClass(youtubeSexy.ui.darkThemed ? "white-text" : "black-text");
+    a.textContent = "Authenticate to view videos recommended for you.";
+    div.appendChild(a);
+
+    youtubeSexy.loadMainMenuPage(json);
+    youtubeSexy.loadingPage = false;
+  });
+
+}
+
 UIManager.prototype.getUserIcon = function(channelId, widthShow){
 
   var chip = this.generateNewElement("div", ["chip", "waves-effect"], undefined, undefined, undefined);

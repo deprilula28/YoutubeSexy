@@ -34,7 +34,19 @@ function YoutubeSexy(){
 
 YoutubeSexy.prototype.gotoHome = function(){
 
+  this.lastPageToken = undefined;
+  $("#loadingcircle").css({"display": "block"});
 
+  if(this.ytDataAPI.authenticated){
+    this.ytDataAPI.googleAPIGet("https://www.googleapis.com/youtube/v3/activities", {
+      "part": "snippet",
+      "maxResults": 50,
+      "home": true
+    }, (json) => {
+      this.loadMainMenuPage(json);
+      this.loadingPage = false;
+    });
+  }else this.ui.loadFeaturedPage();
 
 }
 
@@ -45,7 +57,7 @@ YoutubeSexy.prototype.loadMainMenuPage = function(activitiesResponse){
 
   this.lastPageToken = undefined;
   if(activitiesResponse.nextPageToken) this.lastPageToken = activitiesResponse.nextPageToken;
-  else $("#loadingcircle").css({"display": "none"})
+  else $("#loadingcircle").css({"display": "none"});
 
   if(this.ytDataAPI.authenticated){
     var interpreterJSON = {};
@@ -211,6 +223,14 @@ YoutubeSexy.prototype.showChannelPage = function(channelId){
     $("#main-page").removeClass("blurInFrmes").css({"-webkitfilter": "blur(20px)", "-mozfilter": "blur(20px)",
         "filter": "blur(20px)"})
   }, 500);
+
+  this.ui.addToBreadcrumbs(() => {}, () => {
+    $("#main-page").addClass("blurOutFrames").css({"pointer-events": "all", "-webkitfilter": "", "-mozfilter": "",
+        "filter": ""});
+    setTimeout(() => {
+      $("#main-page").removeClass("blurInFrmes");
+    }, 500);
+  }, "test");
 
 }
 
