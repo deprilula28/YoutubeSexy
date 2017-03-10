@@ -148,8 +148,10 @@ UIManager.prototype.createFullVideoDIV = function(video){
       videoNameTextComp.textContent = vid.snippet.title;
 
       viewsTextComp.textContent = simplifyNumber(vid.statistics.viewCount) + " views";
-      likesText.textContent = simplifyNumber(vid.statistics.likeCount);
-      dislikesText.textContent = simplifyNumber(vid.statistics.dislikeCount);
+      if(vid.statistics.likeCount) likesText.textContent = simplifyNumber(vid.statistics.likeCount);
+      else likesText.textContent = "";
+      if(vid.statistics.dislikeCount) dislikesText.textContent = simplifyNumber(vid.statistics.dislikeCount);
+      else dislikesText.textContent = "";
       return;
     }
 
