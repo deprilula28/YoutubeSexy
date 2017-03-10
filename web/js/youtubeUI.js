@@ -62,12 +62,12 @@ UIManager.prototype.getUserIcon = function(channelId, widthShow){
       textNodeSubs.textContent = simplifyNumber(channel.statistics.subscriberCount);
       img.src = channel.snippet.thumbnails.high.url;
 
-      chip.onmouseover = () => {
+      $(chip).hover((event) => {
         youtubeSexy.showChannelPreview(channel, chip);
-      };
-      chip.onmouseout = (event) => {
+      }, (event) => {
         youtubeSexy.hideChannelPreviews();
-      }
+      });
+      
       chip.onclick = (event) => {
         youtubeSexy.showChannelPage(channelId);
       };

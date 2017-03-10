@@ -30,6 +30,8 @@ function YoutubeSexy(){
   this.playing = undefined;
   this.playlist = undefined;
 
+  this.activeChannelPage = undefined;
+
 }
 
 YoutubeSexy.prototype.gotoHome = function(){
@@ -52,8 +54,7 @@ YoutubeSexy.prototype.gotoHome = function(){
 
 YoutubeSexy.prototype.loadMainMenuPage = function(activitiesResponse){
 
-  console.log("Creating main page contents with videoset:");
-  console.log(activitiesResponse);
+  console.log("Creating main page contents with videoset:", activitiesResponse);
 
   this.lastPageToken = undefined;
   if(activitiesResponse.nextPageToken) this.lastPageToken = activitiesResponse.nextPageToken;
@@ -97,7 +98,7 @@ YoutubeSexy.prototype.loadMainMenuPage = function(activitiesResponse){
 
 }
 
-window.onscroll = (event) => {
+$(window).scroll((event) => {
 
   if(channelPreview){
     var $element = $(channelPreviewElement);
@@ -112,15 +113,15 @@ window.onscroll = (event) => {
     var y = (channelPreviewElement.getBoundingClientRect().top + 25);
     if(y > $(window).height() / 2) y = y - 440;
 
-    $(channelPreview).css({"top": y, "left": x})
-    $("#channelPreviewUserIMG").css({"left": (x + 118) + "px", "top": (y + 75) + "px"})
+    $(channelPreview).css({"top": y, "left": x});
+    $("#channelPreviewUserIMG").css({"left": (x + 118) + "px", "top": (y + 75) + "px"});
   }
 
   if($(document).scrollTop() >= youtubeSexy.maxScroll && !youtubeSexy.loadingPage && youtubeSexy.lastPageToken){
     youtubeSexy.loadNewMenuMenuPage();
   }
 
-}
+});
 
 YoutubeSexy.prototype.hideChannelPreviews = function (){
 
@@ -222,9 +223,11 @@ YoutubeSexy.prototype.showChannelPage = function(channelId){
   $("body").css({"overflow": "hidden"});
 
   var breadcrumb = this.ui.addToBreadcrumbs(() => {}, () => {
+    this.activeChannelPage = undefined;
     $("#main-page").removeClass("blurInFrames").addClass("blurOutFrames");
     $("#content-page").addClass("blurInFrames").animate({"opacity": 0});
     $("body").css({"overflow": ""});
+    $("nav").animate({"background-color": "#3f51b5"});
 
     setTimeout(() => {
       $("#main-page").removeClass("blurOutFrames");
@@ -239,7 +242,7 @@ YoutubeSexy.prototype.showChannelPage = function(channelId){
     for(var channelIndex in result.items){
       var channel = result.items[channelIndex];
       $("#content-page").css({"display": ""}).addClass("blurOutFrames");
-      new YoutubeChannelPage(channelId, channel, breadcrumb);
+      this.activeChannelPage = new YoutubeChannelPage(channelId, channel, breadcrumb);
       return;
     }
 

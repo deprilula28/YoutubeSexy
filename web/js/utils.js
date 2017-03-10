@@ -9,3 +9,9 @@ function simplifyNumber(numb){
   return numbString;
 
 }
+
+function lerp(a, b, progress){
+
+  return a + progress * (b - a);
+
+}
