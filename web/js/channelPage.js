@@ -15,13 +15,16 @@ YoutubeChannelPage.prototype.createChannelPage = function(){
   var chnl = this.response;
   this.breadcrumb.setName(chnl.snippet.title);
 
-  var div = document.getElementById("content-page");
+  var contentPage = document.getElementById("content-page");
   $(div).css({"width": "100%", "height": "100%"});
 
   console.log(chnl);
 
-  var banner = uiMan.generateNewElement("img", ["channelBanner"], undefined, div, {"width": "100%"});
-  banner.src = chnl.brandingSettings.image.bannerTvHighImageUrl;
+  var div = uiMan.generateNewElement("div", ["channelPageWrapper"], undefined, contentPage, {"position": "relative"});
+
+  var banner = uiMan.generateNewElement("img", undefined, undefined, div, {"width": "100%"});
+  banner.src = chnl.brandingSettings.image.bannerImageUrl;
+  banner.crossOrigin = "Anonymous";
   banner.addEventListener("load", () => {
     var vibrant = new Vibrant(banner);
     var swatches = vibrant.swatches();
