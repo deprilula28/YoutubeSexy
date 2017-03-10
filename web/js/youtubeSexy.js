@@ -142,13 +142,14 @@ YoutubeSexy.prototype.showChannelPreview = function(results, element){
   var sizeX = 300;
   var x = elementCenterX- sizeX / 2;
   var y = (element.getBoundingClientRect().top + 25);
-  if(y > $(window).height() / 2) y = y - 440;
+  if(y > $(window).height() / 2){
+    y = y - 440;
+  }
 
-  var baseCSS = {"z-index": "9999", "position": "fixed", "left": x + "px", "top": y + "px", "width": sizeX + "px",
-    "height": "400px", "overflow": "hidden", "opacity": 0};
+  var baseCSS = {"left": x + "px", "top": y + "px", "width": sizeX + "px"};
 
-  var div = this.ui.generateNewElement("div", ["card", "z-depth-5"], undefined, document.body, baseCSS);
-  $(div).animate({"opacity": 1}, 100, "linear", () => {});
+  var div = this.ui.generateNewElement("div", ["card", "z-depth-5", "channelPreviewPopup"], undefined, document.body,
+    baseCSS);
 
   var banner = this.ui.generateNewElement("img", ["channelBanner"], undefined, div, {"width": "200%"});
   banner.src = results.brandingSettings.image.bannerImageUrl;
