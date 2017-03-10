@@ -218,12 +218,14 @@ YoutubeSexy.prototype.showChannelPreview = function(results, element){
 YoutubeSexy.prototype.showChannelPage = function(channelId){
 
   console.log("Loading channel page for channel ID: " + channelId);
-  $("#main-page").addClass("blurInFrames");
+  $("#main-page").addClass("blurInFrames").addClass("popupScrollableElement");
+  $("body").css({"overflow": "hidden"});
 
   var breadcrumb = this.ui.addToBreadcrumbs(() => {}, () => {
     $("#main-page").removeClass("blurInFrames").addClass("blurOutFrames");
     $("#content-page").addClass("blurInFrames").animate({"opacity": 0});
     $("nav").animate({"background-color": "#3f51b5"});
+    $("body").css({"overflow": ""});
 
     setTimeout(() => {
       $("#main-page").removeClass("blurOutFrames");
