@@ -15,12 +15,15 @@ UIManager.prototype.addToBreadcrumbs = function(handleVisit, handleLeave, name){
 
   var newBreadcrumb = document.createElement("a");
   $(newBreadcrumb).addClass("last-breadcrumb").addClass("breadcrumb").addClass("waves-effect").addClass("waves-light");
+  breadcrumbEl.element = newBreadcrumb;
   newBreadcrumb.textContent = name;
   newBreadcrumb.onclick = () => {
     this.onClickBreadcrumb(breadcrumbIndex, breadcrumb)
   };
   lastBreadcrumb.get(0).parentNode.insertBefore(newBreadcrumb, lastBreadcrumb.nextSibling);
   lastBreadcrumb.removeClass("last-breadcrumb");
+
+  return breadcrumbEl;
 
 }
 
@@ -37,6 +40,7 @@ UIManager.prototype.gotoBreadcrumbState = function(breadcrumbs){
 
     var newBreadcrumb = document.createElement("a");
     $(newBreadcrumb).addClass("breadcrumb").addClass("waves-effect").addClass("waves-light");
+    breadcrumb.element = newBreadcrumb;
     newBreadcrumb.textContent = breadcrumb.name;
     newBreadcrumb.onclick = () => {
       this.onClickBreadcrumb(breadcrumbIndex, breadcrumb)
@@ -112,5 +116,13 @@ function Breadcrumb(name, handleVisit, handleLeave){
   this.name = name;
   this.handleVisit = handleVisit;
   this.handleLeave = handleLeave;
+  this.element = undefined;
+
+}
+
+Breadcrumb.prototype.setName = function(name){
+
+  this.name = name;
+  this.element.textContent = name;
 
 }

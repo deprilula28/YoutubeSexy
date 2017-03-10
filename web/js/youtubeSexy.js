@@ -220,26 +220,30 @@ YoutubeSexy.prototype.showChannelPage = function(channelId){
   console.log("Loading channel page for channel ID: " + channelId);
   $("#main-page").addClass("blurInFrames");
 
+  var breadcrumb = this.ui.addToBreadcrumbs(() => {}, () => {
+    $("#main-page").removeClass("blurInFrames").addClass("blurOutFrames");
+    $("#content-page").addClass("blurInFrames").animate({"opacity": 0});
+
+    setTimeout(() => {
+      $("#main-page").removeClass("blurOutFrames");
+      $("#content-page").css({"display": "none", "opacity": 1}).removeClass("blurInFrames").empty();
+    }, 500);
+  }, "Loading...");
+
   youtubeSexy.ytDataAPI.googleAPIGet("https://www.googleapis.com/youtube/v3/channels", {
     "part": "snippet,brandingSettings,statistics",
     "id": channelId
   }, (result) => {
     for(var channelIndex in result.items){
       var channel = result.items[channelIndex];
-      new YoutubeChannelPage(channel);
+      $("#content-page").css({"display": ""}).addClass("blurOutFrames");
+      new YoutubeChannelPage(channelId, channel, breadcrumb);
       return;
     }
 
     alert("Invalid channel. Maybe it got deleted?");
     console.log("Invalid channel. Maybe it got deleted?");
   });
-
-  this.ui.addToBreadcrumbs(() => {}, () => {
-    $("#main-page").removeClass("blurInFrames").addClass("blurOutFrames");
-    setTimeout(() => {
-      $("#main-page").removeClass("blurOutFrames");
-    }, 500);
-  }, "test");
 
 }
 
