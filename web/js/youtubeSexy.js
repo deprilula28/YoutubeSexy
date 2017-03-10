@@ -223,6 +223,7 @@ YoutubeSexy.prototype.showChannelPage = function(channelId){
   var breadcrumb = this.ui.addToBreadcrumbs(() => {}, () => {
     $("#main-page").removeClass("blurInFrames").addClass("blurOutFrames");
     $("#content-page").addClass("blurInFrames").animate({"opacity": 0});
+    $("nav").animate({"background-color": "#3f51b5"});
 
     setTimeout(() => {
       $("#main-page").removeClass("blurOutFrames");
@@ -236,7 +237,7 @@ YoutubeSexy.prototype.showChannelPage = function(channelId){
   }, (result) => {
     for(var channelIndex in result.items){
       var channel = result.items[channelIndex];
-      $("#content-page").css({"display": ""}).addClass("blurOutFrames");
+      $("#content-page").css({"display": "", "opacity": 0}).animate({"opacity": 1})
       new YoutubeChannelPage(channelId, channel, breadcrumb);
       return;
     }

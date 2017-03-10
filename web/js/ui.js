@@ -2,7 +2,8 @@ function UIManager(){
 
   this.darkThemed = true;
   this.breadcrumbs = [new Breadcrumb("Home", () => {
-    console.log("Goin home!");
+    console.log("Setting up homepage");
+    $("nav").animate({"background-color": "#3f51b5"});
   }, undefined)];
 
 }
