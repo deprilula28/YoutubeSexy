@@ -32,8 +32,13 @@
 }
 
 .channelPreviewPopup{
-    z-index: 9999;
-    position: fixed;
-    overflow: hidden;
-    opacity: 1;
+  z-index: 9999;
+  position: fixed;
+  overflow: hidden;
+  opacity: 1;
+}
+
+.content{
+  overflow-x: scroll;
+  overflow-y: auto;
 }

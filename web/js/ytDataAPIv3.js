@@ -4,6 +4,7 @@ var API_KEY = "AIzaSyBlV48q70B0bP3URvRVw_7-uW0YhXZA8GE";
 function YTDataAPI(){
 
   this.authenticated = false;
+  this.authAccessToken = undefined;
 
 }
 
@@ -70,7 +71,7 @@ function gup(url, name){
 
 function getURL(redirect){
 
-	return "https://accounts.google.com/o/oauth2/v2/auth?response_type=token&scope="
+	return "https://accounts.google.com/o/oauth2/v2/auth?response_type=token&scope=" +
 			getScope() + "&client_id=143036117535-r44koj2e0bf9emon2k6kc18g6pkgorh1.apps.googleusercontent.com&redirect_uri=" + redirect;
 
 }
@@ -84,23 +85,28 @@ function getScope(){
 
 YTDataAPI.prototype.requestAuth = function(){
 
-  var win = window.open("oauthFrame.html", "Authenticate", "toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width= 800, height= 600");
+  var win = window.open(getURL("https://deprilula28.github.io/YoutubeSexy/oauthFrame.html"), "Authenticate",
+    "toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=" +
+    "800, height= 600");
+  var redirect = "deprilula28.github.io";
   win.focus();
-  var redirect = window.document.URL;
-  win.location.href = getURL(redirect);
 
   var pollTimer = win.setInterval(function(){
-    console.log(win.document.URL);
-    if(win.document.URL.indexOf(redirect) != -1){
+    if(win.document.URL && win.document.URL.indexOf(redirect) != -1){
         window.clearInterval(pollTimer);
 
         var url = win.document.URL;
         acToken = gup(url, 'access_token');
         tokenType = gup(url, 'token_type');
         expiresIn = gup(url, 'expires_in');
-        win.close();
 
-        validateToken(acToken);
+        if(this.verify(acToken)){
+          this.authAccessToken = new AuthAccessToken(acToken, tokenType, expiresIn);
+          this.authenticated = true;
+          console.log("Authenticated!");
+        }
+
+        win.close();
     }
   }, 100);
 
@@ -143,5 +149,13 @@ YTDataAPI.prototype.googleAPIGet = function(path, params, completeHandler){
 	}
 
 	request.send(null);
+
+}
+
+function AuthAccessToken(token, tokenType, expiresIn){
+
+  this.token = token;
+  this.tokenType = tokenType;
+  this.expiresIn = expiresIn;
 
 }

@@ -32,7 +32,7 @@ UIManager.prototype.getUserIcon = function(channelId, widthShow){
       chip.onmouseover = () => {
         youtubeSexy.showChannelPreview(channel, chip);
       };
-      chip.onmouseout = () => {
+      chip.onmouseout = (event) => {
         youtubeSexy.hideChannelPreviews();
       }
       return;
