@@ -16,7 +16,9 @@ UIManager.prototype.addToBreadcrumbs = function(handleVisit, handleLeave, name){
   var newBreadcrumb = document.createElement("a");
   $(newBreadcrumb).addClass("last-breadcrumb").addClass("breadcrumb").addClass("waves-effect").addClass("waves-light");
   newBreadcrumb.textContent = name;
-  newBreadcrumb.onClick = this.onClickBreadcrumb(this.breadcrumbs.length - 1, breadcrumbEl);
+  newBreadcrumb.onclick = () => {
+    this.onClickBreadcrumb(breadcrumbIndex, breadcrumb)
+  };
   lastBreadcrumb.get(0).parentNode.insertBefore(newBreadcrumb, lastBreadcrumb.nextSibling);
   lastBreadcrumb.removeClass("last-breadcrumb");
 
@@ -36,7 +38,9 @@ UIManager.prototype.gotoBreadcrumbState = function(breadcrumbs){
     var newBreadcrumb = document.createElement("a");
     $(newBreadcrumb).addClass("breadcrumb").addClass("waves-effect").addClass("waves-light");
     newBreadcrumb.textContent = breadcrumb.name;
-    $(newBreadcrumb).click(this.onClickBreadcrumb(breadcrumbIndex, breadcrumb));
+    newBreadcrumb.onclick = () => {
+      this.onClickBreadcrumb(breadcrumbIndex, breadcrumb)
+    };
     lastBreadcrumb.parentNode.insertBefore(newBreadcrumb, lastBreadcrumb.nextSibling);
 
     lastBreadcrumb = newBreadcrumb;
@@ -53,7 +57,7 @@ UIManager.prototype.onClickBreadcrumb = function(arrayIndex, breadcrumb){
   if(this.breadcrumbs[this.breadcrumbs.length - 1].handleLeave) this.breadcrumbs[this.breadcrumbs.length - 1]
     .handleLeave();
   breadcrumb.handleVisit();
-  
+
   this.gotoBreadcrumbState(this.breadcrumbs.slice(0, arrayIndex));
 
 }

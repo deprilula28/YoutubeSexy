@@ -50,6 +50,11 @@
   -moz-animation-duration: 0.5s;
   animation-name: blurIn;
   animation-duration: 0.5s;
+
+  pointer-events: none;
+  filter: blur(20px);
+  -mozfilter: blur(20px);
+  -webkitfilter: blur(20px);
 }
 
 @-webkit-keyframes blurIn{
