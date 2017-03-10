@@ -208,8 +208,8 @@ YoutubeSexy.prototype.showChannelPage = function(channelId){
   console.log("Showing channel page for channel ID: " + channelId);
   $("#main-page").addClass("blurInFrames").css({"pointer-events": "none"});
   setTimeout(() => {
-    $("#main-page").removeClass("blurInFrmes").css({"-webkitfilter": "blur(50px)", "-mozfilter": "blur(50px)",
-        "filter": "blur(50px)"})
+    $("#main-page").removeClass("blurInFrmes").css({"-webkitfilter": "blur(20px)", "-mozfilter": "blur(20px)",
+        "filter": "blur(20px)"})
   }, 500);
 
 }
