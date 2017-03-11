@@ -106,8 +106,7 @@ UIManager.prototype.createCirclePreloaderDIV = function(color, size){
   var circleClipper = this.generateNewElement("div", ["circle"], undefined, circleClipperWrapper, undefined);
   var circleGapPatchWrapper = this.generateNewElement("div", ["gap-patch"], undefined, layer, undefined);
   var circleGapPatch = this.generateNewElement("div", ["circle"], undefined, circleGapPatchWrapper, undefined);
-
-
+  
   return wrapper;
 
 }

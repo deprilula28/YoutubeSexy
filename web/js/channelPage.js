@@ -9,6 +9,7 @@ function YoutubeChannelPage(channelId, response, breadcrumb){
   this.fixed = false;
   this.tabs = undefined;
   this.maxScroll = 0;
+  this.loadingPage = true;
 
   this.createChannelPage();
 
@@ -145,7 +146,8 @@ YoutubeChannelPage.prototype.createChannelPage = function(){
   }
 
   var videoListRow = uiMan.generateNewElement("div", ["row"], undefined, videosDIV, undefined);
-  this.loadVideos(this.channelId, videoListRow, undefined);
+  this.videoRow = videoListRow;
+  this.loadVideoPage();
 
   // About
   var aboutDIV = uiMan.generateNewElement("div", ["col", "s12"], undefined, tabsRow, undefined);
@@ -195,7 +197,16 @@ YoutubeChannelPage.prototype.createChannelPage = function(){
 
   $(tabs).tabs();
   $(".indicator").css({"color": "#FFFFFF"});
-
+  
+  var loading = youtubeSexy.ui.createCirclePreloaderDIV("blue", "big");
+  div.appendChild(loading);
+  $(loading).on('appear', () => {
+  	console.log("Loading on appear");
+  	if(!this.loadingPage && this.nextPageToken) this.loadVideoPage();
+  });
+  
+  $(loading).initAppear();
+  
   // var test = uiMan.generateNewElement("a", undefined, "Test Test Test Test
 	// Test Test Test Test Test Test Test Test Test " +
   // "Test Test Test Test Test Test Test Test Test Test Test Test Test Test
@@ -204,8 +215,9 @@ YoutubeChannelPage.prototype.createChannelPage = function(){
 
 }
 
-YoutubeChannelPage.prototype.loadVideoPage = function(channelId, row){
-
+YoutubeChannelPage.prototype.loadVideoPage = function(){
+	
+	this.loadingPage = true;
   var json = {
     "part": "snippet",
     "maxResults": 10,
@@ -216,9 +228,10 @@ YoutubeChannelPage.prototype.loadVideoPage = function(channelId, row){
   youtubeSexy.ytDataAPI.googleAPIGet("https://www.googleapis.com/youtube/v3/search", json, (json) => {
     for(var videoIndex in json.items){
       var video = json.items[videoIndex];
-      row.appendChild(youtubeSexy.ui.createFullVideoDIV(video));
+      this.videoRow.appendChild(youtubeSexy.ui.createFullVideoDIV(video));
     }
     if(json.nextPageToken) this.nextPageToken = json.nextPageToken;
+    this.loadingPage = false;
   });
 
 }
