@@ -50,7 +50,7 @@ UIManager.prototype.getUserIcon = function(channelId, widthShow){
   //Channel Subscription
   var columnSubs = this.generateNewElement("div", ["col", "s4"], undefined, row, undefined);
   var textNodeSubs = this.generateNewElement("a", ["black-text", "truncate"], "Loading...", columnSubs, undefined);
-
+  
   youtubeSexy.ytDataAPI.googleAPIGet("https://www.googleapis.com/youtube/v3/channels", {
     "part": "snippet,brandingSettings,statistics",
     "id": channelId
@@ -132,7 +132,6 @@ UIManager.prototype.createFullVideoDIV = function(video){
   var imgDiv = this.generateNewElement("div", ["waves-effect", "waves-light"], undefined, column, {"width": "214px", "height": "120px"});
   var img = this.generateNewElement("img", ["waves-effect", "waves-light", "center-align"], undefined, imgDiv,
     {"width": "100%", "height": "100%"});
-  img.src = video.snippet.thumbnails.high.url;
   img.onClick = (event) => {
     youtubeSexy.playVideo(video);
   };
@@ -173,7 +172,9 @@ UIManager.prototype.createFullVideoDIV = function(video){
 
   var userIcon = this.getUserIcon(video.snippet.channelId, "214px");
   columnUserIcon.appendChild(userIcon);
-
+  
+ img.src = video.snippet.thumbnails.high.url;
+	  
   youtubeSexy.ytDataAPI.googleAPIGet("https://www.googleapis.com/youtube/v3/videos", {
     "part": "snippet,statistics",
     "id": video.id
