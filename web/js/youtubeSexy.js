@@ -16,6 +16,12 @@ window.onload = () => {
   $("body").resize((event) => {
     $(".customScrollBarWrapper").css({"left": ($(window).width() - 10) + "px", "height": ($(window).height() - 85) + "px"});
   });
+  
+  $("#loadingcircle").on('appear', () => {	
+  	if(!youtubeSexy.loadingPage) youtubeSexy.loadNewMenuMenuPage();
+  });
+  
+  $("#loadingcircle").initAppear();
 }
 
 function YoutubeSexy(){
@@ -23,7 +29,6 @@ function YoutubeSexy(){
   this.ui = new UIManager();
   this.ytDataAPI = new YTDataAPI();
   this.video = undefined;
-  this.maxScroll = 0;
   this.loadingPage = true;
   this.lastPageToken = undefined;
 
@@ -74,7 +79,6 @@ YoutubeSexy.prototype.loadMainMenuPage = function(activitiesResponse){
 
     jQuery.each(interpreterJSON, (title, itemList) => {
       this.ui.createVideoListDIV(title, itemList);
-      this.maxScroll = this.maxScroll + 240;
     });
   }else{
     var rowVideos = document.createElement("div");
@@ -88,38 +92,16 @@ YoutubeSexy.prototype.loadMainMenuPage = function(activitiesResponse){
       rowVideos.appendChild(this.ui.createFullVideoDIV(item));
       untilAdd --;
       if(untilAdd <= 0){
-        this.maxScroll = this.maxScroll + 240;
         untilAdd = 4;
       }
     }
   }
 
-  console.log("New max scroll: " + this.maxScroll);
-
 }
 
 $(window).scroll((event) => {
 
-  if(channelPreview){
-    var $element = $(channelPreviewElement);
-    var offset = $element.offset();
-    var width = $element.width();
-    var height = $element.height();
-
-    var elementCenterX = offset.left + width / 2;
-
-    var sizeX = 300;
-    var x = elementCenterX- sizeX / 2;
-    var y = (channelPreviewElement.getBoundingClientRect().top + 25);
-    if(y > $(window).height() / 2) y = y - 440;
-
-    $(channelPreview).css({"top": y, "left": x});
-    $("#channelPreviewUserIMG").css({"left": (x + 118) + "px", "top": (y + 75) + "px"});
-  }
-
-  if($(document).scrollTop() >= youtubeSexy.maxScroll && !youtubeSexy.loadingPage && youtubeSexy.lastPageToken){
-    youtubeSexy.loadNewMenuMenuPage();
-  }
+  if(channelPreview) this.hideChannelPreviews();
 
 });
 
