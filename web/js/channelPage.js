@@ -20,7 +20,6 @@ function YoutubeChannelPage(channelId, response, breadcrumb){
       else if(scroll <= 260 && this.fixed){
         //Unfixing
         this.fixed = false;
-
       }
 
       if(scroll <= 260) $("nav").css({"height": "64px"});
@@ -86,7 +85,6 @@ YoutubeChannelPage.prototype.createChannelPage = function(){
   var informationColumn = uiMan.generateNewElement("div", ["col", "s12"], undefined, informationRow, {"padding": "0px"});
   var informationDiv = uiMan.generateNewElement("div", ["vibrantColored"], undefined, informationColumn, {"width": "100%",
     "height": "128px", "background-color": "#000000"});
-  this.informationDiv = informationDiv;
 
   var userImg = uiMan.generateNewElement("img", ["circular", "z-depth-5"], undefined, div,
     {"z-index": "999", "position": "fixed", "width": "128px", "height": "128px", "left": "10px", "top":
@@ -103,6 +101,21 @@ YoutubeChannelPage.prototype.createChannelPage = function(){
   var containerRow = uiMan.generateNewElement("div", ["row"], undefined, container, undefined);
   var containerColumn = uiMan.generateNewElement("div", ["col", "s12"], undefined, containerRow, undefined);
 
+  var tabsRow = uiMan.generateNewElement("div", ["row"], undefined, informationDiv, undefined);
+  var tabsColumn = uiMan.generateNewElement("div", ["col", "s12"], undefined, tabsRow, undefined);
+  var tabs = uiMan.generateNewElement("ul", ["tabs", "vibrantColored"], undefined, tabsColumn,
+      {"background-color": "#000000", "margin-top": "80px", "color": "#FFFFFF"});
+  this.tabsColumn = tabsColumn;
+  this.tabs = tabs;
+
+  var tabSize = chnl.brandingSettings.channel.unsubscribedTrailer ? "s3" : "s4";
+  if(chnl.brandingSettings.channel.unsubscribedTrailer) this.loadTab(uiMan, true, "Trailer", "trailer", tabSize);
+  this.loadTab(uiMan, true, "Videos", "videos", tabSize);
+  this.loadTab(uiMan, false, "About", "about", tabSize);
+  this.loadTab(uiMan, false, "Channels", "channels", tabSize);
+
+  var videosDIV = uiMan.generateNewElement("div", ["col", "s12"], undefined, tabsRow, undefined);
+  videosDIV.id = "videos";
   youtubeSexy.ytDataAPI.googleAPIGet("https://www.googleapis.com/youtube/v3/search", {
     "part": "snippet",
     "maxResults": 50,
@@ -111,29 +124,45 @@ YoutubeChannelPage.prototype.createChannelPage = function(){
 
   });
 
-  var tabsRow = uiMan.generateNewElement("div", ["row"], undefined, informationDiv, undefined);
-  var tabsColumn = uiMan.generateNewElement("div", ["col", "s12"], undefined, tabsRow, undefined);
-  var tabs = uiMan.generateNewElement("ul", ["tabs", "vibrantColored"], undefined, tabsColumn,
-      {"background-color": "#000000", "margin-top": "80px", "color": "#FFFFFF"});
-  this.tabs = tabs;
+  var aboutDIV = uiMan.generateNewElement("div", ["col", "s12"], undefined, tabsRow, undefined);
+  aboutDIV.id = "about";
 
-  this.loadTab(uiMan, true, "Videos", "videos");
-  this.loadTab(uiMan, false, "About", "about");
-  this.loadTab(uiMan, false, "Channels", "channels");
+  var channelsDIV = uiMan.generateNewElement("div", ["col", "s12"], undefined, tabsRow, undefined);
+  channelsDIV.id = "channels";
+
+  //Channels
+  if(chnl.brandingSettings.channel.featuredChannelsTitle){
+    var rowFeaturedChannels = uiMan.generateNewElement("div", ["row"], undefined, channelsDIV, undefined);
+    var channelFeaturedChannels = uiMan.generateNewElement("div", ["col", "s12"], undefined, rowFeaturedChannels, undefined);
+    var text = uiMan.generateNewElement("h4", [youtubeSexy.ui.darkThemed ? "white-text" : "black-text"],
+      chnl.brandingSettings.channel.featuredChannelsTitle, channelFeaturedChannels, undefined);
+  }
+
+  if(chnl.brandingSettings.channel.featuredChannelsUrls){
+    var rowFeaturedChannels = uiMan.generateNewElement("div", ["row"], undefined, channelsDIV, undefined);
+
+    for(var channelIndex in chnl.brandingSettings.channel.featuredChannelsUrls){
+      var channel = chnl.brandingSettings.channel.featuredChannelsUrls[channelIndex];
+      var channelFeaturedChannels = uiMan.generateNewElement("div", ["col", "s12", "m6", "l4"], undefined,
+        rowFeaturedChannels, undefined);
+
+      youtubeSexy.ui.getUserIcon(channel, "100%");
+    }
+  }
 
   $(tabs).tabs();
-  $(".indicator").css({"color": "#FFFFFF"})
+  $(".indicator").css({"color": "#FFFFFF"});
 
-  var test = uiMan.generateNewElement("a", undefined, "Test Test Test Test Test Test Test Test Test Test Test Test Test " +
-    "Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test",
-    div, {"font-size": "72px", "word-wrap": "break-word"});
+  //var test = uiMan.generateNewElement("a", undefined, "Test Test Test Test Test Test Test Test Test Test Test Test Test " +
+  //  "Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test",
+  //  div, {"font-size": "72px", "word-wrap": "break-word"});
 
 }
 
-YoutubeChannelPage.prototype.loadTab = function(uiMan, active, name, tabDivID){
+YoutubeChannelPage.prototype.loadTab = function(uiMan, active, name, tabDivID, tabSize){
 
-  var li = uiMan.generateNewElement("li", ["tab", "col", "s4"], undefined, this.tabs, undefined);
+  var li = uiMan.generateNewElement("li", ["tab", "col", tabSize], undefined, this.tabs, undefined);
   var text = uiMan.generateNewElement("a", active ? ["active"] : undefined, name, li, undefined);
-  text.href = tabDivID;
+  text.href = "#" + tabDivID;
 
 }
