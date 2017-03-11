@@ -218,6 +218,7 @@ YoutubeSexy.prototype.showChannelPreview = function(results, element){
 
 YoutubeSexy.prototype.showChannelPage = function(channelId){
 
+  this.hideChannelPreviews();
   console.log("Loading channel page for channel ID: " + channelId);
   $("#main-page").addClass("blurInFrames");
   $("body").css({"overflow": "hidden"});

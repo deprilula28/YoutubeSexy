@@ -108,29 +108,66 @@ YoutubeChannelPage.prototype.createChannelPage = function(){
   this.tabsColumn = tabsColumn;
   this.tabs = tabs;
 
-  var tabSize = chnl.brandingSettings.channel.unsubscribedTrailer ? "s3" : "s4";
-  if(chnl.brandingSettings.channel.unsubscribedTrailer) this.loadTab(uiMan, true, "Trailer", "trailer", tabSize);
-  this.loadTab(uiMan, true, "Videos", "videos", tabSize);
-  this.loadTab(uiMan, false, "About", "about", tabSize);
-  this.loadTab(uiMan, false, "Channels", "channels", tabSize);
+  this.loadTab(uiMan, true, "Videos", "videos");
+  this.loadTab(uiMan, false, "About", "about");
+  this.loadTab(uiMan, false, "Channels", "channels");
 
+  //Videos
   var videosDIV = uiMan.generateNewElement("div", ["col", "s12"], undefined, tabsRow, undefined);
   videosDIV.id = "videos";
-  youtubeSexy.ytDataAPI.googleAPIGet("https://www.googleapis.com/youtube/v3/search", {
-    "part": "snippet",
-    "maxResults": 50,
-    "channelId": this.channelId
-  }, (json) => {
 
-  });
+  if(chnl.brandingSettings.channel.unsubscribedTrailer){
+    var titleRow = uiMan.generateNewElement("div", ["row"], undefined, videosDIV, {"margin-top": "20px"});
+    var title = uiMan.generateNewElement("h4", [youtubeSexy.ui.darkThemed ? "white-text" : "black-text",
+      "truncate"], "Trailer", titleRow, undefined);
 
+    var trailerRow = uiMan.generateNewElement("div", ["row"], undefined, videosDIV, undefined);
+    //Trailer Video
+    var trailerVideoColumn = uiMan.generateNewElement("div", ["col", "s12", "m6", "l6"], undefined, trailerRow,
+      {"width": "100%", "height": "400px"});
+    var iframe = uiMan.generateNewElement("iframe", undefined, undefined, trailerVideoColumn, {"width": "100%", "height":
+      "100%"});
+    iframe.src = "https://www.youtube.com/embed/" + chnl.brandingSettings.channel.unsubscribedTrailer + "?autoplay=1";
+
+    //Trailer Video Info
+    var trailerVideoInfoColumn = uiMan.generateNewElement("div", ["col", "s12", "m6", "l6"], undefined, trailerRow,
+      {"width": "100%", "height": "400px"});
+
+    var videoSeparationTitleRow = uiMan.generateNewElement("div", ["row"], undefined, videosDIV, {"margin-top": "20px"});
+    var videoSeparationTitle = uiMan.generateNewElement("h4", [youtubeSexy.ui.darkThemed ? "white-text" : "black-text",
+      "truncate"], "Videos", videoSeparationTitleRow, undefined);
+  }
+
+  var videoListRow = uiMan.generateNewElement("div", ["row"], undefined, videosDIV, undefined);
+  this.loadVideos(this.channelId, videoListRow, undefined);
+
+  //About
   var aboutDIV = uiMan.generateNewElement("div", ["col", "s12"], undefined, tabsRow, undefined);
   aboutDIV.id = "about";
 
+  var topRow = uiMan.generateNewElement("div", ["row"], undefined, aboutDIV, {"margin-top": "20px"});
+
+  var columnCreationDate = uiMan.generateNewElement("div", ["col", "s12", "m4", "l4"], undefined, topRow, undefined);
+  var creationDateString = uiMan.generateNewElement("a", [youtubeSexy.ui.darkThemed ? "white-text" : "black-text",
+    "truncate"], "Created at " + chnl.snippet.publishedAt, columnCreationDate, {"font-size": "30px"});
+
+  var columnViews = uiMan.generateNewElement("div", ["col", "s12", "m4", "l4"], undefined, topRow, undefined);
+  var viewsString = uiMan.generateNewElement("a", [youtubeSexy.ui.darkThemed ? "white-text" : "black-text",
+    "truncate"], simplifyNumber(chnl.statistics.viewCount) + " views", columnViews, {"font-size": "30px"});
+
+  var columnVideos = uiMan.generateNewElement("div", ["col", "s12", "m4", "l4"], undefined, topRow, undefined);
+  var videosString = uiMan.generateNewElement("a", [youtubeSexy.ui.darkThemed ? "white-text" : "black-text",
+  "truncate"], simplifyNumber(chnl.statistics.videoCount) + " videos", columnVideos, {"font-size": "30px"});
+
+  var descriptionRow = uiMan.generateNewElement("div", ["row"], undefined, aboutDIV, {"margin-top": "20px"});
+  var descriptionColumn = uiMan.generateNewElement("div", ["col", "s12"], undefined, descriptionRow, undefined);
+  var description = uiMan.generateNewElement("a", [youtubeSexy.ui.darkThemed ? "white-text" : "black-text"],
+    chnl.snippet.description, descriptionColumn, {"word-wrap": "break-word", "font-size": "12px"});
+
+  //Channels
   var channelsDIV = uiMan.generateNewElement("div", ["col", "s12"], undefined, tabsRow, undefined);
   channelsDIV.id = "channels";
 
-  //Channels
   if(chnl.brandingSettings.channel.featuredChannelsTitle){
     var rowFeaturedChannels = uiMan.generateNewElement("div", ["row"], undefined, channelsDIV, undefined);
     var channelFeaturedChannels = uiMan.generateNewElement("div", ["col", "s12"], undefined, rowFeaturedChannels, undefined);
@@ -146,7 +183,7 @@ YoutubeChannelPage.prototype.createChannelPage = function(){
       var channelFeaturedChannels = uiMan.generateNewElement("div", ["col", "s12", "m6", "l4"], undefined,
         rowFeaturedChannels, undefined);
 
-      youtubeSexy.ui.getUserIcon(channel, "100%");
+      channelFeaturedChannels.appendChild(youtubeSexy.ui.getUserIcon(channel, "100%"));
     }
   }
 
@@ -159,9 +196,28 @@ YoutubeChannelPage.prototype.createChannelPage = function(){
 
 }
 
-YoutubeChannelPage.prototype.loadTab = function(uiMan, active, name, tabDivID, tabSize){
+YoutubeChannelPage.prototype.loadVideos = function(channelId, row, nextPageToken){
 
-  var li = uiMan.generateNewElement("li", ["tab", "col", tabSize], undefined, this.tabs, undefined);
+  var json = {
+    "part": "snippet",
+    "maxResults": 50,
+    "channelId": this.channelId
+  };
+  if(nextPageToken) json.pageToken = nextPageToken;
+
+  youtubeSexy.ytDataAPI.googleAPIGet("https://www.googleapis.com/youtube/v3/search", json, (json) => {
+    for(var videoIndex in json.items){
+      var video = json.items[videoIndex];
+      row.appendChild(youtubeSexy.ui.createFullVideoDIV(video));
+    }
+    if(json.nextPageToken) this.loadVideos(channelId, row, json.nextPageToken);
+  });
+
+}
+
+YoutubeChannelPage.prototype.loadTab = function(uiMan, active, name, tabDivID){
+
+  var li = uiMan.generateNewElement("li", ["tab", "col", "s4"], undefined, this.tabs, undefined);
   var text = uiMan.generateNewElement("a", active ? ["active"] : undefined, name, li, undefined);
   text.href = "#" + tabDivID;
 
