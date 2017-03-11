@@ -39,7 +39,7 @@
 }
 
 .content{
-  overflow-x: scroll;
+  overflow-x: hidden;
   overflow-y: auto;
 }
 
@@ -55,6 +55,13 @@
   filter: blur(20px);
   -mozfilter: blur(20px);
   -webkitfilter: blur(20px);
+}
+
+.channelPageWrapper{
+  overflow-y: scroll;
+  overflow-x: hidden;
+  width: 100%;
+  height: 100%;
 }
 
 @-webkit-keyframes blurIn{

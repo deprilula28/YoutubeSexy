@@ -227,7 +227,7 @@ YoutubeSexy.prototype.showChannelPage = function(channelId){
     $("#main-page").removeClass("blurInFrames").addClass("blurOutFrames");
     $("#content-page").addClass("blurInFrames").animate({"opacity": 0});
     $("body").css({"overflow": ""});
-    $("nav").animate({"background-color": "#3f51b5"});
+    $("nav").css({"height": "64px"}).animate({"background-color": "#3f51b5"});
 
     setTimeout(() => {
       $("#main-page").removeClass("blurOutFrames");
