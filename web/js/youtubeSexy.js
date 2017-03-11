@@ -47,7 +47,7 @@ YoutubeSexy.prototype.gotoHome = function(){
   if(this.ytDataAPI.authenticated){
     this.ytDataAPI.googleAPIGet("https://www.googleapis.com/youtube/v3/activities", {
       "part": "snippet",
-      "maxResults": 50,
+      "maxResults": 15,
       "home": true
     }, (json) => {
       this.loadMainMenuPage(json);
@@ -242,7 +242,7 @@ YoutubeSexy.prototype.loadNewMenuMenuPage = function(){
   if(this.ytDataAPI.authenticated){
     this.ytDataAPI.googleAPIGet("https://www.googleapis.com/youtube/v3/activities", {
       "part": "snippet",
-      "maxResults": 50,
+      "maxResults": 15,
       "home": true,
       "pageToken": this.lastPageToken
     }, (json) => {
@@ -253,7 +253,7 @@ YoutubeSexy.prototype.loadNewMenuMenuPage = function(){
     this.ytDataAPI.googleAPIGet("https://www.googleapis.com/youtube/v3/videos", {
       "part": "snippet",
       "chart": "mostPopular",
-      "maxResults": 50,
+      "maxResults": 15,
       "pageToken": this.lastPageToken
     }, (json) => {
       this.loadMainMenuPage(json);
