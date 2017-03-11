@@ -67,7 +67,7 @@ UIManager.prototype.getUserIcon = function(channelId, widthShow){
       }, (event) => {
         youtubeSexy.hideChannelPreviews();
       });
-      
+
       chip.onclick = (event) => {
         youtubeSexy.showChannelPage(channelId);
       };
@@ -126,7 +126,7 @@ UIManager.prototype.createVideoListDIV = function(title, items){
 
 UIManager.prototype.createFullVideoDIV = function(video){
 
-  var column = this.generateNewElement("div", ["col", "s6", "l3"], undefined, undefined, {"height": "240px", "max-height": "240px", "width": "214px", "max-width": "214px", "overflow": "none",
+  var column = this.generateNewElement("div", ["col", "s12", "m6", "l4"], undefined, undefined, {"height": "240px", "max-height": "240px", "width": "214px", "max-width": "214px", "overflow": "none",
     "margin-right": "20px"});
 
   var imgDiv = this.generateNewElement("div", ["waves-effect", "waves-light"], undefined, column, {"width": "214px", "height": "120px"});

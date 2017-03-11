@@ -1,1 +1,14 @@
-UIManager.prototype.generateNewElement=function(e,t,n,a,r){var o=document.createElement(e),d=$(o);if(t)for(var c in t)d.addClass(t[c]);return n&&(o.textContent=n),a&&a.appendChild(o),r&&d.css(r),o};
+UIManager.prototype.generateNewElement = function(type, classes, textContent, master, css){
+
+  var element = document.createElement(type);
+  var jqueryElement = $(element);
+  if(classes){
+    for(var classCur in classes) jqueryElement.addClass(classes[classCur]);
+  }
+  if(textContent) element.textContent = textContent;
+  if(master) master.appendChild(element);
+  if(css) jqueryElement.css(css);
+
+  return element;
+
+}

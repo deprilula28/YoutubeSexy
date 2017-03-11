@@ -1,1 +1,17 @@
-function simplifyNumber(e){var r=e+"";return e>1e3&&999999>e?r=Math.round(e/1e3)+"K":e>1e6&&999999999>e?r=Math.round(e/1e6)+"M":e>1e9&&(r=Math.round(e/1e9)+"Bil"),r}function lerp(e,r,n){return e+n*(r-e)}
+function simplifyNumber(numb){
+
+  var numbString = numb + "";
+
+  if(numb > 1000 && numb < 999999) numbString = Math.round(numb / 1000) + "K";
+  else if(numb > 1000000 && numb < 999999999) numbString = Math.round(numb / 1000000) + "M";
+  else if(numb > 1000000000) numbString = Math.round(numb / 1000000000) + "Bil";
+
+  return numbString;
+
+}
+
+function lerp(a, b, progress){
+
+  return a + progress * (b - a);
+
+}
