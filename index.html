@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>YoutubeSexy</title>
+
+		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+		<link type="text/css" rel="stylesheet" href="css/materialize.css" media="screen,projection" />
+
+		<meta name="viewport" content="user-scalable=0"/>
+		<link type="text/css" rel="stylesheet" href="css/youtubeSexy.css" />
+
+		<script src="https://apis.google.com/js/platform.js"></script>
+		<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+  </head>
+  <body class="grey darken-3">
+		<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+    <script src="js/materialize.js"></script>
+    <script src="js/ytDataAPIv3.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/uiprimary.js"></script>
+    <script src="js/youtubeUI.js"></script>
+    <script src="js/youtubeSexy.js"></script>
+    <script src="js/lazyload.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/channelPage.js"></script>
+    <script src="js/vibrant.js"></script>
+
+    <noscript>Please enable JavaScript.</noscript>
+
+    <div class="content">
+      <!-- Side openable bar -->
+      <ul id="sidebar" class="side-nav">
+      </ul>
+
+      <div id="top-bar" class="z-depth-4 navbar-fixed">
+        <nav style="background-color: #3f51b5">
+          <div class="nav-wrapper">
+            <!-- Menu Button -->
+            <a class="btn-floating btn-large btn-flat waves-effect waves-light">
+              <i data-activates="sidebar" class="material-icons white-text button-collapse center-align">menu</i>
+            </a>
+
+            <!-- Breadcrumbs -->
+            <a onclick="youtubeSexy.ui.onClickBreadcrumb(0, youtubeSexy.ui.breadcrumbs[0]);"
+              class="home-breadcrumb last-breadcrumb breadcrumb waves-effect waves-light">Home</a>
+
+            <!-- Right Side of the bar -->
+            <div class="right nav-wrapper-right-align">
+              <!-- Upload Button -->
+              <img style="display: none;" class="upload-button btn-floating btn-flat waves-effect waves-light" src="img/Upload.png" class="circle" />
+
+              <!-- Search Icon -->
+              <a class="search-button btn-floating btn-large btn-flat waves-effect waves-light">
+                <i class="material-icons white-text">search</i>
+              </a>
+
+              <div id="authenticateButton" class="chip waves-effect waves-light large grey darken-2">
+                <img src="img/UserPic.jpg" />
+                <a class="white-text" onclick="youtubeSexy.ytDataAPI.requestAuth();">Authenticate</a>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+
+      <div id="main-page" class="container">
+
+      </div>
+
+
+      <div id="content-page" class="content-page-container" style="display: none;">
+
+      </div>
+
+      <div id="loadingcircle" class="center-align">
+        <div class="preloader-wrapper big active loadingcircle">
+          <div class="spinner-layer spinner-blue-only">
+            <div class="circle-clipper left">
+              <div class="circle"></div>
+            </div><div class="gap-patch">
+              <div class="circle"></div>
+            </div><div class="circle-clipper right">
+              <div class="circle"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer class="page-footer indigo lighten-2">
+        <div class="container">
+          <div class="row">
+            <div class="col l6 s12">
+              <h5 class="white-text">YoutubeSexy</h5>
+
+              <a class="white-text waves-effect" onclick="youtubeSexy.ui.toggleTheme();">Toogle Theme</a>
+            </div>
+            <div class="col l4 offset-l2 s12">
+              <h5 class="white-text">Links</h5>
+              <ul>
+                <li><a class="grey-text text-lighten-3" href="http://materializecss.com">Materialize Framework</a></li>
+                <li><a class="grey-text text-lighten-3" href="https://youtube.com">Youtube</a></li>
+                <li><a class="grey-text text-lighten-3" href="https://developers.google.com/youtube/v3/docs/">YT API Docs</a></li>
+                <li><a class="grey-text text-lighten-3" href="https://github.com/deprilula28/YoutubeSexy">Github Src</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="footer-copyright indigo lighten-1">
+          <div class="container">
+          by <a class="blue-text text-lighten-3" href="https://deprilula28.github.io">deprilula28</a>
+          </div>
+        </div>
+      </footer>
+    </div>
+
+  </body>
+</html>
