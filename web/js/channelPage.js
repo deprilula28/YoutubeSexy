@@ -22,11 +22,11 @@ function YoutubeChannelPage(channelId, response, breadcrumb){
       if(scroll > 260 && this.fixed) return;
       else if(scroll <= 260 && this.fixed){
         // Unfixing
+        $(this.filler).css({"display": "none"});
+        $(this.tabs).css({"margin-top": "80px"});
+        this.tabsColumn.appendChild(this.tabs);
         this.fixed = false;
       }
-
-      if(scroll <= 260) $("nav").css({"height": "64px"});
-      else $("nav").css({"height": "128px"});
 
       var banner = this.banner;
       var bannerColumn = banner.parentNode;
@@ -43,6 +43,9 @@ function YoutubeChannelPage(channelId, response, breadcrumb){
         // Fixing
         $(img).css({"width": "64px", "height": "64px", "opacity": 0, "top": "65px"});
         $(name).css({"top": "32px", "left": "150px"});
+        $(this.filler).css({"display": "block"});
+        $("nav").get(0).appendChild(this.tabs);
+        $(this.tabs).css({"margin-top": "0px"});
         this.fixed = true;
       }
 
@@ -106,6 +109,11 @@ YoutubeChannelPage.prototype.createChannelPage = function(){
 
   var tabsRow = uiMan.generateNewElement("div", ["row"], undefined, informationDiv, undefined);
   var tabsColumn = uiMan.generateNewElement("div", ["col", "s12"], undefined, tabsRow, undefined);
+
+  var filler = uiMan.generateNewElement("div", undefined, undefined, tabsColumn, {"display": "none", "height": "48px",
+    "margin-top": "80px"});
+    this.filler = filler;
+
   var tabs = uiMan.generateNewElement("ul", ["tabs", "vibrantColored"], undefined, tabsColumn,
       {"background-color": "#000000", "margin-top": "80px", "color": "#FFFFFF"});
   this.tabsColumn = tabsColumn;
@@ -226,7 +234,7 @@ YoutubeChannelPage.prototype.loadVideoPage = function(){
   youtubeSexy.ytDataAPI.googleAPIGet("https://www.googleapis.com/youtube/v3/search", json, (json) => {
     for(var videoIndex in json.items){
       var video = json.items[videoIndex];
-      this.videoRow.appendChild(youtubeSexy.ui.createFullVideoDIV(video));
+      this.videoRow.appendChild(youtubeSexy.ui.createFullVideoDIV(video, true));
     }
     if(json.nextPageToken) this.nextPageToken = json.nextPageToken;
     this.loadingPage = false;

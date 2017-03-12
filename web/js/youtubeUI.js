@@ -50,7 +50,7 @@ UIManager.prototype.getUserIcon = function(channelId, widthShow){
   //Channel Subscription
   var columnSubs = this.generateNewElement("div", ["col", "s4"], undefined, row, undefined);
   var textNodeSubs = this.generateNewElement("a", ["black-text", "truncate"], "Loading...", columnSubs, undefined);
-  
+
   youtubeSexy.ytDataAPI.googleAPIGet("https://www.googleapis.com/youtube/v3/channels", {
     "part": "snippet,brandingSettings,statistics",
     "id": channelId
@@ -124,7 +124,7 @@ UIManager.prototype.createVideoListDIV = function(title, items){
 
 }
 
-UIManager.prototype.createFullVideoDIV = function(video){
+UIManager.prototype.createFullVideoDIV = function(video, doNotPutChannelChip){
 
   var column = this.generateNewElement("div", ["col", "s12", "m6", "l4"], undefined, undefined, {"height": "240px", "max-height": "240px", "width": "214px", "max-width": "214px", "overflow": "none",
     "margin-right": "20px"});
@@ -170,14 +170,19 @@ UIManager.prototype.createFullVideoDIV = function(video){
   var rowUserIcon = this.generateNewElement("div", ["row"], undefined, column, {"margin-bottom": "20px"});
   var columnUserIcon = this.generateNewElement("div", ["col", "s12"], undefined, rowUserIcon, undefined);
 
-  var userIcon = this.getUserIcon(video.snippet.channelId, "214px");
-  columnUserIcon.appendChild(userIcon);
-  
- img.src = video.snippet.thumbnails.high.url;
-	  
+  if(!doNotPutChannelChip){
+    var userIcon = this.getUserIcon(video.snippet.channelId, "214px");
+    columnUserIcon.appendChild(userIcon);
+  }
+
+  img.src = video.snippet.thumbnails.high.url;
+
+  var vidId = video.id;
+  if(vidId.videoId) vidId = vidId.videoId;
+
   youtubeSexy.ytDataAPI.googleAPIGet("https://www.googleapis.com/youtube/v3/videos", {
     "part": "snippet,statistics",
-    "id": video.id
+    "id": vidId
   }, (result) => {
     for(var videoIndex in result.items){
       var vid = result.items[videoIndex];
