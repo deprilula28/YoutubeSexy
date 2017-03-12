@@ -131,14 +131,14 @@ YoutubeChannelPage.prototype.createChannelPage = function(){
     var trailerRow = uiMan.generateNewElement("div", ["row"], undefined, videosDIV, undefined);
     // Trailer Video
     var trailerVideoColumn = uiMan.generateNewElement("div", ["col", "s12", "m6", "l6"], undefined, trailerRow,
-      {"width": "100%", "height": "400px"});
+      {"height": "400px"});
     var iframe = uiMan.generateNewElement("iframe", undefined, undefined, trailerVideoColumn, {"width": "100%", "height":
       "100%"});
     iframe.src = "https://www.youtube.com/embed/" + chnl.brandingSettings.channel.unsubscribedTrailer + "?autoplay=1";
 
     // Trailer Video Info
     var trailerVideoInfoColumn = uiMan.generateNewElement("div", ["col", "s12", "m6", "l6"], undefined, trailerRow,
-      {"width": "100%", "height": "400px"});
+      {"height": "400px"});
 
     var videoSeparationTitleRow = uiMan.generateNewElement("div", ["row"], undefined, videosDIV, {"margin-top": "20px"});
     var videoSeparationTitle = uiMan.generateNewElement("h4", [youtubeSexy.ui.darkThemed ? "white-text" : "black-text",
