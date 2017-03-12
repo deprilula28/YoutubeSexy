@@ -16,11 +16,11 @@ window.onload = () => {
   $("body").resize((event) => {
     $(".customScrollBarWrapper").css({"left": ($(window).width() - 10) + "px", "height": ($(window).height() - 85) + "px"});
   });
-  
-  $("#loadingcircle").on('appear', () => {	
+
+  $("#loadingcircle").on('appear', () => {
   	if(!youtubeSexy.loadingPage) youtubeSexy.loadNewMenuMenuPage();
   });
-  
+
   $("#loadingcircle").initAppear();
 }
 
@@ -101,7 +101,7 @@ YoutubeSexy.prototype.loadMainMenuPage = function(activitiesResponse){
 
 $(window).scroll((event) => {
 
-  if(channelPreview) this.hideChannelPreviews();
+  if(channelPreview) youtubeSexy.hideChannelPreviews();
 
 });
 
@@ -206,6 +206,7 @@ YoutubeSexy.prototype.showChannelPage = function(channelId){
   $("body").css({"overflow": "hidden"});
 
   var breadcrumb = this.ui.addToBreadcrumbs(() => {}, () => {
+    this.activeChannelPage.unload();
     this.activeChannelPage = undefined;
     $("#main-page").removeClass("blurInFrames").addClass("blurOutFrames");
     $("#content-page").addClass("blurInFrames").animate({"opacity": 0});

@@ -85,7 +85,6 @@ YTDataAPI.prototype.googleAPIGet = function(path, params, completeHandler){
   var url = path + "?key=" + API_KEY;
 
   jQuery.each(params, (paramName, param) => url = url + "&" + paramName + "=" + (param + ""));
-  console.log("Requesting with URL " + url);
 
 	var request = new XMLHttpRequest();
 	var received = false;
