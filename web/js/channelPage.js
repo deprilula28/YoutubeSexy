@@ -17,12 +17,8 @@ function YoutubeChannelPage(channelId, response, breadcrumb){
     if(youtubeSexy.activeChannelPage){
       var scroll = $(".channelPageWrapper").scrollTop();
       
-      if(scroll > this.maxScroll){
-      	
-      }
-      
       var tabs = this.tabs;
-      
+
       if(scroll > 260 && this.fixed) return;
       else if(scroll <= 260 && this.fixed){
         // Unfixing
@@ -197,16 +193,16 @@ YoutubeChannelPage.prototype.createChannelPage = function(){
 
   $(tabs).tabs();
   $(".indicator").css({"color": "#FFFFFF"});
-  
+
   var loading = youtubeSexy.ui.createCirclePreloaderDIV("blue", "big");
   div.appendChild(loading);
   $(loading).on('appear', () => {
   	console.log("Loading on appear");
   	if(!this.loadingPage && this.nextPageToken) this.loadVideoPage();
   });
-  
+
   $(loading).initAppear();
-  
+
   // var test = uiMan.generateNewElement("a", undefined, "Test Test Test Test
 	// Test Test Test Test Test Test Test Test Test " +
   // "Test Test Test Test Test Test Test Test Test Test Test Test Test Test
@@ -216,7 +212,7 @@ YoutubeChannelPage.prototype.createChannelPage = function(){
 }
 
 YoutubeChannelPage.prototype.loadVideoPage = function(){
-	
+
 	this.loadingPage = true;
   var json = {
     "part": "snippet",
