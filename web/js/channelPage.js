@@ -16,7 +16,7 @@ function YoutubeChannelPage(channelId, response, breadcrumb){
   $(".channelPageWrapper").get(0).onscroll = (event) => {
     if(youtubeSexy.activeChannelPage){
       var scroll = $(".channelPageWrapper").scrollTop();
-      
+
       var tabs = this.tabs;
 
       if(scroll > 260 && this.fixed) return;
@@ -129,8 +129,10 @@ YoutubeChannelPage.prototype.createChannelPage = function(){
     var trailerVideoColumn = uiMan.generateNewElement("div", ["col", "s12", "m6", "l6"], undefined, trailerRow,
       {"height": "400px"});
     var iframe = uiMan.generateNewElement("iframe", undefined, undefined, trailerVideoColumn, {"width": "100%", "height":
-      "100%"});
-    iframe.src = "https://www.youtube.com/embed/" + chnl.brandingSettings.channel.unsubscribedTrailer + "?autoplay=1";
+      "100%", "border": "0px"});
+    iframe.src = "https://www.youtube.com/embed/" + chnl.brandingSettings.channel.unsubscribedTrailer + "?autoplay=1&"
+      + "enablejsapi=1&theme=light&showinfo=0";
+    iframe.allowfullscreen = true;
 
     // Trailer Video Info
     var trailerVideoInfoColumn = uiMan.generateNewElement("div", ["col", "s12", "m6", "l6"], undefined, trailerRow,
