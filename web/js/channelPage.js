@@ -57,6 +57,12 @@ function YoutubeChannelPage(channelId, response, breadcrumb){
 
 }
 
+YoutubeChannelPage.prototype.unload = function(){
+
+  $(this.tabs).remove();
+
+}
+
 YoutubeChannelPage.prototype.createChannelPage = function(){
 
   var uiMan = youtubeSexy.ui;

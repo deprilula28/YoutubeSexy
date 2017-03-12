@@ -206,6 +206,7 @@ YoutubeSexy.prototype.showChannelPage = function(channelId){
   $("body").css({"overflow": "hidden"});
 
   var breadcrumb = this.ui.addToBreadcrumbs(() => {}, () => {
+    this.activeChannelPage.unload();
     this.activeChannelPage = undefined;
     $("#main-page").removeClass("blurInFrames").addClass("blurOutFrames");
     $("#content-page").addClass("blurInFrames").animate({"opacity": 0});
