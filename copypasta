@@ -1,0 +1,16 @@
+top:18px;
+left:1.359375px;
+-webkit-transform:scale(12.7);
+-moz-transform:scale(12.7);
+-ms-transform:scale(12.7);
+-o-transform:scale(12.7);
+transform:scale(12.7);
+opacity:1;
+-webkit-transition-duration:
+750ms;
+-moz-transition-duration:750ms;
+-o-transition-duration:750ms;
+transition-duration:750ms;
+-webkit-transition-timing-function:cubic-bezier(0.250, 0.460, 0.450, 0.940);
+-moz-transition-timing-function:cubic-bezier(0.250, 0.460, 0.450, 0.940);
+-o-transition-timing-function:cubic-bezier(0.250, 0.460, 0.450, 0.940);transition-timing-function:cubic-bezier(0.250, 0.460, 0.450, 0.940);

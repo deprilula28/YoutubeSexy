@@ -1,0 +1,70 @@
+{
+ "kind": "youtube#videoListResponse",
+ "etag": "\"uQc-MPTsstrHkQcRXL3IWLmeNsM/GKNBrC0Q8rFQ2VFiZ1KMrR9VFGs\"",
+ "pageInfo": {
+  "totalResults": 1,
+  "resultsPerPage": 1
+ },
+ "items": [
+  {
+   "kind": "youtube#video",
+   "etag": "\"uQc-MPTsstrHkQcRXL3IWLmeNsM/RPSFisUjMoOFXW2giEswhs07x2I\"",
+   "id": "d-D65Jqhsbw",
+   "snippet": {
+    "publishedAt": "2016-09-05T13:03:46.000Z",
+    "channelId": "UCM6beUu6lqHbtJGA8U3zZXA",
+    "title": "French x Cp x Archee | It's a Movie (Audio) [Bass Boosted]",
+    "description": "Original Music Video Directed and edited by: https://twitter.com/HamProductionz - https://www.instagram.com/haysonaden/ \n\n\n🎵  Frenchy 🎵\n● https://www.instagram.com/3mfrench/\n● https://twitter.com/MGFrenchyFrmCle\n\n🎵  Cp 🎵\n● https://twitter.com/ParkWaveCp\n\n🎵  Archee 🎵\n● https://twitter.com/WhosArchee\n\n#FreeCp\n\n🚫 All the music bass boosted is not owned by Bass Central, all music is owned by set respected owners. 🚫\n\n⚠️ These videos may cause people with photosensitive epilepsy to convulse in seizures. Viewer discretion is advised. ⚠️",
+    "thumbnails": {
+     "default": {
+      "url": "https://i.ytimg.com/vi/d-D65Jqhsbw/default.jpg",
+      "width": 120,
+      "height": 90
+     },
+     "medium": {
+      "url": "https://i.ytimg.com/vi/d-D65Jqhsbw/mqdefault.jpg",
+      "width": 320,
+      "height": 180
+     },
+     "high": {
+      "url": "https://i.ytimg.com/vi/d-D65Jqhsbw/hqdefault.jpg",
+      "width": 480,
+      "height": 360
+     },
+     "standard": {
+      "url": "https://i.ytimg.com/vi/d-D65Jqhsbw/sddefault.jpg",
+      "width": 640,
+      "height": 480
+     },
+     "maxres": {
+      "url": "https://i.ytimg.com/vi/d-D65Jqhsbw/maxresdefault.jpg",
+      "width": 1280,
+      "height": 720
+     }
+    },
+    "channelTitle": "Bass Central",
+    "tags": [
+     "Rap",
+     "Rap Nation",
+     "lil uzi",
+     "eminem",
+     "trap nation",
+     "Adobe",
+     "Logic X",
+     "1000 views",
+     "gang gang rap",
+     "gang gang music",
+     "gang",
+     "300",
+     "Cheif Keef"
+    ],
+    "categoryId": "10",
+    "liveBroadcastContent": "none",
+    "localized": {
+     "title": "French x Cp x Archee | It's a Movie (Audio) [Bass Boosted]",
+     "description": "Original Music Video Directed and edited by: https://twitter.com/HamProductionz - https://www.instagram.com/haysonaden/ \n\n\n🎵  Frenchy 🎵\n● https://www.instagram.com/3mfrench/\n● https://twitter.com/MGFrenchyFrmCle\n\n🎵  Cp 🎵\n● https://twitter.com/ParkWaveCp\n\n🎵  Archee 🎵\n● https://twitter.com/WhosArchee\n\n#FreeCp\n\n🚫 All the music bass boosted is not owned by Bass Central, all music is owned by set respected owners. 🚫\n\n⚠️ These videos may cause people with photosensitive epilepsy to convulse in seizures. Viewer discretion is advised. ⚠️"
+    }
+   }
+  }
+ ]
+}

@@ -1,9 +1,10 @@
 # YoutubeSexy
-Yep. I did that.
+This is a website that's supposed to be a Google Materialize'd version of YouTube that uses the API for everything.
 
-## What is this?
-This is a project for an actual good looking Youtube, with a not absolutely awful design.
-This project will use JavaScript and HTML to run natively on your browser with the Youtube API that Google provides.
-
-## Oh great. HOW CAN I GET IT???!!?!?
-At the time of I'm making no releases have been made. But once there are releases, you will most likely be able to check them out in [my website](http://deprilula28.github.io).
+## Additional Credits
+- [Stack Overflow](https://stackoverflow.com)
+- [Materialize CSS](http://materializecss.com)
+- Google for making the [Youtube API](https://developers.google.com/youtube/v3/docs/)
+- [Material Design Rules](https://material.io/guidelines/)
+- [Vibrant.js](http://jariz.github.io/vibrant.js/)
+- Well everything JS related uses [jquery](https://jquery.com/), I'll credit it either way
