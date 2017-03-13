@@ -23,7 +23,7 @@ function YoutubeChannelPage(channelId, response, breadcrumb){
       else if(scroll <= 260 && this.fixed){
         // Unfixing
         $(this.filler).css({"display": "none"});
-        $(this.tabs).css({"margin-top": "80px"});
+        $(this.tabs).css({"margin-top": "80px", "width": ""});
         this.tabsColumn.appendChild(this.tabs);
         this.fixed = false;
       }
@@ -44,8 +44,8 @@ function YoutubeChannelPage(channelId, response, breadcrumb){
         $(img).css({"width": "64px", "height": "64px", "opacity": 0, "top": "65px"});
         $(name).css({"top": "32px", "left": "150px"});
         $(this.filler).css({"display": "block"});
-        $("nav").get(0).appendChild(this.tabs);
-        $(this.tabs).css({"margin-top": "0px"});
+        this.tabsNavWrapperColumn.appendChild(this.tabs);
+        $(this.tabs).css({"margin-top": "0px", "width": "100%"});
         this.fixed = true;
       }
 
@@ -59,7 +59,7 @@ function YoutubeChannelPage(channelId, response, breadcrumb){
 
 YoutubeChannelPage.prototype.unload = function(){
 
-  $(this.tabs).remove();
+  $(this.tabsNavWrapperRow).remove();
 
 }
 
@@ -67,7 +67,7 @@ YoutubeChannelPage.prototype.createChannelPage = function(){
 
   var uiMan = youtubeSexy.ui;
   var chnl = this.response;
-  this.breadcrumb.setName(chnl.snippet.title);
+  if(this.breadcrumb) this.breadcrumb.setName(chnl.snippet.title);
 
   var contentPage = document.getElementById("content-page");
   $(div).css({"width": "100%", "height": "100%"});
@@ -124,6 +124,12 @@ YoutubeChannelPage.prototype.createChannelPage = function(){
       {"background-color": "#000000", "margin-top": "80px", "color": "#FFFFFF"});
   this.tabsColumn = tabsColumn;
   this.tabs = tabs;
+
+  var tabsNavWrapperRow = uiMan.generateNewElement("div", ["row"], undefined, $("nav").get(0), {"width": "100%"});
+  var tabsNavWrapperColumn = uiMan.generateNewElement("div", ["col", "s12"], undefined, tabsNavWrapperRow, {"height": "0px",
+    "width": "100%"});
+  this.tabsNavWrapperRow = tabsNavWrapperRow;
+  this.tabsNavWrapperColumn = tabsNavWrapperColumn;
 
   this.loadTab(uiMan, true, "Videos", "videos");
   this.loadTab(uiMan, false, "About", "about");
