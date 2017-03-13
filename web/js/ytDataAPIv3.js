@@ -19,7 +19,12 @@ YTDataAPI.prototype.startAPILib = function(){
       youtubeSexy.loadMainMenuPage(json);
       youtubeSexy.loadingPage = false;
     });
-  }else youtubeSexy.ui.loadFeaturedPage();
+
+    youtubeSexy.ui.loadSidebarPanelAuthenticated();
+  }else{
+    youtubeSexy.ui.loadFeaturedPage();
+    youtubeSexy.ui.loadSidebarPanelNoAuth();
+  }
 
 }
 
