@@ -10,6 +10,7 @@ function UIManager(){
 
 UIManager.prototype.addToBreadcrumbs = function(handleVisit, handleLeave, name){
 
+  var breadcrumbIndex = this.breadcrumbs.length;
   var breadcrumbEl = new Breadcrumb(name, handleVisit, handleLeave);
   this.breadcrumbs.push(breadcrumbEl);
   var lastBreadcrumb = $(".last-breadcrumb");
@@ -17,9 +18,10 @@ UIManager.prototype.addToBreadcrumbs = function(handleVisit, handleLeave, name){
   var newBreadcrumb = document.createElement("a");
   $(newBreadcrumb).addClass("last-breadcrumb").addClass("breadcrumb").addClass("waves-effect").addClass("waves-light");
   breadcrumbEl.element = newBreadcrumb;
+  console.log("breadcrumbs:", this.breadcrumbs);
   newBreadcrumb.textContent = name;
   newBreadcrumb.onclick = () => {
-    this.onClickBreadcrumb(breadcrumbIndex, breadcrumb)
+    this.onClickBreadcrumb(breadcrumbIndex, breadcrumbEl);
   };
   lastBreadcrumb.get(0).parentNode.insertBefore(newBreadcrumb, lastBreadcrumb.nextSibling);
   lastBreadcrumb.removeClass("last-breadcrumb");
@@ -30,14 +32,14 @@ UIManager.prototype.addToBreadcrumbs = function(handleVisit, handleLeave, name){
 
 UIManager.prototype.gotoBreadcrumbState = function(breadcrumbs){
 
-  $(".breadcrumb:not(.home-breadcrumb)").remove();
+  $(".breadcrumb").remove();
+  console.log("Loading breadcrumb state:", breadcrumbs, "Previous:", this.breadcrumbs);
   this.breadcrumbs = breadcrumbs;
 
-  var lastBreadcrumb = $(".home-breadcrumb").get(0);
+  var lastBreadcrumb = undefined;
 
   for(var breadcrumbIndex in breadcrumbs){
     var breadcrumb = breadcrumbs[breadcrumbIndex];
-    if(breadcrumb.name == "Home") continue;
 
     var newBreadcrumb = document.createElement("a");
     $(newBreadcrumb).addClass("breadcrumb").addClass("waves-effect").addClass("waves-light");
@@ -46,7 +48,8 @@ UIManager.prototype.gotoBreadcrumbState = function(breadcrumbs){
     newBreadcrumb.onclick = () => {
       this.onClickBreadcrumb(breadcrumbIndex, breadcrumb)
     };
-    lastBreadcrumb.parentNode.insertBefore(newBreadcrumb, lastBreadcrumb.nextSibling);
+    if(lastBreadcrumb) lastBreadcrumb.parentNode.insertBefore(newBreadcrumb, lastBreadcrumb.nextSibling);
+    else $(".placeholder-breadcrumb").get(0).parentNode.insertBefore(newBreadcrumb, $(".placeholder-breadcrumb").get(0).nextSibling);
 
     lastBreadcrumb = newBreadcrumb;
   }
@@ -63,7 +66,8 @@ UIManager.prototype.onClickBreadcrumb = function(arrayIndex, breadcrumb){
     .handleLeave();
   breadcrumb.handleVisit();
 
-  this.gotoBreadcrumbState(this.breadcrumbs.slice(0, arrayIndex));
+  console.log("Slicing from 0 to " + arrayIndex);
+  this.gotoBreadcrumbState(this.breadcrumbs.slice(0, arrayIndex + 1));
 
 }
 
@@ -106,7 +110,7 @@ UIManager.prototype.createCirclePreloaderDIV = function(color, size){
   var circleClipper = this.generateNewElement("div", ["circle"], undefined, circleClipperWrapper, undefined);
   var circleGapPatchWrapper = this.generateNewElement("div", ["gap-patch"], undefined, layer, undefined);
   var circleGapPatch = this.generateNewElement("div", ["circle"], undefined, circleGapPatchWrapper, undefined);
-  
+
   return wrapper;
 
 }

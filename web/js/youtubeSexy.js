@@ -198,19 +198,24 @@ YoutubeSexy.prototype.showChannelPreview = function(results, element){
 
 }
 
-YoutubeSexy.prototype.showChannelPage = function(channelId){
+YoutubeSexy.prototype.showChannelPage = function(channelId, donotaddbreadcrumb){
 
   youtubeSexy.hideChannelPreviews();
   console.log("Loading channel page for channel ID: " + channelId);
   $("#main-page").addClass("blurInFrames");
   $("body").css({"overflow": "hidden"});
   $(".content-page-overlay").css({"opacity": 1});
+  $("#content-page").empty();
 
-  var breadcrumb = this.ui.addToBreadcrumbs(() => {}, () => {
+  var breadcrumb;
+  if(!donotaddbreadcrumb) breadcrumb = this.ui.addToBreadcrumbs(() => {
+    $("#content-page").empty();
+    this.showChannelPage(channelId, true);
+  }, () => {
     this.activeChannelPage.unload();
     this.activeChannelPage = undefined;
     $("#main-page").removeClass("blurInFrames").addClass("blurOutFrames");
-    $("#content-page").addClass("blurInFrames").animate({"opacity": 0});
+    $("#content-page").animate({"opacity": 0});
     $("body").css({"overflow": ""});
     $("nav").css({"height": "64px"}).animate({"background-color": "#3f51b5"});
     $(".content-page-overlay").css({"opacity": 0});
@@ -227,7 +232,7 @@ YoutubeSexy.prototype.showChannelPage = function(channelId){
   }, (result) => {
     for(var channelIndex in result.items){
       var channel = result.items[channelIndex];
-      $("#content-page").css({"display": ""}).addClass("blurOutFrames");
+      $("#content-page").css({"display": ""});
       this.activeChannelPage = new YoutubeChannelPage(channelId, channel, breadcrumb);
       return;
     }

@@ -67,7 +67,7 @@ YoutubeChannelPage.prototype.createChannelPage = function(){
 
   var uiMan = youtubeSexy.ui;
   var chnl = this.response;
-  this.breadcrumb.setName(chnl.snippet.title);
+  if(this.breadcrumb) this.breadcrumb.setName(chnl.snippet.title);
 
   var contentPage = document.getElementById("content-page");
   $(div).css({"width": "100%", "height": "100%"});
