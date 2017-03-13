@@ -55,6 +55,7 @@
   filter: blur(8px);
   -mozfilter: blur(8px);
   -webkitfilter: blur(8px);
+  opacity: 0.3;
 }
 
 .channelPageWrapper{
@@ -68,10 +69,12 @@
   0%{
     filter: blur(0px);
     -webkitfilter: blur(0px);
+    opacity: 1;
   }
   100%{
     filter: blur(8px);
     -webkitfilter: blur(8px);
+    opacity: 0.3;
   }
 }
 
@@ -79,10 +82,12 @@
   0%{
     filter: blur(0px);
     -mozfilter: blur(0px);
+    opacity: 1;
   }
   100%{
     filter: blur(8px);
     -mozfilter: blur(8px);
+    opacity: 0.3;
   }
 }
 
@@ -91,11 +96,13 @@
     filter: blur(0px);
     -webkitfilter: blur(0px);
     -mozfilter: blur(0px);
+    opacity: 1;
   }
   100%{
     filter: blur(8px);
     -webkitfilter: blur(8px);
     -mozfilter: blur(8px);
+    opacity: 0.3;
   }
 }
 
@@ -106,16 +113,21 @@
   -moz-animation-duration: 0.5s;
   animation-name: blurOut;
   animation-duration: 0.5s;
+  filter: blur(0px);
+  -webkitfilter: blur(0px);
+  opacity: 1;
 }
 
 @-webkit-keyframes blurOut{
   0%{
     filter: blur(8px);
     -webkitfilter: blur(8px);
+    opacity: 0.3;
   }
   100%{
     filter: blur(0px);
     -webkitfilter: blur(0px);
+    opacity: 1;
   }
 }
 
@@ -123,10 +135,12 @@
   0%{
     filter: blur(8px);
     -mozfilter: blur(8px);
+    opacity: 0.3;
   }
   100%{
     filter: blur(0px);
     -mozfilter: blur(0px);
+    opacity: 1;
   }
 }
 
@@ -135,11 +149,13 @@
     filter: blur(8px);
     -webkitfilter: blur(8px);
     -mozfilter: blur(8px);
+    opacity: 0.3;
   }
   100%{
     filter: blur(0px);
     -webkitfilter: blur(0px);
     -mozfilter: blur(0px);
+    opacity: 1;
   }
 }
 
@@ -153,18 +169,6 @@
 
 .popupScrollableElement{
   overflow-y: scroll;
-}
-
-.content-page-overlay{
-  z-index: 499;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(66, 66, 66, 0.8);
-  opacity: 0;
-  pointer-events: none;
 }
 
 .placeholder-breadcrumb{

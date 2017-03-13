@@ -17,6 +17,12 @@ function YoutubeChannelPage(channelId, response, breadcrumb){
     if(youtubeSexy.activeChannelPage){
       var scroll = $(".channelPageWrapper").scrollTop();
 
+      if(this.preloader && !this.loadingPage && scroll + $(window).height() >= this.preloader.getBoundingClientRect().top){
+        console.log("Loading new page");
+        this.loadingPage = true;
+        this.loadVideoPage();
+      }
+
       var tabs = this.tabs;
 
       if(scroll > 260 && this.fixed) return;
@@ -71,8 +77,6 @@ YoutubeChannelPage.prototype.createChannelPage = function(){
 
   var contentPage = document.getElementById("content-page");
   $(div).css({"width": "100%", "height": "100%"});
-
-  console.log(chnl);
 
   var div = uiMan.generateNewElement("div", ["channelPageWrapper"], undefined, contentPage, undefined);
 
@@ -150,8 +154,8 @@ YoutubeChannelPage.prototype.createChannelPage = function(){
       {"height": "400px"});
     var iframe = uiMan.generateNewElement("iframe", undefined, undefined, trailerVideoColumn, {"width": "100%", "height":
       "100%", "border": "0px"});
-    iframe.src = "https://www.youtube.com/embed/" + chnl.brandingSettings.channel.unsubscribedTrailer + "?autoplay=1&"
-      + "enablejsapi=1&theme=light&showinfo=0";
+    var trailer = chnl.brandingSettings.channel.unsubscribedTrailer;
+    iframe.src = "https://www.youtube.com/embed/" + trailer + "?autoplay=1&enablejsapi=1&theme=light&showinfo=0";
     iframe.allowfullscreen = true;
 
     // Trailer Video Info
@@ -217,39 +221,49 @@ YoutubeChannelPage.prototype.createChannelPage = function(){
   $(".indicator").css({"color": "#FFFFFF"});
 
   var loading = youtubeSexy.ui.createCirclePreloaderDIV("blue", "big");
-  div.appendChild(loading);
-  $(loading).on('appear', () => {
-  	console.log("Loading on appear");
-  	if(!this.loadingPage && this.nextPageToken) this.loadVideoPage();
-  });
-
-  $(loading).initAppear();
-
-  // var test = uiMan.generateNewElement("a", undefined, "Test Test Test Test
-	// Test Test Test Test Test Test Test Test Test " +
-  // "Test Test Test Test Test Test Test Test Test Test Test Test Test Test
-	// Test Test Test Test Test Test Test Test Test",
-  // div, {"font-size": "72px", "word-wrap": "break-word"});
+  videosDIV.appendChild(loading);
+  this.preloader = loading;
 
 }
 
 YoutubeChannelPage.prototype.loadVideoPage = function(){
 
 	this.loadingPage = true;
-  var json = {
+  var jsonReq = {
     "part": "snippet",
-    "maxResults": 10,
+    "maxResults": 25,
     "channelId": this.channelId
   };
-  if(this.nextPageToken) json.pageToken = this.nextPageToken;
+  if(this.nextPageToken) jsonReq.pageToken = this.nextPageToken;
+  else $(this.preloader).remove();
 
-  youtubeSexy.ytDataAPI.googleAPIGet("https://www.googleapis.com/youtube/v3/search", json, (json) => {
-    for(var videoIndex in json.items){
-      var video = json.items[videoIndex];
-      this.videoRow.appendChild(youtubeSexy.ui.createFullVideoDIV(video, true));
+  youtubeSexy.ytDataAPI.googleAPIGet("https://www.googleapis.com/youtube/v3/search", jsonReq, (json) => {
+    var items = json.items;
+    var itemIDs = [];
+    var itemIdInputString = "";
+    var first = true;
+
+    for(var itemIndex in items){
+      var item = items[itemIndex];
+
+      if(first) first = false;
+      else itemIdInputString = itemIdInputString + ",";
+
+      itemIdInputString = itemIdInputString + item.id.videoId;
     }
-    if(json.nextPageToken) this.nextPageToken = json.nextPageToken;
-    this.loadingPage = false;
+
+    console.log("Item ID input string: " + itemIdInputString);
+
+    youtubeSexy.ytDataAPI.googleAPIGet("https://www.googleapis.com/youtube/v3/videos", {
+      "part": "snippet,statistics",
+      "id": itemIdInputString
+    }, (result) => {
+      for(var videoIndex in result.items){
+        var video = result.items[videoIndex];
+        this.videoRow.appendChild(youtubeSexy.ui.createFullVideoDIV(video, true));
+      }
+      this.loadingPage = false;
+    });
   });
 
 }

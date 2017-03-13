@@ -1,9 +1,9 @@
 UIManager.prototype.loadFeaturedPage = function(){
 
   youtubeSexy.ytDataAPI.googleAPIGet("https://www.googleapis.com/youtube/v3/videos", {
-    "part": "snippet",
+    "part": "snippet,statistics",
     "chart": "mostPopular",
-    "maxResults": 50
+    "maxResults": 25
   }, (json) => {
     var div = document.createElement("div");
     document.getElementById("main-page").appendChild(div);
@@ -73,8 +73,6 @@ UIManager.prototype.getUserIcon = function(channelId, widthShow){
       };
       return;
     }
-
-    textNode.textContent = "Invalid channel.";
   });
 
   return chip;
@@ -177,29 +175,13 @@ UIManager.prototype.createFullVideoDIV = function(video, doNotPutChannelChip){
 
   img.src = video.snippet.thumbnails.high.url;
 
-  var vidId = video.id;
-  if(vidId.videoId) vidId = vidId.videoId;
+  videoNameTextComp.textContent = video.snippet.title;
 
-  youtubeSexy.ytDataAPI.googleAPIGet("https://www.googleapis.com/youtube/v3/videos", {
-    "part": "snippet,statistics",
-    "id": vidId
-  }, (result) => {
-    for(var videoIndex in result.items){
-      var vid = result.items[videoIndex];
-
-      videoNameTextComp.textContent = vid.snippet.title;
-
-      viewsTextComp.textContent = simplifyNumber(vid.statistics.viewCount) + " views";
-      if(vid.statistics.likeCount) likesText.textContent = simplifyNumber(vid.statistics.likeCount);
-      else likesText.textContent = "";
-      if(vid.statistics.dislikeCount) dislikesText.textContent = simplifyNumber(vid.statistics.dislikeCount);
-      else dislikesText.textContent = "";
-      return;
-    }
-
-    videoNameTextComp.textContent = "Invalid video.";
-    videoNameTextComp.textContent = "Invalid video.";
-  });
+  viewsTextComp.textContent = simplifyNumber(video.statistics.viewCount) + " views";
+  if(video.statistics.likeCount) likesText.textContent = simplifyNumber(video.statistics.likeCount);
+  else likesText.textContent = "";
+  if(video.statistics.dislikeCount) dislikesText.textContent = simplifyNumber(video.statistics.dislikeCount);
+  else dislikesText.textContent = "";
 
   return column;
 
