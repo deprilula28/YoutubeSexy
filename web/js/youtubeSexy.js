@@ -204,7 +204,6 @@ YoutubeSexy.prototype.showChannelPage = function(channelId, donotaddbreadcrumb){
   console.log("Loading channel page for channel ID: " + channelId);
   $("#main-page").addClass("blurInFrames");
   $("body").css({"overflow": "hidden"});
-  $(".content-page-overlay").css({"opacity": 1});
   $("#content-page").empty();
 
   var breadcrumb;
@@ -218,7 +217,6 @@ YoutubeSexy.prototype.showChannelPage = function(channelId, donotaddbreadcrumb){
     $("#content-page").animate({"opacity": 0});
     $("body").css({"overflow": ""});
     $("nav").css({"height": "64px"}).animate({"background-color": "#3f51b5"});
-    $(".content-page-overlay").css({"opacity": 0});
 
     setTimeout(() => {
       $("#main-page").removeClass("blurOutFrames");
