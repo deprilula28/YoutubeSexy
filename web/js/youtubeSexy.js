@@ -69,17 +69,40 @@ YoutubeSexy.prototype.loadMainMenuPage = function(activitiesResponse){
     var interpreterJSON = {};
 
     var items = activitiesResponse.items;
+    var itemIDs = [];
+    var itemIdInputString = "";
+    var first = true;
+
     for(var itemIndex in items){
       var item = items[itemIndex];
-      var channelTitle = item.snippet.channelTitle;
 
-      if(!interpreterJSON.hasOwnProperty(channelTitle)) interpreterJSON[channelTitle] = [];
-      interpreterJSON[channelTitle].push(item);
+      if(first) first = false;
+      else itemIdInputString = itemIdInputString + ",";
+
+      itemIdInputString = itemIdInputString + item.id;
     }
 
-    jQuery.each(interpreterJSON, (title, itemList) => {
-      this.ui.createVideoListDIV(title, itemList);
+    youtubeSexy.ytDataAPI.googleAPIGet("https://www.googleapis.com/youtube/v3/videos", {
+      "part": "snippet,statistics",
+      "id": itemIdInputString
+    }, (result) => {
+      for(var itemIndex in result.items){
+        var item = result.items[itemIndex];
+        var channelTitle = item.snippet.channelTitle;
+
+        if(!interpreterJSON.hasOwnProperty(channelTitle)) interpreterJSON[channelTitle] = [];
+        interpreterJSON[channelTitle].push(item);
+      }
+
+      jQuery.each(interpreterJSON, (title, itemList) => {
+        for(var itemIndex in itemList){
+          var item = itemList[itemIndex];
+
+        }
+        this.ui.createVideoListDIV(title, itemList);
+      });
     });
+
   }else{
     var rowVideos = document.createElement("div");
     $(rowVideos).addClass("row");
@@ -143,6 +166,9 @@ YoutubeSexy.prototype.showChannelPreview = function(results, element){
   var x = elementCenterX- sizeX / 2;
   var y = (element.getBoundingClientRect().top + 25);
   var appersOnTop = false;
+
+  if(x < 0) x = 0;
+  if(x + 300 > $(window).width()) x = $(window).width() - 300;
 
   if(y > $(window).height() / 2){
     y = y - 440;
@@ -248,7 +274,7 @@ YoutubeSexy.prototype.loadNewMenuMenuPage = function(){
   if(this.ytDataAPI.authenticated){
     this.ytDataAPI.googleAPIGet("https://www.googleapis.com/youtube/v3/activities", {
       "part": "snippet",
-      "maxResults": 15,
+      "maxResults": 25,
       "home": true,
       "pageToken": this.lastPageToken
     }, (json) => {
@@ -257,9 +283,9 @@ YoutubeSexy.prototype.loadNewMenuMenuPage = function(){
     });
   }else{
     this.ytDataAPI.googleAPIGet("https://www.googleapis.com/youtube/v3/videos", {
-      "part": "snippet",
+      "part": "snippet,statistics",
       "chart": "mostPopular",
-      "maxResults": 15,
+      "maxResults": 25,
       "pageToken": this.lastPageToken
     }, (json) => {
       this.loadMainMenuPage(json);

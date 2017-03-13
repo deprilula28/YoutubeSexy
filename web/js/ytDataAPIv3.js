@@ -12,7 +12,7 @@ YTDataAPI.prototype.startAPILib = function(){
 
   if(this.authenticated){
     this.googleAPIGet("https://www.googleapis.com/youtube/v3/activities", {
-      "part": "snippet",
+      "part": "snippet,statistics",
       "maxResults": 50,
       "home": true
     }, (json) => {
