@@ -19,7 +19,12 @@ YTDataAPI.prototype.startAPILib = function(){
       youtubeSexy.loadMainMenuPage(json);
       youtubeSexy.loadingPage = false;
     });
-  }else youtubeSexy.ui.loadFeaturedPage();
+
+    youtubeSexy.ui.loadSidebarPanelAuthenticated();
+  }else{
+    youtubeSexy.ui.loadFeaturedPage();
+    youtubeSexy.ui.loadSidebarPanelNoAuth();
+  }
 
 }
 
@@ -56,33 +61,62 @@ YTDataAPI.prototype.requestAuth = function(){
   var win = window.open(getURL("https://deprilula28.github.io/YoutubeSexy/oauthFrame.html"), "Authenticate",
     "toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=" +
     "800, height= 600");
-  var redirect = "deprilula28.github.io";
+  var redirect = "https://deprilula28.github.io/YoutubeSexy/oauthFrame.html#";
   win.focus();
 
-  var pollTimer = win.setInterval(function(){
-    if(win.document.URL && win.document.URL.indexOf(redirect) != -1){
-        window.clearInterval(pollTimer);
+  var pollTimer = window.setInterval(function(){
+    try{
+      if(win && win.document.URL.indexOf(redirect) == 0){
+          window.clearInterval(pollTimer);
 
-        var url = win.document.URL;
-        acToken = gup(url, 'access_token');
-        tokenType = gup(url, 'token_type');
-        expiresIn = gup(url, 'expires_in');
+          var url = win.document.URL;
+          acToken = gup(url, 'access_token');
+          tokenType = gup(url, 'token_type');
+          expiresIn = gup(url, 'expires_in');
 
-        if(this.verify(acToken)){
-          this.authAccessToken = new AuthAccessToken(acToken, tokenType, expiresIn);
-          this.authenticated = true;
-          console.log("Authenticated!");
-        }
+          win.close();
 
-        win.close();
-    }
+          this.verify(acToken, () => {
+            this.authAccessToken = new AuthAccessToken(acToken, tokenType, expiresIn);
+            this.authenticated = true;
+            console.log("Authenticated!");
+          });
+
+      }
+    }catch(e){}
   }, 100);
+
+}
+
+YTDataAPI.prototype.verify = function(token, handleSuccess){
+
+  var url = "https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=" + token;
+
+	var request = new XMLHttpRequest();
+	var received = false;
+
+	request.open('GET', url, true);
+	request.onreadystatechange = function(e){
+
+		if(!received && request.readyState == 4){
+			received = true;
+      var response = JSON.parse(request.responseText);
+
+      if(response.hasOwnProperty("error")) Materialize.toast("Invalid token; Try again", 5000);
+      else if(response.audience != "143036117535-r44koj2e0bf9emon2k6kc18g6pkgorh1.apps.googleusercontent.com")
+        Materialize.toast("Bad response; Try again", 5000);
+      else handleSuccess();
+		}
+
+	}
+
+	request.send(null);
 
 }
 
 YTDataAPI.prototype.googleAPIGet = function(path, params, completeHandler){
 
-  var url = path + "?key=" + API_KEY;
+  var url = path + (this.authAccessToken ? "?access_token=" + this.authAccessToken : "?key=" + API_KEY);
 
   jQuery.each(params, (paramName, param) => url = url + "&" + paramName + "=" + (param + ""));
 
@@ -97,7 +131,7 @@ YTDataAPI.prototype.googleAPIGet = function(path, params, completeHandler){
       var json = JSON.parse(request.responseText);
 
       if(json.hasOwnProperty("error")){
-        var errorAlert = "An error has occured while processing a Youtube API request! Error Code: " + json.error.code + "\n" +
+        var errorAlert = "An error has been returned by the Youtube API! Error Code: " + json.error.code + "\n" +
           "Message: " + json.error.message + "\n\nFull error log:";
         var index = 1;
         console.log(json.error.errors);

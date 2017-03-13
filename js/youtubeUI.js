@@ -127,8 +127,8 @@ UIManager.prototype.createFullVideoDIV = function(video, doNotPutChannelChip){
   var column = this.generateNewElement("div", ["col", "s12", "m6", "l4"], undefined, undefined, {"height": "240px", "max-height": "240px", "width": "214px", "max-width": "214px", "overflow": "none",
     "margin-right": "20px"});
 
-  var imgDiv = this.generateNewElement("div", ["waves-effect", "waves-light"], undefined, column, {"width": "214px", "height": "120px"});
-  var img = this.generateNewElement("img", ["waves-effect", "waves-light", "center-align"], undefined, imgDiv,
+  var imgDiv = this.generateNewElement("div", undefined, undefined, column, {"width": "214px", "height": "120px"});
+  var img = this.generateNewElement("img", ["center-align"], undefined, imgDiv,
     {"width": "100%", "height": "100%"});
   img.onClick = (event) => {
     youtubeSexy.playVideo(video);
@@ -151,16 +151,16 @@ UIManager.prototype.createFullVideoDIV = function(video, doNotPutChannelChip){
   //Like/Dislike
   var rowVideoInfo = this.generateNewElement("div", ["row"], undefined, column, {"margin-bottom": "10px"});
   var columnLike = this.generateNewElement("div", ["col", "s6"], undefined, rowVideoInfo, {"padding-right": "0px"});
-  var likeChip = this.generateNewElement("div", ["chip", "small", "waves-effect", "waves-teal"], undefined,
+  var likeChip = this.generateNewElement("div", ["chip", "small", "waves-effect", "waves-dark"], undefined,
     columnLike, {"margin": "0px"});
   var likeImg = this.generateNewElement("img", undefined, undefined, likeChip, {"margin-right": "0px"});
   likeImg.src = "img/like.png";
   var likesText = this.generateNewElement("a", ["black-text", "truncate"], "0", likeChip, undefined)
 
   var columnDislike = this.generateNewElement("div", ["col", "s4"], undefined, rowVideoInfo, {"padding": "0px"});
-  var dislikeChip = this.generateNewElement("div", ["chip", "small", "waves-effect", "waves-red"], undefined,
+  var dislikeChip = this.generateNewElement("div", ["chip", "small", "waves-effect", "waves-dark"], undefined,
     columnDislike, {"margin": "0px"});
-  var dislikeImg = this.generateNewElement("img", undefined, undefined, dislikeChip, {"margin-right": "0px"});
+  var dislikeImg  = this.generateNewElement("img", undefined, undefined, dislikeChip, {"margin-right": "0px"});
   dislikeImg.src = "img/dislike.png";
   var dislikesText = this.generateNewElement("a", ["black-text", "truncate"], "0", dislikeChip, undefined)
 
@@ -182,6 +182,45 @@ UIManager.prototype.createFullVideoDIV = function(video, doNotPutChannelChip){
   else likesText.textContent = "";
   if(video.statistics.dislikeCount) dislikesText.textContent = simplifyNumber(video.statistics.dislikeCount);
   else dislikesText.textContent = "";
+
+  var vidClick = () => {
+    youtubeSexy.playVideo(video);
+  }
+
+  $(imgDiv).click(vidClick);
+  $(img).click(vidClick);
+  $(videoNameTextComp).click(vidClick);
+
+  var authVerify = () => {
+    if(youtubeSexy.ytDataAPI.authenticated) return true;
+    Materialize.toast("You need to be authenticated to perform this action!", 5000);
+    youtubeSexy.ytDataAPI.requestAuth();
+
+    return false;
+  };
+
+  var likeClick = () => {
+    if(!authVerify()) return;
+    youtubeSexy.ytDataAPI.googleAPIGet("https://www.googleapis.com/youtube/v3/videos/rate", {
+      "id": video.snippet.id,
+      "rating": "like"
+    }, (result) => {
+    Materialize.toast("Video successfully liked.", 5000);
+    });
+  }
+
+  var dislikeClick = () => {
+    if(!authVerify()) return;
+    youtubeSexy.ytDataAPI.googleAPIGet("https://www.googleapis.com/youtube/v3/videos/rate", {
+      "id": video.snippet.id,
+      "rating": "dislike"
+    }, (result) => {
+    Materialize.toast("Video successfully disliked.", 5000);
+    });
+  }
+
+    $(dislikeChip).click(dislikeClick);
+    $(likeChip).click(likeClick);
 
   return column;
 
