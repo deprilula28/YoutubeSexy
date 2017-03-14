@@ -20,6 +20,7 @@
     <script src="js/ui.js"></script>
     <script src="js/youtubeUI.js"></script>
     <script src="js/youtubeSexy.js"></script>
+    <script src="js/youtubeVideo.js"></script>
     <script src="js/lazyload.js"></script>
     <script src="js/utils.js"></script>
     <script src="js/channelPage.js"></script>
@@ -43,14 +44,11 @@
         <nav style="background-color: #3f51b5">
           <div class="nav-wrapper">
             <!-- Menu Button -->
-            <a class="btn-floating btn-large btn-flat waves-effect waves-light">
-              <i data-activates="sidebar" class="material-icons white-text button-collapse center-align">menu</i>
+            <a class="waves-effect waves-light">
+              <i data-activates="sidebar" class="material-icons white-text button-collapse">menu</i>
             </a>
 
-            <div class="placeholder-breadcrumb"></div>
-            <!-- Breadcrumbs -->
-            <a onclick="youtubeSexy.ui.onClickBreadcrumb(0, youtubeSexy.ui.breadcrumbs[0]);"
-              class="home-breadcrumb last-breadcrumb breadcrumb waves-effect waves-light">Home</a>
+            <a class="top-text">Home</a>
 
             <!-- Right Side of the bar -->
             <div class="right nav-wrapper-right-align">
@@ -71,13 +69,9 @@
         </nav>
       </div>
 
-      <div id="main-page" class="container">
-
-      </div>
-
-      <div id="content-page" class="content-page-container" style="display: none;">
-
-      </div>
+      <div class="videoCircleAnimation"></div>
+      <div id="main-page" class="container"></div>
+      <div id="content-page" class="content-page-container" style="display: none;"></div>
 
       <div id="loadingcircle" class="center-align">
         <div class="preloader-wrapper big active loadingcircle">

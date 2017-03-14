@@ -130,17 +130,11 @@ UIManager.prototype.createFullVideoDIV = function(video, doNotPutChannelChip){
   var imgDiv = this.generateNewElement("div", undefined, undefined, column, {"width": "214px", "height": "120px"});
   var img = this.generateNewElement("img", ["center-align"], undefined, imgDiv,
     {"width": "100%", "height": "100%"});
-  img.onClick = (event) => {
-    youtubeSexy.playVideo(video);
-  };
 
   var rowVideoName = this.generateNewElement("div", ["row"], undefined, column, {"margin-bottom": "0px"});
   var columnVideoName = this.generateNewElement("div", ["col", "s12"], undefined, rowVideoName, undefined);
   var videoNameTextComp = this.generateNewElement("a", ["videoNameTextComponent", "truncate", this.darkThemed ? "white-text"
     : "black-text"], "Loading...", columnVideoName, undefined);
-  videoNameTextComp.onclick = (event) => {
-    youtubeSexy.playVideo(video);
-  };
 
   //Views
   var rowVideoViews = this.generateNewElement("div", ["row"], undefined, column, {"margin-bottom": "0px"});
@@ -173,6 +167,7 @@ UIManager.prototype.createFullVideoDIV = function(video, doNotPutChannelChip){
     columnUserIcon.appendChild(userIcon);
   }
 
+  //img.crossOrigin = "Anonymous";
   img.src = video.snippet.thumbnails.high.url;
 
   videoNameTextComp.textContent = video.snippet.title;
@@ -183,12 +178,11 @@ UIManager.prototype.createFullVideoDIV = function(video, doNotPutChannelChip){
   if(video.statistics.dislikeCount) dislikesText.textContent = simplifyNumber(video.statistics.dislikeCount);
   else dislikesText.textContent = "";
 
-  var vidClick = () => {
-    youtubeSexy.playVideo(video);
+  var vidClick = (e) => {
+    youtubeSexy.playVideo(video, e.pageX, e.pageY, img);
   }
 
   $(imgDiv).click(vidClick);
-  $(img).click(vidClick);
   $(videoNameTextComp).click(vidClick);
 
   var authVerify = () => {
@@ -219,8 +213,8 @@ UIManager.prototype.createFullVideoDIV = function(video, doNotPutChannelChip){
     });
   }
 
-    $(dislikeChip).click(dislikeClick);
-    $(likeChip).click(likeClick);
+  $(dislikeChip).click(dislikeClick);
+  $(likeChip).click(likeClick);
 
   return column;
 

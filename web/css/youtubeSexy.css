@@ -91,6 +91,11 @@
   }
 }
 
+.top-text{
+  font-size: 24px;
+  margin-left: 40px;
+}
+
 @keyframes blurIn{
   0%{
     filter: blur(0px);
@@ -172,5 +177,12 @@
 }
 
 .placeholder-breadcrumb{
+  display: none;
+}
+
+.videoCircleAnimation{
+  z-index: 501;
+  border-radius: 50%;
+  position: fixed;
   display: none;
 }

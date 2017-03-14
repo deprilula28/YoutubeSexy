@@ -80,6 +80,7 @@ YTDataAPI.prototype.requestAuth = function(){
             this.authAccessToken = new AuthAccessToken(acToken, tokenType, expiresIn);
             this.authenticated = true;
             console.log("Authenticated!");
+            Materialize.toast("Authenticated successfully.", 4000);
           });
 
       }

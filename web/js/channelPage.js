@@ -1,8 +1,7 @@
-function YoutubeChannelPage(channelId, response, breadcrumb){
+function YoutubeChannelPage(channelId, response){
 
   this.channelId = channelId;
   this.response = response;
-  this.breadcrumb = breadcrumb;
   this.vibrantColor = "#000000";
 
   this.banner = undefined;
@@ -73,8 +72,9 @@ YoutubeChannelPage.prototype.createChannelPage = function(){
 
   var uiMan = youtubeSexy.ui;
   var chnl = this.response;
-  if(this.breadcrumb) this.breadcrumb.setName(chnl.snippet.title);
 
+  $(".top-text").get(0).textContent = chnl.snippet.title;
+  
   var contentPage = document.getElementById("content-page");
   $(div).css({"width": "100%", "height": "100%"});
 
@@ -89,7 +89,6 @@ YoutubeChannelPage.prototype.createChannelPage = function(){
     var vibrant = new Vibrant(banner);
     var swatches = vibrant.swatches();
     this.vibrantColor = swatches.DarkVibrant.getHex();
-    console.log("Vibrant color: " + this.vibrantColor + ", all swatches:", swatches);
 
     $("nav").animate({"background-color": this.vibrantColor});
     $(".vibrantColored").animate({"background-color": this.vibrantColor})
@@ -100,7 +99,7 @@ YoutubeChannelPage.prototype.createChannelPage = function(){
   var informationRow = uiMan.generateNewElement("div", ["row"], undefined, div, undefined);
   var informationColumn = uiMan.generateNewElement("div", ["col", "s12"], undefined, informationRow, {"padding": "0px"});
   var informationDiv = uiMan.generateNewElement("div", ["vibrantColored"], undefined, informationColumn, {"width": "100%",
-    "height": "128px", "background-color": "#000000"});
+    "height": "128px"});
 
   var userImg = uiMan.generateNewElement("img", ["circular", "z-depth-5"], undefined, div,
     {"z-index": "999", "position": "fixed", "width": "128px", "height": "128px", "left": "10px", "top":
@@ -124,8 +123,7 @@ YoutubeChannelPage.prototype.createChannelPage = function(){
     "margin-top": "80px"});
     this.filler = filler;
 
-  var tabs = uiMan.generateNewElement("ul", ["tabs", "vibrantColored"], undefined, tabsColumn,
-      {"background-color": "#000000", "margin-top": "80px", "color": "#FFFFFF"});
+  var tabs = uiMan.generateNewElement("ul", ["tabs", "vibrantColored"], undefined, tabsColumn, {"margin-top": "80px"});
   this.tabsColumn = tabsColumn;
   this.tabs = tabs;
 
@@ -252,8 +250,6 @@ YoutubeChannelPage.prototype.loadVideoPage = function(){
       itemIdInputString = itemIdInputString + item.id.videoId;
     }
 
-    console.log("Item ID input string: " + itemIdInputString);
-
     youtubeSexy.ytDataAPI.googleAPIGet("https://www.googleapis.com/youtube/v3/videos", {
       "part": "snippet,statistics",
       "id": itemIdInputString
@@ -271,7 +267,7 @@ YoutubeChannelPage.prototype.loadVideoPage = function(){
 YoutubeChannelPage.prototype.loadTab = function(uiMan, active, name, tabDivID){
 
   var li = uiMan.generateNewElement("li", ["tab", "col", "s4"], undefined, this.tabs, undefined);
-  var text = uiMan.generateNewElement("a", active ? ["active"] : undefined, name, li, undefined);
+  var text = uiMan.generateNewElement("a", active ? ["active", "white-text"] : ["white-text"], name, li, undefined);
   text.href = "#" + tabDivID;
 
 }
