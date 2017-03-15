@@ -1,0 +1,10 @@
+{
+  "name": "YoutubeSexy",
+  "version": "0.1.0",
+  "description": "Material version of youtube",
+  "main": "electronMain.js",
+  "scripts": {
+    "start": "electron electronMain.js"
+  },
+  "author": "deprilula28"
+}
