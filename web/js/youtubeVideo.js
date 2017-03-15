@@ -36,8 +36,8 @@ YoutubeSexy.prototype.playVideo = function(videoResult, mouseX, mouseY, thumbnai
 
     $(".videoCircleAnimation").css({"display": "block", "top": (mouseY - 5) + "px", "left": (mouseX - 5) + "px", "width": "10px",
       "height": "10px"/*, "background-color": swatches.DarkVibrant.getHex()*/}).animate({"top": (mouseY - $(window).height()) + "px",
-      "left": (mouseX - $(window).width()) + "px", "width": Math.min($(window).height(), $(window).width()) + "px",
-      "height": Math.min($(window).height(), $(window).width()) + "px"}, 500, "linear", () => {
+      "left": (mouseX - $(window).width()) + "px", "width": Math.max($(window).height(), $(window).width()) + "px",
+      "height": Math.max($(window).height(), $(window).width()) + "px"}, 500, "linear", () => {
         $(".videoCircleAnimation").animate({"opacity": 0}, 100, "linear", () => { $(".videoCircleAnimation").css({"display": "none"})});
         $("#content-page").animate({"opacity": 1});
       });
