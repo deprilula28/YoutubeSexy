@@ -27,6 +27,7 @@ window.onload = () => {
 function YoutubeSexy(){
 
   this.ui = new UIManager();
+  this.cookies = new Cookies();
   this.ytDataAPI = new YTDataAPI();
   this.video = undefined;
   this.loadingPage = true;
