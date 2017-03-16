@@ -14,3 +14,4 @@ You can then unzip it and open the web/index.html file with Chrome (From my test
 - [Material Design Rules](https://material.io/guidelines/)
 - [Vibrant.js](http://jariz.github.io/vibrant.js/)
 - Well everything JS related uses [jquery](https://jquery.com/), I'll credit it either way
+- [Electron](https://electron.atom.io)
