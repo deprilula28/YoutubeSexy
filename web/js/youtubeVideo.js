@@ -47,6 +47,8 @@ YoutubeSexy.prototype.playVideo = function(videoResult, mouseX, mouseY, thumbnai
   
   //Content page filing
   $("#youtubeVideoTabs").tabs();
+  $("#youtubeVideoTitleLabel").get(0).textContent = videoResult.snippet.title;
+  $("#youtubeVideoViewsLabel").get(0).textContent = prettifyNumber(videoResult.statistics.viewCount);
 
 }
 

@@ -185,3 +185,11 @@
   border-radius: 50%;
   position: fixed;
 }
+
+#youtubeVideoTitleLabel{
+ font-size: 18px;
+}
+
+#youtubeVideoViewsLabel{
+ font-size: 12px;
+}

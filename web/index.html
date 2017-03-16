@@ -103,21 +103,58 @@
 
 		<div id="youtubePage" style="display: none;">
 			<div class="col s12 m8 l6 youtubeVideoContainer">
+				<!-- Video IFrame container -->
 				<div class="row">
-					<iframe id="bigVideoIFrame" src=""
-						style="width: 100%; height: 100%"></iframe>
+					<div class="col s12">
+						<iframe id="bigVideoIFrame" src="" style="width: 100%; height: 100%"></iframe>						
+					</div>
 				</div>
+				
+				<!-- Video title row -->
+				<div class="row">
+					<div class="col s12">
+						<a class="truncate white-text textColorResponsive" id="youtubeVideoTitleLabel">Loading</a>
+					</div>
+				</div>
+				
+				<!-- Video views row -->
+				<div class="row">
+					<div class="col s12">
+						<a class="truncate white-text textColorResponsive" id="youtubeVideoViewsLabel">Loading</a>
+					</div>
+				</div>
+				
+				<!-- Video info row -->
+				<div class="row">
+					<div class="col s12">
+						<div class="row">
+							<!-- Channel chip placeholder space -->
+							<div class="col s12 m6 l4" id="channelYoutubeVideoChipPlaceholder"></div>
+							
+							<!-- Video buttons (Like, Dislike, Share, Add to playlist -->
+							<div class="col s12 m6 l4 offset-l4" id="ldshadpYoutubeVideoChipPlaceholder"></div>
+						</div>
+					</div>
+				</div>
+				
+				<div class="row">
+					<div class="col s12"></div>
+				</div>
+				<div class="row">
+					<div class="col s12"></div>
+				</div>
+				<div class="row">
+					<div class="col s12"></div>
+				</div>
+			</div>
+			<div class="col s12 m4 l6 youtubeVideoSidebar" style="height: 100%; width: 100%">
+				
+				<!-- Right side bar  -->
 				<div class="row">
 					<div class="col s12">
 						<div class="row">
 							<div class="col s12">
-								<a class="black-text textColorResponsive truncate"
-									style="width: 100%">Loading</a>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col s12">
-								<!-- Right side bar  -->
+								<!-- Tabs -->
 								<ul class="tabs tabs-fixed-width" id="youtubeVideoTabs">
 									<li class="tab active"><a href="comments">Comments</a></li>
 									<li class="tab"><a href="recommended">Recommended</a></li>
@@ -138,9 +175,8 @@
 						</div>
 					</div>
 				</div>
+				
 			</div>
-			<div class="col s12 m4 l6 youtubeVideoSidebar"
-				style="height: 100%; width: 100%"></div>
 		</div>
 
 		<div id="loadingcircle" class="center-align">

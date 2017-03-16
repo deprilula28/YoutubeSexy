@@ -10,6 +10,12 @@ function simplifyNumber(numb){
 
 }
 
+function prettifyNumber(numb){
+
+  return numb.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+	
+}
+
 function lerp(a, b, progress){
 
   return a + progress * (b - a);
