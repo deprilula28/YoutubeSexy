@@ -6,6 +6,7 @@ YoutubeSexy.prototype.playVideo = function(videoResult, mouseX, mouseY, thumbnai
     return;
   }
 
+  if(handleLeave) handleLeave();
   this.playing = videoResult.id;
   $(".top-text").get(0).textContent = videoResult.snippet.title;
   console.log("Preparing to play video...");
@@ -19,6 +20,7 @@ YoutubeSexy.prototype.playVideo = function(videoResult, mouseX, mouseY, thumbnai
     $("nav").css({"height": "64px"}).animate({"background-color": "#3f51b5"});
 
     setTimeout(() => {
+    	$("#content-page").get(0).appendChild($("#youtubePage").get(0));
       $("#content-page").css({"display": "none", "opacity": 1}).empty();
     }, 500);
     $(".top-text").get(0).textContent = "Home";
@@ -39,9 +41,12 @@ YoutubeSexy.prototype.playVideo = function(videoResult, mouseX, mouseY, thumbnai
       "left": (mouseX - $(window).width()) + "px", "width": Math.max($(window).height(), $(window).width()) + "px",
       "height": Math.max($(window).height(), $(window).width()) + "px"}, 500, "linear", () => {
         $(".videoCircleAnimation").animate({"opacity": 0}, 100, "linear", () => { $(".videoCircleAnimation").css({"display": "none"})});
-        $("#content-page").animate({"opacity": 1});
+    		$("#content-page").animate({"opacity": 1});
       });
   }
+  
+  //Content page filing
+  $("#youtubeVideoTabs").tabs();
 
 }
 
