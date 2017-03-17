@@ -49,6 +49,23 @@ YoutubeSexy.prototype.playVideo = function(videoResult, mouseX, mouseY, thumbnai
   $("#youtubeVideoTabs").tabs();
   $("#youtubeVideoTitleLabel").get(0).textContent = videoResult.snippet.title;
   $("#youtubeVideoViewsLabel").get(0).textContent = prettifyNumber(videoResult.statistics.viewCount);
+  $("#channelYoutubeVideoChipPlaceholder").get(0).appendChild(getUserIcon(videoResult.snippet.channelId, "100%"));
+
+  //Like/Dislike
+  var rowVideoInfo = this.generateNewElement("div", ["row"], undefined, $("#ldshadpYoutubeVideoChipPlaceholder").get(0), undefined);
+  var columnLike = this.generateNewElement("div", ["col", "s6"], undefined, rowVideoInfo, {"padding-right": "0px"});
+  var likeChip = this.generateNewElement("div", ["chip", "small", "waves-effect", "waves-dark"], undefined,
+    columnLike, {"margin": "0px"});
+  var likeImg = this.generateNewElement("img", undefined, undefined, likeChip, {"margin-right": "0px"});
+  likeImg.src = "img/like.png";
+  var likesText = this.generateNewElement("a", ["black-text", "truncate"], "0", likeChip, undefined)
+
+  var columnDislike = this.generateNewElement("div", ["col", "s4"], undefined, rowVideoInfo, {"padding": "0px"});
+  var dislikeChip = this.generateNewElement("div", ["chip", "small", "waves-effect", "waves-dark"], undefined,
+    columnDislike, {"margin": "0px"});
+  var dislikeImg  = this.generateNewElement("img", undefined, undefined, dislikeChip, {"margin-right": "0px"});
+  dislikeImg.src = "img/dislike.png";
+  var dislikesText = this.generateNewElement("a", ["black-text", "truncate"], "0", dislikeChip, undefined)
 
 }
 
