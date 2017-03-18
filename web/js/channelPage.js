@@ -39,6 +39,7 @@ function YoutubeChannelPage(channelId, response){
 
       var img = this.userImg;
       var name = this.userNameA;
+      var subscribers = this.userSubscriberCountA;
       var informationDiv = this.informationDiv;
 
       var progress = scroll / 260.0;
@@ -48,6 +49,7 @@ function YoutubeChannelPage(channelId, response){
         // Fixing
         $(img).css({"width": "64px", "height": "64px", "opacity": 0, "top": "65px"});
         $(name).css({"top": "32px", "left": "150px"});
+        $(subscribers).css({"top": "32px"});
         $(this.filler).css({"display": "block"});
         this.tabsNavWrapperColumn.appendChild(this.tabs);
         $(this.tabs).css({"margin-top": "0px", "width": "100%"});
@@ -56,7 +58,8 @@ function YoutubeChannelPage(channelId, response){
 
       $(img).css({"width": ((-progress + 1) * 64.0 + 64.0) + "px", "height": ((-progress + 1) * 64.0 + 64.0) + "px", "opacity":
         -progress + 1, "top": lerp(160.0, 0, progress)});
-      $(name).css({"top": lerp(275, 32, progress) + "px", "left": lerp(150, 150, progress)});
+      $(name).css({"top": lerp(275, 32, progress) + "px"});
+      $(subscribers).css({"top": lerp(275, 32, progress) + "px"});
     }
   };
 
@@ -110,8 +113,12 @@ YoutubeChannelPage.prototype.createChannelPage = function(){
   var userName = uiMan.generateNewElement("a", ["white-text", "truncate"], chnl.snippet.title,
     div, {"font-size": "24px", "position": "fixed", "z-index": "15000", "left": "150px", "top": "275px"});
 
-  this.userNameA = userName;
+  var userSubscriberCount = uiMan.generateNewElement("a", ["white-text", "truncate", "right"], prettifyNumber(chnl.statistics.subscriberCount),
+    div, {"font-size": "24px", "position": "fixed", "z-index": "15000", "top": "275px"});
 
+  this.userNameA = userName;
+  this.userSubscriberCountA = userSubscriberCount;
+  
   var container = uiMan.generateNewElement("div", ["container"], undefined, div, undefined);
   var containerRow = uiMan.generateNewElement("div", ["row"], undefined, container, undefined);
   var containerColumn = uiMan.generateNewElement("div", ["col", "s12"], undefined, containerRow, undefined);
@@ -211,7 +218,7 @@ YoutubeChannelPage.prototype.createChannelPage = function(){
       var channelFeaturedChannels = uiMan.generateNewElement("div", ["col", "s12", "m6", "l4"], undefined,
         rowFeaturedChannels, undefined);
 
-      channelFeaturedChannels.appendChild(youtubeSexy.ui.getUserIcon(channel, "100%"));
+      channelFeaturedChannels.appendChild(youtubeSexy.ui.getUserIcon(channel, "100%", chnl));
     }
   }
 

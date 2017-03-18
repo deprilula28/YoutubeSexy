@@ -34,7 +34,7 @@ UIManager.prototype.loadFeaturedPage = function(){
 
 }
 
-UIManager.prototype.getUserIcon = function(channelId, widthShow){
+UIManager.prototype.getUserIcon = function(channelId, widthShow, commenterData){
 
   var chip = this.generateNewElement("div", ["chip", "waves-effect"], undefined, undefined, undefined);
   var img = this.generateNewElement("img", undefined, undefined, chip, {"margin-right": "0px"});
@@ -74,7 +74,14 @@ UIManager.prototype.getUserIcon = function(channelId, widthShow){
       return;
     }
   });
-
+  
+  if(commenterData){
+  	var tag = commenterData.tag;
+  	
+  	if(tag === "owner") $(chip).css({"background-color": "#00C0AD"});
+  	else if(tag === "featured") $(chip).css({"background-color": "#EC4646"});
+  }
+  
   return chip;
 
 }
@@ -122,7 +129,7 @@ UIManager.prototype.createVideoListDIV = function(title, items){
 
 }
 
-UIManager.prototype.createFullVideoDIV = function(video, doNotPutChannelChip){
+UIManager.prototype.createFullVideoDIV = function(video, doNotPutChannelChip, channelResult){
 
   var column = this.generateNewElement("div", ["col", "s12", "m6", "l4"], undefined, undefined, {"height": "240px", "max-height": "240px", "width": "214px", "max-width": "214px", "overflow": "none",
     "margin-right": "20px"});
@@ -179,7 +186,20 @@ UIManager.prototype.createFullVideoDIV = function(video, doNotPutChannelChip){
   else dislikesText.textContent = "";
 
   var vidClick = (e) => {
-    youtubeSexy.playVideo(video, e.pageX, e.pageY, img);
+  	if(channelResult) youtubeSexy.playVideo(video, channelResult, e.pageX, e.pageY, img);
+  	else{
+      youtubeSexy.ytDataAPI.googleAPIGet("https://www.googleapis.com/youtube/v3/channels", {
+      	"part": "brandingSettings",
+      	"id": video.snippet.channelId
+      }, (result) => {
+      	for(var itemIndex in result.items){
+      		var item = result.items[itemIndex];
+        	youtubeSexy.playVideo(video, item, e.pageX, e.pageY, img);
+      		
+      		break;
+      	}
+      });
+  	}
   }
 
   $(imgDiv).click(vidClick);
@@ -199,7 +219,7 @@ UIManager.prototype.createFullVideoDIV = function(video, doNotPutChannelChip){
       "id": video.snippet.id,
       "rating": "like"
     }, (result) => {
-    Materialize.toast("Video successfully liked.", 5000);
+	    Materialize.toast("Video successfully liked.", 5000);
     });
   }
 
@@ -209,7 +229,7 @@ UIManager.prototype.createFullVideoDIV = function(video, doNotPutChannelChip){
       "id": video.snippet.id,
       "rating": "dislike"
     }, (result) => {
-    Materialize.toast("Video successfully disliked.", 5000);
+    	Materialize.toast("Video successfully disliked.", 5000);
     });
   }
 
