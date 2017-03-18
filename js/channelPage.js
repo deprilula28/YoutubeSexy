@@ -1,8 +1,7 @@
-function YoutubeChannelPage(channelId, response, breadcrumb){
+function YoutubeChannelPage(channelId, response){
 
   this.channelId = channelId;
   this.response = response;
-  this.breadcrumb = breadcrumb;
   this.vibrantColor = "#000000";
 
   this.banner = undefined;
@@ -40,6 +39,7 @@ function YoutubeChannelPage(channelId, response, breadcrumb){
 
       var img = this.userImg;
       var name = this.userNameA;
+      var subscribers = this.userSubscriberCountA;
       var informationDiv = this.informationDiv;
 
       var progress = scroll / 260.0;
@@ -49,6 +49,7 @@ function YoutubeChannelPage(channelId, response, breadcrumb){
         // Fixing
         $(img).css({"width": "64px", "height": "64px", "opacity": 0, "top": "65px"});
         $(name).css({"top": "32px", "left": "150px"});
+        $(subscribers).css({"top": "32px"});
         $(this.filler).css({"display": "block"});
         this.tabsNavWrapperColumn.appendChild(this.tabs);
         $(this.tabs).css({"margin-top": "0px", "width": "100%"});
@@ -57,7 +58,8 @@ function YoutubeChannelPage(channelId, response, breadcrumb){
 
       $(img).css({"width": ((-progress + 1) * 64.0 + 64.0) + "px", "height": ((-progress + 1) * 64.0 + 64.0) + "px", "opacity":
         -progress + 1, "top": lerp(160.0, 0, progress)});
-      $(name).css({"top": lerp(275, 32, progress) + "px", "left": lerp(150, 150, progress)});
+      $(name).css({"top": lerp(275, 32, progress) + "px"});
+      $(subscribers).css({"top": lerp(275, 32, progress) + "px"});
     }
   };
 
@@ -73,8 +75,9 @@ YoutubeChannelPage.prototype.createChannelPage = function(){
 
   var uiMan = youtubeSexy.ui;
   var chnl = this.response;
-  if(this.breadcrumb) this.breadcrumb.setName(chnl.snippet.title);
 
+  $(".top-text").get(0).textContent = chnl.snippet.title;
+  
   var contentPage = document.getElementById("content-page");
   $(div).css({"width": "100%", "height": "100%"});
 
@@ -89,7 +92,6 @@ YoutubeChannelPage.prototype.createChannelPage = function(){
     var vibrant = new Vibrant(banner);
     var swatches = vibrant.swatches();
     this.vibrantColor = swatches.DarkVibrant.getHex();
-    console.log("Vibrant color: " + this.vibrantColor + ", all swatches:", swatches);
 
     $("nav").animate({"background-color": this.vibrantColor});
     $(".vibrantColored").animate({"background-color": this.vibrantColor})
@@ -100,7 +102,7 @@ YoutubeChannelPage.prototype.createChannelPage = function(){
   var informationRow = uiMan.generateNewElement("div", ["row"], undefined, div, undefined);
   var informationColumn = uiMan.generateNewElement("div", ["col", "s12"], undefined, informationRow, {"padding": "0px"});
   var informationDiv = uiMan.generateNewElement("div", ["vibrantColored"], undefined, informationColumn, {"width": "100%",
-    "height": "128px", "background-color": "#000000"});
+    "height": "128px"});
 
   var userImg = uiMan.generateNewElement("img", ["circular", "z-depth-5"], undefined, div,
     {"z-index": "999", "position": "fixed", "width": "128px", "height": "128px", "left": "10px", "top":
@@ -111,8 +113,12 @@ YoutubeChannelPage.prototype.createChannelPage = function(){
   var userName = uiMan.generateNewElement("a", ["white-text", "truncate"], chnl.snippet.title,
     div, {"font-size": "24px", "position": "fixed", "z-index": "15000", "left": "150px", "top": "275px"});
 
-  this.userNameA = userName;
+  var userSubscriberCount = uiMan.generateNewElement("a", ["white-text", "truncate", "right"], prettifyNumber(chnl.statistics.subscriberCount),
+    div, {"font-size": "24px", "position": "fixed", "z-index": "15000", "top": "275px"});
 
+  this.userNameA = userName;
+  this.userSubscriberCountA = userSubscriberCount;
+  
   var container = uiMan.generateNewElement("div", ["container"], undefined, div, undefined);
   var containerRow = uiMan.generateNewElement("div", ["row"], undefined, container, undefined);
   var containerColumn = uiMan.generateNewElement("div", ["col", "s12"], undefined, containerRow, undefined);
@@ -124,8 +130,7 @@ YoutubeChannelPage.prototype.createChannelPage = function(){
     "margin-top": "80px"});
     this.filler = filler;
 
-  var tabs = uiMan.generateNewElement("ul", ["tabs", "vibrantColored"], undefined, tabsColumn,
-      {"background-color": "#000000", "margin-top": "80px", "color": "#FFFFFF"});
+  var tabs = uiMan.generateNewElement("ul", ["tabs", "vibrantColored"], undefined, tabsColumn, {"margin-top": "80px"});
   this.tabsColumn = tabsColumn;
   this.tabs = tabs;
 
@@ -213,7 +218,7 @@ YoutubeChannelPage.prototype.createChannelPage = function(){
       var channelFeaturedChannels = uiMan.generateNewElement("div", ["col", "s12", "m6", "l4"], undefined,
         rowFeaturedChannels, undefined);
 
-      channelFeaturedChannels.appendChild(youtubeSexy.ui.getUserIcon(channel, "100%"));
+      channelFeaturedChannels.appendChild(youtubeSexy.ui.getUserIcon(channel, "100%", chnl));
     }
   }
 
@@ -252,8 +257,6 @@ YoutubeChannelPage.prototype.loadVideoPage = function(){
       itemIdInputString = itemIdInputString + item.id.videoId;
     }
 
-    console.log("Item ID input string: " + itemIdInputString);
-
     youtubeSexy.ytDataAPI.googleAPIGet("https://www.googleapis.com/youtube/v3/videos", {
       "part": "snippet,statistics",
       "id": itemIdInputString
@@ -271,7 +274,7 @@ YoutubeChannelPage.prototype.loadVideoPage = function(){
 YoutubeChannelPage.prototype.loadTab = function(uiMan, active, name, tabDivID){
 
   var li = uiMan.generateNewElement("li", ["tab", "col", "s4"], undefined, this.tabs, undefined);
-  var text = uiMan.generateNewElement("a", active ? ["active"] : undefined, name, li, undefined);
+  var text = uiMan.generateNewElement("a", active ? ["active", "white-text"] : ["white-text"], name, li, undefined);
   text.href = "#" + tabDivID;
 
 }

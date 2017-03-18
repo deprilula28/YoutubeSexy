@@ -7,7 +7,8 @@ UIManager.prototype.loadSidebarPanelNoAuth = function(){
   this.sidebar = sidebar;
 
   this.addButton("Home", () => {
-    youtubeSexy.ui.onClickBreadcrumb(0, youtubeSexy.ui.breadcrumbs[0]);
+    if(handleLeave) handleLeave();
+    $("nav").animate({"background-color": "#3f51b5"});
   });
 
 }

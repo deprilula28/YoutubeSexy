@@ -1,98 +1,205 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>YoutubeSexy - Material Version of Youtube</title>
+<head>
+<title>YoutubeSexy - Material Version of Youtube</title>
 
-		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-		<link type="text/css" rel="stylesheet" href="css/materialize.css" media="screen,projection" />
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+	rel="stylesheet">
+<link type="text/css" rel="stylesheet" href="css/materialize.css"
+	media="screen,projection" />
 
-		<meta name="viewport" content="user-scalable=0"/>
-		<link type="text/css" rel="stylesheet" href="css/youtubeSexy.css" />
+<meta name="viewport" content="user-scalable=0" />
+<link type="text/css" rel="stylesheet" href="css/youtubeSexy.css" />
 
-		<script src="https://apis.google.com/js/platform.js"></script>
-		<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
-  </head>
-  <body class="grey darken-3">
+<script src="https://apis.google.com/js/platform.js"></script>
+<link rel="stylesheet"
+	href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+</head>
+<body class="grey darken-3">
+	<script>
+		if(typeof module === 'object'){
+			window.module = module;
+			module = undefined;
+		}
+	</script>
+
 	<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
-    <script src="js/materialize.js"></script>
-    <script src="js/ytDataAPIv3.js"></script>
-    <script src="js/ui.js"></script>
-    <script src="js/youtubeUI.js"></script>
-    <script src="js/youtubeSexy.js"></script>
-    <script src="js/lazyload.js"></script>
-    <script src="js/utils.js"></script>
-    <script src="js/channelPage.js"></script>
-    <script src="js/sidebarPanel.js"></script>
-    <script src="js/vibrant.js"></script>
-    <script src="js/appear.js"></script>
-    <script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	<script
+		src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+	<script src="js/materialize.js"></script>
+	<script src="js/ytDataAPIv3.js"></script>
+	<script src="js/ui.js"></script>
+	<script src="js/youtubeUI.js"></script>
+	<script src="js/youtubeSexy.js"></script>
+	<script src="js/youtubeVideo.js"></script>
+	<script src="js/lazyload.js"></script>
+	<script src="js/utils.js"></script>
+	<script src="js/channelPage.js"></script>
+	<script src="js/sidebarPanel.js"></script>
+	<script src="js/vibrant.js"></script>
+	<script src="js/appear.js"></script>
+	<script src="js/cookies.js"></script>
+	<script>
+		(function(i, s, o, g, r, a, m){
+			i['GoogleAnalyticsObject'] = r;
+			i[r] = i[r] || function(){
+				(i[r].q = i[r].q || []).push(arguments)
+			}, i[r].l = 1 * new Date();
+			a = s.createElement(o), m = s.getElementsByTagName(o)[0];
+			a.async = 1;
+			a.src = g;
+			m.parentNode.insertBefore(a, m)
+		})(window, document, 'script',
+				'https://www.google-analytics.com/analytics.js', 'ga');
 
-      ga('create', 'UA-93663902-1', 'auto');
-      ga('send', 'pageview');
-    </script>
+		ga('create', 'UA-93663902-1', 'auto');
+		ga('send', 'pageview');
+	</script>
 
-    <noscript>Please enable JavaScript.</noscript>
+	<script>if(window.module)module = window.module;</script>
+	<noscript>Please enable JavaScript.</noscript>
 
-    <div class="content" style="overflow: hidden;">
-      <!-- Side openable bar -->
-      <ul id="sidebar" class="side-nav">
-      </ul>
+	<div class="content" style="overflow: hidden;">
+		<!-- Side openable bar -->
+		<ul id="sidebar" class="side-nav">
+		</ul>
 
-      <div id="top-bar" class="z-depth-4 navbar-fixed">
-        <nav style="background-color: #3f51b5">
-          <div class="nav-wrapper">
-            <!-- Menu Button -->
-            <a class="btn-floating btn-large btn-flat waves-effect waves-light">
-              <i data-activates="sidebar" class="material-icons white-text button-collapse center-align">menu</i>
-            </a>
+		<div id="top-bar" class="z-depth-4 navbar-fixed">
+			<nav style="background-color: #3f51b5">
+				<div class="nav-wrapper">
+					<!-- Menu Button -->
+					<a class="waves-effect waves-light"> <i
+						data-activates="sidebar"
+						class="material-icons white-text button-collapse">menu</i>
+					</a> <a class="top-text">Home</a>
 
-            <div class="placeholder-breadcrumb"></div>
-            <!-- Breadcrumbs -->
-            <a onclick="youtubeSexy.ui.onClickBreadcrumb(0, youtubeSexy.ui.breadcrumbs[0]);"
-              class="home-breadcrumb last-breadcrumb breadcrumb waves-effect waves-light">Home</a>
+					<!-- Right Side of the bar -->
+					<div class="right nav-wrapper-right-align">
+						<!-- Upload Button -->
+						<img style="display: none;"
+							class="upload-button btn-floating btn-flat waves-effect waves-light"
+							src="img/Upload.png" class="circle" />
 
-            <!-- Right Side of the bar -->
-            <div class="right nav-wrapper-right-align">
-              <!-- Upload Button -->
-              <img style="display: none;" class="upload-button btn-floating btn-flat waves-effect waves-light" src="img/Upload.png" class="circle" />
+						<!-- Search Icon -->
+						<a
+							class="search-button btn-floating btn-large btn-flat waves-effect waves-light">
+							<i class="material-icons white-text">search</i>
+						</a>
 
-              <!-- Search Icon -->
-              <a class="search-button btn-floating btn-large btn-flat waves-effect waves-light">
-                <i class="material-icons white-text">search</i>
-              </a>
+						<div id="authenticateButton"
+							class="chip waves-effect waves-light large grey darken-2">
+							<img src="img/UserPic.jpg" /> <a class="white-text"
+								onclick="youtubeSexy.ytDataAPI.requestAuth();">Authenticate</a>
+						</div>
+					</div>
+				</div>
+			</nav>
+		</div>
 
-              <div id="authenticateButton" class="chip waves-effect waves-light large grey darken-2">
-                <img src="img/UserPic.jpg" />
-                <a class="white-text" onclick="youtubeSexy.ytDataAPI.requestAuth();">Authenticate</a>
-              </div>
-            </div>
-          </div>
-        </nav>
-      </div>
+		<div id="main-page" class="container"></div>
+		<div id="content-page" class="content-page-container"
+			style="display: none;"></div>
 
-      <div id="main-page" class="container">
+		<div id="youtubePage" style="display: none;">
+			<div class="col s12 m8 l6 youtubeVideoContainer">
+				<!-- Video IFrame container -->
+				<div class="row">
+					<div class="col s12">
+						<iframe id="bigVideoIFrame" src="" style="width: 100%; height: 100%"></iframe>						
+					</div>
+				</div>
+				
+				<!-- Video title row -->
+				<div class="row">
+					<div class="col s12">
+						<a class="truncate white-text textColorResponsive" id="youtubeVideoTitleLabel">Loading</a>
+					</div>
+				</div>
+				
+				<!-- Video views row -->
+				<div class="row">
+					<div class="col s12">
+						<a class="truncate white-text textColorResponsive" id="youtubeVideoViewsLabel">Loading</a>
+					</div>
+				</div>
+				
+				<!-- Video info row -->
+				<div class="row">
+					<div class="col s12">
+						<div class="row">
+							<!-- Channel chip placeholder space -->
+							<div class="col s12 m6 l4" id="channelYoutubeVideoChipPlaceholder"></div>
+							
+							<!-- Video buttons (Like, Dislike, Share, Add to playlist -->
+							<div class="col s12 m6 l4 offset-l4" id="ldshadpYoutubeVideoChipPlaceholder"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<div class="col s12 m4 l6 youtubeVideoSidebar" style="height: 100%; width: 100%">
+				
+				<!-- Right side bar  -->
+				<div class="row">
+					<div class="col s12">
+						<div class="row">
+							<div class="col s12">
+								<!-- Tabs -->
+								<ul class="tabs tabs-fixed-width" id="youtubeVideoTabs">
+									<li class="tab active"><a href="comments">Comments</a></li>
+									<li class="tab"><a href="recommended">Recommended</a></li>
+									<li class="tab"><a href="statistics">Statistics</a></li>
+								</ul>
+								
+								<!-- Items -->
+								<!-- Comments -->
+								<div class="col s12" id="comments">
+									<div class="row">
+										<div class="col s12">
+											<a class="white-text truncate" id="commentAmountTitle">Loading</a>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col s12">
+											<div id="commentSection"></div>
+										</div>
+									</div>
+								</div>
+								
+								<!-- Recommended -->
+								<div class="col s12" id="recommended">
+									
+								</div>
+								
+								<!-- Statistics -->
+								<div class="col s12" id="statistics">
+									
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+			</div>
+		</div>
 
-      </div>
+		<div id="loadingcircle" class="center-align">
+			<div class="preloader-wrapper big active loadingcircle">
+				<div class="spinner-layer spinner-blue-only">
+					<div class="circle-clipper left">
+						<div class="circle"></div>
+					</div>
+					<div class="gap-patch">
+						<div class="circle"></div>
+					</div>
+					<div class="circle-clipper right">
+						<div class="circle"></div>
+					</div>
+				</div>
+			</div>
+		</div>
 
-      <div id="content-page" class="content-page-container" style="display: none;">
+	</div>
 
-      </div>
-
-      <div id="loadingcircle" class="center-align">
-        <div class="preloader-wrapper big active loadingcircle">
-          <div class="spinner-layer spinner-blue-only">
-            <div class="circle-clipper left">
-              <div class="circle"></div>
-            </div><div class="gap-patch">
-              <div class="circle"></div>
-            </div><div class="circle-clipper right">
-              <div class="circle"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-  </body>
+</body>
 </html>

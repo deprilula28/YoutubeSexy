@@ -27,6 +27,7 @@ window.onload = () => {
 function YoutubeSexy(){
 
   this.ui = new UIManager();
+  this.cookies = new Cookies();
   this.ytDataAPI = new YTDataAPI();
   this.video = undefined;
   this.loadingPage = true;
@@ -224,6 +225,8 @@ YoutubeSexy.prototype.showChannelPreview = function(results, element){
 
 }
 
+var handleLeave = undefined;
+
 YoutubeSexy.prototype.showChannelPage = function(channelId, donotaddbreadcrumb){
 
   youtubeSexy.hideChannelPreviews();
@@ -231,24 +234,24 @@ YoutubeSexy.prototype.showChannelPage = function(channelId, donotaddbreadcrumb){
   $("#main-page").addClass("blurInFrames");
   $("body").css({"overflow": "hidden"});
   $("#content-page").empty();
+  $(".top-text").get(0).textContent = "Loading...";
 
-  var breadcrumb;
-  if(!donotaddbreadcrumb) breadcrumb = this.ui.addToBreadcrumbs(() => {
-    $("#content-page").empty();
-    this.showChannelPage(channelId, true);
-  }, () => {
-    this.activeChannelPage.unload();
-    this.activeChannelPage = undefined;
-    $("#main-page").removeClass("blurInFrames").addClass("blurOutFrames");
-    $("#content-page").animate({"opacity": 0});
-    $("body").css({"overflow": ""});
-    $("nav").css({"height": "64px"}).animate({"background-color": "#3f51b5"});
+  if(!donotaddbreadcrumb){
+    handleLeave = () => {
+      $(".top-text").get(0).textContent = "Home";
+      this.activeChannelPage.unload();
+      this.activeChannelPage = undefined;
+      $("#main-page").removeClass("blurInFrames").addClass("blurOutFrames");
+      $("#content-page").animate({"opacity": 0});
+      $("body").css({"overflow": ""});
+      $("nav").css({"height": "64px"}).animate({"background-color": "#3f51b5"});
 
-    setTimeout(() => {
-      $("#main-page").removeClass("blurOutFrames");
-      $("#content-page").css({"display": "none", "opacity": 1}).removeClass("blurInFrames").empty();
-    }, 500);
-  }, "Loading...");
+      setTimeout(() => {
+        $("#main-page").removeClass("blurOutFrames");
+        $("#content-page").css({"display": "none", "opacity": 1}).removeClass("blurInFrames").empty();
+      }, 500);
+    };
+  }
 
   youtubeSexy.ytDataAPI.googleAPIGet("https://www.googleapis.com/youtube/v3/channels", {
     "part": "snippet,brandingSettings,statistics",
@@ -257,7 +260,7 @@ YoutubeSexy.prototype.showChannelPage = function(channelId, donotaddbreadcrumb){
     for(var channelIndex in result.items){
       var channel = result.items[channelIndex];
       $("#content-page").css({"display": ""});
-      this.activeChannelPage = new YoutubeChannelPage(channelId, channel, breadcrumb);
+      this.activeChannelPage = new YoutubeChannelPage(channelId, channel);
       return;
     }
 

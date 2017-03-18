@@ -10,6 +10,12 @@
   margin-right: 10px;
 }
 
+.commentSeparator{
+  width: 100%;
+  height: 4px;
+  background-color: #C3C3C3;
+}
+
 .search-button{
   margin-right: 10px;
 }
@@ -89,6 +95,11 @@
     -mozfilter: blur(8px);
     opacity: 0.3;
   }
+}
+
+.top-text{
+  font-size: 24px;
+  margin-left: 40px;
 }
 
 @keyframes blurIn{
@@ -173,4 +184,18 @@
 
 .placeholder-breadcrumb{
   display: none;
+}
+
+.videoCircleAnimation{
+  z-index: 501;
+  border-radius: 50%;
+  position: fixed;
+}
+
+#youtubeVideoTitleLabel{
+ font-size: 18px;
+}
+
+#youtubeVideoViewsLabel{
+ font-size: 12px;
 }

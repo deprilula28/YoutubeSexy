@@ -10,7 +10,10 @@ function YTDataAPI(){
 
 YTDataAPI.prototype.startAPILib = function(){
 
-  if(this.authenticated){
+  if(youtubeSexy.cookies.getCookie("doAuthenticate") && youtubeSexy.cookies.getCookie("doAuthenticate") == "true"){
+    console.log("Automatic authentication based on cookie.");
+    this.requestAuth();
+  }else if(this.authenticated){
     this.googleAPIGet("https://www.googleapis.com/youtube/v3/activities", {
       "part": "snippet,statistics",
       "maxResults": 50,
@@ -80,6 +83,21 @@ YTDataAPI.prototype.requestAuth = function(){
             this.authAccessToken = new AuthAccessToken(acToken, tokenType, expiresIn);
             this.authenticated = true;
             console.log("Authenticated!");
+            Materialize.toast("Authenticated successfully, loading main page", 4000);
+
+            youtubeSexy.cookies.setCookie("doAuthenticate", "true", 365);
+            youtubeSexy.loadingPage = true;
+            $("#loadingcircle").css({"display": ""});
+            $("#main-page").empty();
+
+            this.googleAPIGet("https://www.googleapis.com/youtube/v3/activities", {
+              "part": "snippet,statistics",
+              "maxResults": 50,
+              "home": true
+            }, (json) => {
+              youtubeSexy.loadMainMenuPage(json);
+              youtubeSexy.loadingPage = false;
+            });
           });
 
       }

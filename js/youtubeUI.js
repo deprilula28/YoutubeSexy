@@ -34,7 +34,7 @@ UIManager.prototype.loadFeaturedPage = function(){
 
 }
 
-UIManager.prototype.getUserIcon = function(channelId, widthShow){
+UIManager.prototype.getUserIcon = function(channelId, widthShow, commenterData){
 
   var chip = this.generateNewElement("div", ["chip", "waves-effect"], undefined, undefined, undefined);
   var img = this.generateNewElement("img", undefined, undefined, chip, {"margin-right": "0px"});
@@ -74,7 +74,14 @@ UIManager.prototype.getUserIcon = function(channelId, widthShow){
       return;
     }
   });
-
+  
+  if(commenterData){
+  	var tag = commenterData.tag;
+  	
+  	if(tag === "owner") $(chip).css({"background-color": "#00C0AD"});
+  	else if(tag === "featured") $(chip).css({"background-color": "#EC4646"});
+  }
+  
   return chip;
 
 }
@@ -122,7 +129,7 @@ UIManager.prototype.createVideoListDIV = function(title, items){
 
 }
 
-UIManager.prototype.createFullVideoDIV = function(video, doNotPutChannelChip){
+UIManager.prototype.createFullVideoDIV = function(video, doNotPutChannelChip, channelResult){
 
   var column = this.generateNewElement("div", ["col", "s12", "m6", "l4"], undefined, undefined, {"height": "240px", "max-height": "240px", "width": "214px", "max-width": "214px", "overflow": "none",
     "margin-right": "20px"});
@@ -130,17 +137,11 @@ UIManager.prototype.createFullVideoDIV = function(video, doNotPutChannelChip){
   var imgDiv = this.generateNewElement("div", undefined, undefined, column, {"width": "214px", "height": "120px"});
   var img = this.generateNewElement("img", ["center-align"], undefined, imgDiv,
     {"width": "100%", "height": "100%"});
-  img.onClick = (event) => {
-    youtubeSexy.playVideo(video);
-  };
 
   var rowVideoName = this.generateNewElement("div", ["row"], undefined, column, {"margin-bottom": "0px"});
   var columnVideoName = this.generateNewElement("div", ["col", "s12"], undefined, rowVideoName, undefined);
   var videoNameTextComp = this.generateNewElement("a", ["videoNameTextComponent", "truncate", this.darkThemed ? "white-text"
     : "black-text"], "Loading...", columnVideoName, undefined);
-  videoNameTextComp.onclick = (event) => {
-    youtubeSexy.playVideo(video);
-  };
 
   //Views
   var rowVideoViews = this.generateNewElement("div", ["row"], undefined, column, {"margin-bottom": "0px"});
@@ -173,6 +174,7 @@ UIManager.prototype.createFullVideoDIV = function(video, doNotPutChannelChip){
     columnUserIcon.appendChild(userIcon);
   }
 
+  //img.crossOrigin = "Anonymous";
   img.src = video.snippet.thumbnails.high.url;
 
   videoNameTextComp.textContent = video.snippet.title;
@@ -183,12 +185,24 @@ UIManager.prototype.createFullVideoDIV = function(video, doNotPutChannelChip){
   if(video.statistics.dislikeCount) dislikesText.textContent = simplifyNumber(video.statistics.dislikeCount);
   else dislikesText.textContent = "";
 
-  var vidClick = () => {
-    youtubeSexy.playVideo(video);
+  var vidClick = (e) => {
+  	if(channelResult) youtubeSexy.playVideo(video, channelResult, e.pageX, e.pageY, img);
+  	else{
+      youtubeSexy.ytDataAPI.googleAPIGet("https://www.googleapis.com/youtube/v3/channels", {
+      	"part": "brandingSettings",
+      	"id": video.snippet.channelId
+      }, (result) => {
+      	for(var itemIndex in result.items){
+      		var item = result.items[itemIndex];
+        	youtubeSexy.playVideo(video, item, e.pageX, e.pageY, img);
+      		
+      		break;
+      	}
+      });
+  	}
   }
 
   $(imgDiv).click(vidClick);
-  $(img).click(vidClick);
   $(videoNameTextComp).click(vidClick);
 
   var authVerify = () => {
@@ -205,7 +219,7 @@ UIManager.prototype.createFullVideoDIV = function(video, doNotPutChannelChip){
       "id": video.snippet.id,
       "rating": "like"
     }, (result) => {
-    Materialize.toast("Video successfully liked.", 5000);
+	    Materialize.toast("Video successfully liked.", 5000);
     });
   }
 
@@ -215,12 +229,12 @@ UIManager.prototype.createFullVideoDIV = function(video, doNotPutChannelChip){
       "id": video.snippet.id,
       "rating": "dislike"
     }, (result) => {
-    Materialize.toast("Video successfully disliked.", 5000);
+    	Materialize.toast("Video successfully disliked.", 5000);
     });
   }
 
-    $(dislikeChip).click(dislikeClick);
-    $(likeChip).click(likeClick);
+  $(dislikeChip).click(dislikeClick);
+  $(likeChip).click(likeClick);
 
   return column;
 
