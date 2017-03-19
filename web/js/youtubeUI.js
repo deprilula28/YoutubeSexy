@@ -174,8 +174,8 @@ UIManager.prototype.createFullVideoDIV = function(video, doNotPutChannelChip, ch
     columnUserIcon.appendChild(userIcon);
   }
 
-  //img.crossOrigin = "Anonymous";
-  img.src = video.snippet.thumbnails.high.url;
+  img.crossOrigin = "Anonymous";
+  img.src = "https://crossorigin.me/" + video.snippet.thumbnails.high.url;
 
   videoNameTextComp.textContent = video.snippet.title;
 

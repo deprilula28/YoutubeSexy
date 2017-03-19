@@ -25,10 +25,11 @@ YoutubeSexy.prototype.playVideo = function(videoResult, posterResult, mouseX, mo
     $("body").css({"overflow": ""});
     $("nav").css({"height": "64px"}).animate({"background-color": "#3f51b5"});
     $("#main-page").removeClass("blurInFrames").addClass("blurOutFrames").animate({"opacity": 1});
-
+    
     setTimeout(() => {
     	$(".content").get(0).appendChild($("#youtubePage").get(0));
       $("#main-page").removeClass("blurOutFrames").css({"opacity": ""});
+      $("#youtubePage").css({"display": "none"});
       $("#content-page").css({"display": "none", "opacity": 1}).empty();
     }, 500);
     $(".top-text").get(0).textContent = "Home";
@@ -40,6 +41,17 @@ YoutubeSexy.prototype.playVideo = function(videoResult, posterResult, mouseX, mo
     }
   };
 
+  var vibrant = new Vibrant(thumbnail);
+  var swatches = vibrant.swatches();
+  this.vibrantColor = swatches.DarkVibrant.getHex();
+
+  $("nav").animate({"background-color": this.vibrantColor});
+  
+  thumbnail.id = "youtubeVideoBackgroundOverlayImgSrc";
+  stackBlurImage("youtubeVideoBackgroundOverlayImgSrc", "youtubeVideoBackgroundOverlayCanvasObj", 180, 255);
+  thumbnail.id = "";
+  $("#youtubeVideoBackgroundOverlayCanvasObj").css({"width": "110%", "height": "110%"});
+  
   //Appear animation
   if(mouseX && mouseY){
     $("#content-page").css({"opacity": 0, "display": "block"}).animate({"opacity": 1});
@@ -124,6 +136,14 @@ YoutubeSexy.prototype.loadCommentSection = function(videoId, videoResult, poster
 	$(".commentAmountTitle").text("Amount of comments: " + commentCount);
 	var commentSectionDiv = $("#commentSection").get(0);
 
+  var authVerify = () => {
+    if(youtubeSexy.ytDataAPI.authenticated) return true;
+    Materialize.toast("You need to be authenticated to perform this action!", 5000);
+    youtubeSexy.ytDataAPI.requestAuth();
+
+    return false;
+  };
+
 	youtubeSexy.ytDataAPI.googleAPIGet("https://www.googleapis.com/youtube/v3/commentThreads", {
 		"part": "snippet",
 		"videoId": videoResult.id,
@@ -150,11 +170,53 @@ YoutubeSexy.prototype.loadCommentSection = function(videoId, videoResult, poster
 			var commenterChip = this.ui.getUserIcon(item.snippet.topLevelComment.snippet.authorChannelId.value, "100%");
 			commenterColumn.appendChild(commenterChip);
 			
+			console.log(item);
 			//Content
 			var contentRow = this.ui.generateNewElement("div", ["row"], undefined, commentColumn, {"margin-bottom": "2px"});
 			var contentColumn = this.ui.generateNewElement("div", ["col", "s12"], undefined, contentRow, undefined);
 			appendCommentHTML(item.snippet.topLevelComment.snippet.textDisplay, contentColumn);
 			
+			//Like & Dislike Buttons
+			var rateRow = this.ui.generateNewElement("div", ["row"], undefined, commentColumn, {"margin-bottom": "2px"});
+			var columnLike = this.ui.generateNewElement("div", ["col", "s6"], undefined, rateRow, {"padding-right": "0px"});
+		  var likeChip = this.ui.generateNewElement("div", ["chip", "small", "waves-effect", "waves-dark"], undefined,
+		    columnLike, {"margin": "0px"});
+		  var likeImg = this.ui.generateNewElement("img", undefined, undefined, likeChip, {"margin-right": "0px"});
+		  likeImg.src = "img/like.png";
+		  var likesText = this.ui.generateNewElement("a", ["black-text", "truncate"], item.snippet.topLevelComment.likeCount ? prettifyNumber(item.snippet.topLevelComment.likeCount)
+		  		: "0", likeChip, undefined)
+
+		  var columnDislike = this.ui.generateNewElement("div", ["col", "s4"], undefined, rateRow, {"padding": "0px"});
+		  var dislikeChip = this.ui.generateNewElement("div", ["chip", "small", "waves-effect", "waves-dark"], undefined,
+		    columnDislike, {"margin": "0px"});
+		  var dislikeImg  = this.ui.generateNewElement("img", undefined, undefined, dislikeChip, {"margin-right": "0px"});
+		  dislikeImg.src = "img/dislike.png";
+		  
+		  //Interactables
+		  var likeClick = () => {
+		    if(!authVerify()) return;
+		    youtubeSexy.ytDataAPI.googleAPIGet("https://www.googleapis.com/youtube/v3/videos/rate", {
+		      "id": video.snippet.id,
+		      "rating": "like"
+		    }, (result) => {
+			    Materialize.toast("Video successfully liked.", 5000);
+		    });
+		  }
+
+		  var dislikeClick = () => {
+		    if(!authVerify()) return;
+		    youtubeSexy.ytDataAPI.googleAPIGet("https://www.googleapis.com/youtube/v3/videos/rate", {
+		      "id": video.snippet.id,
+		      "rating": "dislike"
+		    }, (result) => {
+		    	Materialize.toast("Video successfully disliked.", 5000);
+		    });
+		  }
+
+		  $(dislikeChip).click(dislikeClick);
+		  $(likeChip).click(likeClick);
+			
+		  //Comment separator
 			var div = this.ui.generateNewElement("div", ["commentSeparator"], undefined, commentSectionDiv, undefined);
 		}
 	});
@@ -178,17 +240,15 @@ function appendCommentHTML(comment, master){
 				attachments.push(videoLink);
 			}
 		}catch(e){}
-		return "<a class=\"indigo-text\" target=\"_blank\" href=" + url + ">" + url + "</a>";
+		return "<a style=\"background-color: " + this.vibrantColor + "\" target=\"_blank\" href=\"" + url + "\">" + url + "</a>";
 	});
 	comment = comment.replaceAll("\n", "<br>");
 
 	var boldRegex = /\*(.|\n)*?\*/ig;
 	var italicRegex = /_(.|\n)*?_/ig;
-	var strikethroughRegex = /-(.|\n)*?-/ig;
 
 	comment = comment.replace(boldRegex, (text) => {return "<a class=\"white-text\" style=\"font-style: bold;\">" + text + "</a>"});
 	comment = comment.replace(italicRegex, (text) => {return "<a class=\"white-text\" style=\"font-style: oblique;\">" + text + "</a>"});
-	comment = comment.replace(strikethroughRegex, (text) => {return "<a class=\"white-text\" style=\"text-decoration: overline;\">" + text + "</a>"});
 	
 	for(var attachmentIndex in attachments){
 		
