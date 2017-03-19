@@ -136,7 +136,7 @@ UIManager.prototype.createFullVideoDIV = function(video, doNotPutChannelChip, ch
 
   var imgDiv = this.generateNewElement("div", undefined, undefined, column, {"width": "214px", "height": "120px"});
   var img = this.generateNewElement("img", ["center-align"], undefined, imgDiv,
-    {"width": "100%", "height": "100%"});
+    {"width": "100%", "height": "100%", "cursor": "pointer"});
 
   var rowVideoName = this.generateNewElement("div", ["row"], undefined, column, {"margin-bottom": "0px"});
   var columnVideoName = this.generateNewElement("div", ["col", "s12"], undefined, rowVideoName, undefined);
