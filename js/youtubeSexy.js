@@ -128,8 +128,14 @@ YoutubeSexy.prototype.loadMainMenuPage = function(activitiesResponse){
 $(window).scroll((event) => {
 
   if(channelPreview) youtubeSexy.hideChannelPreviews();
-
+  
 });
+
+window.onresize = (event) => {
+
+  $("#tabOverlayColumn").css({"height": ($(window).height() - 50) + "px"});
+  
+};
 
 YoutubeSexy.prototype.hideChannelPreviews = function (){
 
