@@ -69,8 +69,7 @@ YTDataAPI.prototype.requestAuth = function(){
 
   var pollTimer = window.setInterval(function(){
     try{
-    	if(!win.document || !win) window.clearInterval(pollTimer);
-      if(win && win.document.URL.indexOf(redirect) == 0){
+      if(win.document.URL.indexOf(redirect) == 0){
           window.clearInterval(pollTimer);
 
           var url = win.document.URL;
@@ -106,8 +105,7 @@ YTDataAPI.prototype.requestAuth = function(){
               youtubeSexy.loadingPage = false;
             });
           });
-
-      }
+      }else if(!win.document || !win) window.clearInterval(pollTimer);
     }catch(e){
     	console.log(e.stack);
     }
