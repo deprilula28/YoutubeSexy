@@ -49,6 +49,9 @@ YoutubeSexy.prototype.playVideo = function(videoResult, posterResult, mouseX, mo
 
   thumbnail.id = "youtubeVideoBackgroundOverlayImgSrc";
   stackBlurImage("youtubeVideoBackgroundOverlayImgSrc", "youtubeVideoBackgroundOverlayCanvasObj", 100, 255);
+  var ctx = document.getElementById("youtubeVideoBackgroundOverlayCanvasObj").getContext("2d");
+  ctx.fillStyle = "rgba(0, 0, 0, 0.3)";
+  ctx.fillRect(0, 0, $(window).height(), $(window).width());
   thumbnail.id = "";
   $("#youtubeVideoBackgroundOverlayCanvasObj").css({"width": "110%", "height": "120%"});
 
@@ -65,6 +68,7 @@ YoutubeSexy.prototype.playVideo = function(videoResult, posterResult, mouseX, mo
   $("#youtubeVideoViewsLabel").get(0).textContent = prettifyNumber(videoResult.statistics.viewCount) + " views";
   $("#channelYoutubeVideoChipPlaceholder").empty();
   $("#channelYoutubeVideoChipPlaceholder").get(0).appendChild(this.ui.getUserIcon(videoResult.snippet.channelId, "100%"));
+  $("#bigVideoIFrameContainer").css({"height": ($(window).height() - 200) + "px"});
 
   //Like/Dislike
   $("#ldshadpYoutubeVideoChipPlaceholder").empty();
@@ -170,7 +174,6 @@ YoutubeSexy.prototype.loadCommentSection = function(videoId, videoResult, poster
 			var commenterChip = this.ui.getUserIcon(item.snippet.topLevelComment.snippet.authorChannelId.value, "100%");
 			commenterColumn.appendChild(commenterChip);
 
-			console.log(item);
 			//Content
 			var contentRow = this.ui.generateNewElement("div", ["row"], undefined, commentColumn, {"margin-bottom": "2px"});
 			var contentColumn = this.ui.generateNewElement("div", ["col", "s12"], undefined, contentRow, undefined);
