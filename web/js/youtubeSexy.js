@@ -131,11 +131,12 @@ $(window).scroll((event) => {
   
 });
 
-window.onresize = (event) => {
+$(window).resize((event) => {
 
   $("#tabOverlayColumn").css({"height": ($(window).height() - 50) + "px"});
+  $("#bigVideoIFrameContainer").css({"height": ($(window).height() - 200) + "px"});
   
-};
+});
 
 YoutubeSexy.prototype.hideChannelPreviews = function (){
 
