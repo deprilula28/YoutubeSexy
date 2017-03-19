@@ -26,11 +26,16 @@ function YoutubeChannelPage(channelId, response){
 
       if(scroll > 260 && this.fixed) return;
       else if(scroll <= 260 && this.fixed){
+      	$("")
         // Unfixing
+      	$(".top-text").get(0).textContent = "";
+      	
         $(this.filler).css({"display": "none"});
         $(this.tabs).css({"margin-top": "80px", "width": ""});
         this.tabsColumn.appendChild(this.tabs);
         this.fixed = false;
+      	this.callSubUpdate(this.response);
+        this.setupPollTimer(this.response);
       }
 
       var banner = this.banner;
@@ -47,6 +52,8 @@ function YoutubeChannelPage(channelId, response){
 
       if(scroll > 260 && !this.fixed){
         // Fixing
+      	$(".top-text").get(0).textContent = this.response.snippet.title;
+        
         $(img).css({"width": "64px", "height": "64px", "opacity": 0, "top": "65px"});
         $(name).css({"top": "32px", "left": "150px"});
         $(subscribers).css({"top": "47px"});
@@ -54,6 +61,7 @@ function YoutubeChannelPage(channelId, response){
         this.tabsNavWrapperColumn.appendChild(this.tabs);
         $(this.tabs).css({"margin-top": "0px", "width": "100%"});
         this.fixed = true;
+        window.clearInterval(this.pollTimer);
       }
 
       $(img).css({"width": ((-progress + 1) * 64.0 + 64.0) + "px", "height": ((-progress + 1) * 64.0 + 64.0) + "px", "opacity":
@@ -76,7 +84,7 @@ YoutubeChannelPage.prototype.createChannelPage = function(){
   var uiMan = youtubeSexy.ui;
   var chnl = this.response;
 
-  $(".top-text").get(0).textContent = chnl.snippet.title;
+  $(".top-text").get(0).textContent = "";
   
   var contentPage = document.getElementById("content-page");
   $(div).css({"width": "100%", "height": "100%"});
@@ -113,7 +121,7 @@ YoutubeChannelPage.prototype.createChannelPage = function(){
   var userName = uiMan.generateNewElement("a", ["white-text", "truncate"], chnl.snippet.title,
     div, {"font-size": "24px", "position": "fixed", "z-index": "15000", "left": "150px", "top": "275px"});
 
-  var userSubscriberCount = uiMan.generateNewElement("a", ["white-text", "truncate"], prettifyNumber(chnl.statistics.subscriberCount),
+  var userSubscriberCount = uiMan.generateNewElement("a", ["white-text", "truncate"], prettifyNumber(chnl.statistics.subscriberCount) + " subscribers",
     div, {"left": "150px", "font-size": "24px", "position": "fixed", "z-index": "15000", "top": "300px"});
 
   this.userNameA = userName;
@@ -228,7 +236,33 @@ YoutubeChannelPage.prototype.createChannelPage = function(){
   var loading = youtubeSexy.ui.createCirclePreloaderDIV("blue", "big");
   videosDIV.appendChild(loading);
   this.preloader = loading;
+  this.setupPollTimer(chnl);
+  
+}
 
+YoutubeChannelPage.prototype.setupPollTimer = function(chnl){
+	
+	var pollTimer = window.setInterval(() => {
+		youtubeSexy.activeChannelPage.callSubUpdate(chnl);
+	}, youtubeSexy.options.subscriberCountChannelPageUpdateRate);
+  this.pollTimer = pollTimer;
+	
+}
+
+YoutubeChannelPage.prototype.callSubUpdate = function(chnl){
+	
+	youtubeSexy.ytDataAPI.googleAPIGet("https://www.googleapis.com/youtube/v3/channels", {
+		"part": "statistics",
+		"id": chnl.id,
+		"fields": "items/statistics/subscriberCount"
+	}, (result) => {
+		for(var channelIndex in result.items){
+			var channel = result.items[channelIndex];
+			this.userSubscriberCountA.textContent = prettifyNumber(channel.statistics.subscriberCount) + " subscribers";
+  	  break;
+		}
+	});
+	
 }
 
 YoutubeChannelPage.prototype.loadVideoPage = function(){

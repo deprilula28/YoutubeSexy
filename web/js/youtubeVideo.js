@@ -20,7 +20,6 @@ YoutubeSexy.prototype.playVideo = function(videoResult, posterResult, mouseX, mo
 	$("#content-page").get(0).appendChild($("#youtubePage").get(0));
 
   handleLeave = (toVideo) => {
-  	console.log("Handle leave called.");
   	this.playing = undefined;
     $("#content-page").animate({"opacity": 0});
     $("body").css({"overflow": ""});

@@ -11,6 +11,7 @@ window.onload = () => {
 
   youtubeSexy = new YoutubeSexy();
   youtubeSexy.ytDataAPI.startAPILib();
+  youtubeSexy.options.load();
   $(".customScrollBarWrapper").css({"left": ($(window).width() - 10) + "px", "height": ($(window).height() - 85) + "px"})
 
   $("body").resize((event) => {
@@ -28,6 +29,7 @@ function YoutubeSexy(){
 
   this.ui = new UIManager();
   this.cookies = new Cookies();
+  this.options = new OptionManager();
   this.ytDataAPI = new YTDataAPI();
   this.video = undefined;
   this.loadingPage = true;
@@ -241,6 +243,7 @@ YoutubeSexy.prototype.showChannelPage = function(channelId, donotaddbreadcrumb){
 
   if(!donotaddbreadcrumb){
     handleLeave = () => {
+      window.clearInterval(this.activeChannelPage.pollTimer);
       $(".top-text").get(0).textContent = "Home";
       this.activeChannelPage.unload();
       this.activeChannelPage = undefined;
