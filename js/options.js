@@ -22,13 +22,13 @@ OptionManager.prototype.changeOptionInJSON = function(option, newValue){
 	
 	this.optionsJSON[option] = newValue;
 	this.save();
-	Materialize.toast("Settings saved!", 1000);
+	Materialize.toast("Options saved!", 3000);
 	
 }
 
 OptionManager.prototype.save = function(){
 	
-	youtubeSexy.cookies.setCookie("options", this.optionsJSON, 365);
+	youtubeSexy.cookies.setCookie("options", this.optionsJSON.toString(), 365);
 	
 }
 
