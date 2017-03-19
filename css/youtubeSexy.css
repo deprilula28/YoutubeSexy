@@ -214,3 +214,20 @@
   animation-name: blurOut;
   animation-duration: 0.5s;
 }
+
+.youtubeVideoBackgroundOverlay{
+	position: fixed;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	z-index: -1; 
+}
+
+.youtubeVideoBackgroundOverlayCanvas{
+	width: 110%;
+	height: 110%;
+	transform: translate(-5%, -5%);
+	-webkittransform: translate(-5%, -5%);
+	-moztransform: translate(-5%, -5%);
+}
