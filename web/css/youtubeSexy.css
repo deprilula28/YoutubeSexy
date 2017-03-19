@@ -17,8 +17,9 @@
 
 .commentSeparator{
   width: 100%;
-  height: 4px;
+  height: 1px;
   background-color: #C3C3C3;
+  margin-bottom: 8px;
 }
 
 .search-button{
