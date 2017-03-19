@@ -169,7 +169,7 @@ YoutubeChannelPage.prototype.createChannelPage = function(){
       "100%", "border": "0px"});
     var trailer = chnl.brandingSettings.channel.unsubscribedTrailer;
     iframe.src = "https://www.youtube.com/embed/" + trailer + "?autoplay=1&enablejsapi=1&theme=light&showinfo=0";
-    iframe.allowfullscreen = true;
+    iframe.allowfullscreen = "allowfullscreen";
 
     // Trailer Video Info
     var trailerVideoInfoColumn = uiMan.generateNewElement("div", ["col", "s12", "m6", "l6"], undefined, trailerRow,

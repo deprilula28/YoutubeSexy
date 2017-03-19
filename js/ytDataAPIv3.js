@@ -69,6 +69,7 @@ YTDataAPI.prototype.requestAuth = function(){
 
   var pollTimer = window.setInterval(function(){
     try{
+    	if(!win.document || !win) window.clearInterval(pollTimer);
       if(win && win.document.URL.indexOf(redirect) == 0){
           window.clearInterval(pollTimer);
 
@@ -77,6 +78,9 @@ YTDataAPI.prototype.requestAuth = function(){
           tokenType = gup(url, 'token_type');
           expiresIn = gup(url, 'expires_in');
 
+          console.log("Received authentication request, verifying token...");
+          Materialize.toast("Received authentication request, verifying token...", 4000);
+          
           win.close();
 
           this.verify(acToken, () => {
@@ -85,6 +89,9 @@ YTDataAPI.prototype.requestAuth = function(){
             console.log("Authenticated!");
             Materialize.toast("Authenticated successfully, loading main page", 4000);
 
+            $("#sidebar").empty();
+            
+            youtubeSexy.ui.loadSidebarPanelAuthenticated();
             youtubeSexy.cookies.setCookie("doAuthenticate", "true", 365);
             youtubeSexy.loadingPage = true;
             $("#loadingcircle").css({"display": ""});
@@ -101,7 +108,9 @@ YTDataAPI.prototype.requestAuth = function(){
           });
 
       }
-    }catch(e){}
+    }catch(e){
+    	console.log(e.stack);
+    }
   }, 100);
 
 }
