@@ -90,6 +90,7 @@ YTDataAPI.prototype.requestAuth = function(){
             Materialize.toast("Authenticated successfully, loading main page", 4000);
 
             $("#sidebar").empty();
+            
             youtubeSexy.ui.loadSidebarPanelAuthenticated();
             youtubeSexy.cookies.setCookie("doAuthenticate", "true", 365);
             youtubeSexy.loadingPage = true;
