@@ -37,6 +37,7 @@
 	<script src="js/channelPage.js"></script>
 	<script src="js/sidebarPanel.js"></script>
 	<script src="js/vibrant.js"></script>
+	<script src="js/options.js"></script>
 	<script src="js/appear.js"></script>
 	<script src="js/cookies.js"></script>
 	<script>
@@ -71,7 +72,9 @@
 					<a class="waves-effect waves-light"> <i
 						data-activates="sidebar"
 						class="material-icons white-text button-collapse">menu</i>
-					</a> <a class="top-text">Home</a>
+					</a> 
+					
+					<a class="top-text" style="text-overflow: ellipsis; white-space: nowrap; width: 100%;">Home</a>
 
 					<!-- Right Side of the bar -->
 					<div class="right nav-wrapper-right-align">
@@ -101,85 +104,88 @@
 			style="display: none;"></div>
 
 		<div id="youtubePage" style="display: none;">
-			<div class="col s12 m8 l6 youtubeVideoContainer">
-				<!-- Video IFrame container -->
-				<div class="row">
-					<div class="col s12">
-						<iframe id="bigVideoIFrame" src="" style="width: 100%; height: 100%"></iframe>						
+			<div class="row">
+				<div class="col s12 m8 l8 youtubeVideoContainer" style="padding: 0px">
+					<!-- Video IFrame container -->
+					<div class="row">
+						<div class="col s12" style="padding: 0px">
+							<div id="bigVideoIFrameContainer">
+								
+							</div>
+							<iframe id="bigVideoIFrame" src="" style="width: 100%; height: 100%; border: 0px; margin: 0px; padding: 0px"></iframe>						
+						</div>
 					</div>
-				</div>
-				
-				<!-- Video title row -->
-				<div class="row">
-					<div class="col s12">
-						<a class="truncate white-text textColorResponsive" id="youtubeVideoTitleLabel">Loading</a>
+					
+					<!-- Video title row -->
+					<div class="row" style="margin-bottom: 0px;">
+						<div class="col s12">
+							<a class="truncate white-text textColorResponsive" id="youtubeVideoTitleLabel">Loading</a>
+						</div>
 					</div>
-				</div>
-				
-				<!-- Video views row -->
-				<div class="row">
-					<div class="col s12">
-						<a class="truncate white-text textColorResponsive" id="youtubeVideoViewsLabel">Loading</a>
+					
+					<!-- Video views row -->
+					<div class="row">
+						<div class="col s12">
+							<a class="truncate white-text textColorResponsive" id="youtubeVideoViewsLabel">Loading</a>
+						</div>
 					</div>
-				</div>
-				
-				<!-- Video info row -->
-				<div class="row">
-					<div class="col s12">
-						<div class="row">
-							<!-- Channel chip placeholder space -->
-							<div class="col s12 m6 l4" id="channelYoutubeVideoChipPlaceholder"></div>
-							
-							<!-- Video buttons (Like, Dislike, Share, Add to playlist -->
-							<div class="col s12 m6 l4 offset-l4" id="ldshadpYoutubeVideoChipPlaceholder"></div>
+					
+					<!-- Video info row -->
+					<div class="row">
+						<div class="col s12">
+							<div class="row">
+								<!-- Channel chip placeholder space -->
+								<div class="col s12 m6 l4" id="channelYoutubeVideoChipPlaceholder"></div>
+								
+								<!-- Video buttons (Like, Dislike, Share, Add to playlist -->
+								<div class="col s12 m6 l4 offset-l4" id="ldshadpYoutubeVideoChipPlaceholder"></div>
+							</div>
 						</div>
 					</div>
 				</div>
-			</div>
 			
-			<div class="col s12 m4 l6 youtubeVideoSidebar" style="height: 100%; width: 100%">
-				
-				<!-- Right side bar  -->
-				<div class="row">
-					<div class="col s12">
-						<div class="row">
-							<div class="col s12">
-								<!-- Tabs -->
-								<ul class="tabs tabs-fixed-width" id="youtubeVideoTabs">
-									<li class="tab active"><a href="comments">Comments</a></li>
-									<li class="tab"><a href="recommended">Recommended</a></li>
-									<li class="tab"><a href="statistics">Statistics</a></li>
-								</ul>
-								
-								<!-- Items -->
-								<!-- Comments -->
-								<div class="col s12" id="comments">
-									<div class="row">
-										<div class="col s12">
-											<a class="white-text truncate" id="commentAmountTitle">Loading</a>
+				<div class="col s12 m4 l4 youtubeVideoSidebar" style="padding: 0px">
+					<!-- Right side bar  -->
+					<div class="row">
+						<div class="col s12" style="padding: 0px">
+							<div class="row">
+								<div class="col s12" style="padding: 0px">
+									<!-- Tabs -->
+									<ul class="tabs tabs-fixed-width youtubeVideoTabsClass" id="youtubeVideoTabs">
+										<li class="tab active"><a href="comments">Comments</a></li>
+										<li class="tab"><a href="recommended">Recommended</a></li>
+										<li class="tab"><a href="statistics">Statistics</a></li>
+									</ul>
+									
+									<!-- Items -->
+									<!-- Comments -->
+									<div class="col s12" id="comments">
+										<div class="row">
+											<div class="col s12">
+												<a class="white-text truncate commentAmountTitle">Loading</a>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col s12">
+												<div id="commentSection"></div>
+											</div>
 										</div>
 									</div>
-									<div class="row">
-										<div class="col s12">
-											<div id="commentSection"></div>
-										</div>
+									
+									<!-- Recommended -->
+									<div class="col s12" id="recommended">
+										
 									</div>
-								</div>
-								
-								<!-- Recommended -->
-								<div class="col s12" id="recommended">
 									
-								</div>
-								
-								<!-- Statistics -->
-								<div class="col s12" id="statistics">
-									
+									<!-- Statistics -->
+									<div class="col s12" id="statistics">
+										
+									</div>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-				
 			</div>
 		</div>
 
