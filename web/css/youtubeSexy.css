@@ -10,6 +10,11 @@
   margin-right: 10px;
 }
 
+.youtubeVideoTabsClass{
+  overflow: hidden;
+  background-color: rgba(0, 0, 0, 0);
+}
+
 .commentSeparator{
   width: 100%;
   height: 4px;
@@ -198,4 +203,13 @@
 
 #youtubeVideoViewsLabel{
  font-size: 12px;
+}
+
+.videoSmallPlayerAnimation{
+ -webkit-animation-name: blurOut;
+  -webkit-animation-duration: 0.5s;
+  -moz-animation-name: blurOut;
+  -moz-animation-duration: 0.5s;
+  animation-name: blurOut;
+  animation-duration: 0.5s;
 }

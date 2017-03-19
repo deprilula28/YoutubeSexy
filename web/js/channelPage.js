@@ -49,7 +49,7 @@ function YoutubeChannelPage(channelId, response){
         // Fixing
         $(img).css({"width": "64px", "height": "64px", "opacity": 0, "top": "65px"});
         $(name).css({"top": "32px", "left": "150px"});
-        $(subscribers).css({"top": "32px"});
+        $(subscribers).css({"top": "47px"});
         $(this.filler).css({"display": "block"});
         this.tabsNavWrapperColumn.appendChild(this.tabs);
         $(this.tabs).css({"margin-top": "0px", "width": "100%"});
@@ -59,7 +59,7 @@ function YoutubeChannelPage(channelId, response){
       $(img).css({"width": ((-progress + 1) * 64.0 + 64.0) + "px", "height": ((-progress + 1) * 64.0 + 64.0) + "px", "opacity":
         -progress + 1, "top": lerp(160.0, 0, progress)});
       $(name).css({"top": lerp(275, 32, progress) + "px"});
-      $(subscribers).css({"top": lerp(275, 32, progress) + "px"});
+      $(subscribers).css({"top": lerp(300, 57, progress) + "px"});
     }
   };
 
@@ -113,8 +113,8 @@ YoutubeChannelPage.prototype.createChannelPage = function(){
   var userName = uiMan.generateNewElement("a", ["white-text", "truncate"], chnl.snippet.title,
     div, {"font-size": "24px", "position": "fixed", "z-index": "15000", "left": "150px", "top": "275px"});
 
-  var userSubscriberCount = uiMan.generateNewElement("a", ["white-text", "truncate", "right"], prettifyNumber(chnl.statistics.subscriberCount),
-    div, {"font-size": "24px", "position": "fixed", "z-index": "15000", "top": "275px"});
+  var userSubscriberCount = uiMan.generateNewElement("a", ["white-text", "truncate"], prettifyNumber(chnl.statistics.subscriberCount),
+    div, {"left": "150px", "font-size": "24px", "position": "fixed", "z-index": "15000", "top": "300px"});
 
   this.userNameA = userName;
   this.userSubscriberCountA = userSubscriberCount;
@@ -130,7 +130,7 @@ YoutubeChannelPage.prototype.createChannelPage = function(){
     "margin-top": "80px"});
     this.filler = filler;
 
-  var tabs = uiMan.generateNewElement("ul", ["tabs", "vibrantColored"], undefined, tabsColumn, {"margin-top": "80px"});
+  var tabs = uiMan.generateNewElement("ul", ["tabs", "vibrantColored"], undefined, tabsColumn, {"margin-top": "80px", "background-color": "rgba(0, 0, 0, 0)"});
   this.tabsColumn = tabsColumn;
   this.tabs = tabs;
 

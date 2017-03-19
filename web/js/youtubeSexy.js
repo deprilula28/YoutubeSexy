@@ -229,6 +229,9 @@ var handleLeave = undefined;
 
 YoutubeSexy.prototype.showChannelPage = function(channelId, donotaddbreadcrumb){
 
+	if(handleLeave) handleLeave();
+  $("#main-page").removeClass("blurInFrames").removeClass("blurOutFrames");
+  
   youtubeSexy.hideChannelPreviews();
   console.log("Loading channel page for channel ID: " + channelId);
   $("#main-page").addClass("blurInFrames");
@@ -250,6 +253,8 @@ YoutubeSexy.prototype.showChannelPage = function(channelId, donotaddbreadcrumb){
         $("#main-page").removeClass("blurOutFrames");
         $("#content-page").css({"display": "none", "opacity": 1}).removeClass("blurInFrames").empty();
       }, 500);
+      
+      handleLeave = undefined;
     };
   }
 
