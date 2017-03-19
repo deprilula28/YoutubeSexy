@@ -14,7 +14,7 @@ YoutubeSexy.prototype.playVideo = function(videoResult, posterResult, mouseX, mo
   $("#main-page").removeClass("blurInFrames").removeClass("blurOutFrames");
 
   $("body").css({"overflow": "hidden"});
-  
+
   var inVideo = $('#content-page').children().length > 0;
   $("#content-page").empty();
 	$("#content-page").get(0).appendChild($("#youtubePage").get(0));
@@ -25,7 +25,7 @@ YoutubeSexy.prototype.playVideo = function(videoResult, posterResult, mouseX, mo
     $("body").css({"overflow": ""});
     $("nav").css({"height": "64px"}).animate({"background-color": "#3f51b5"});
     $("#main-page").removeClass("blurInFrames").addClass("blurOutFrames").animate({"opacity": 1});
-    
+
     setTimeout(() => {
     	$(".content").get(0).appendChild($("#youtubePage").get(0));
       $("#main-page").removeClass("blurOutFrames").css({"opacity": ""});
@@ -33,9 +33,9 @@ YoutubeSexy.prototype.playVideo = function(videoResult, posterResult, mouseX, mo
       $("#content-page").css({"display": "none", "opacity": 1}).empty();
     }, 500);
     $(".top-text").get(0).textContent = "Home";
-    
+
     handleLeave = undefined;
-    
+
     if(!toVideo){
     	//Put video in small window view
     }
@@ -46,12 +46,12 @@ YoutubeSexy.prototype.playVideo = function(videoResult, posterResult, mouseX, mo
   this.vibrantColor = swatches.DarkVibrant.getHex();
 
   $("nav").animate({"background-color": this.vibrantColor});
-  
+
   thumbnail.id = "youtubeVideoBackgroundOverlayImgSrc";
-  stackBlurImage("youtubeVideoBackgroundOverlayImgSrc", "youtubeVideoBackgroundOverlayCanvasObj", 180, 255);
+  stackBlurImage("youtubeVideoBackgroundOverlayImgSrc", "youtubeVideoBackgroundOverlayCanvasObj", 100, 255);
   thumbnail.id = "";
-  $("#youtubeVideoBackgroundOverlayCanvasObj").css({"width": "110%", "height": "110%"});
-  
+  $("#youtubeVideoBackgroundOverlayCanvasObj").css({"width": "110%", "height": "120%"});
+
   //Appear animation
   if(mouseX && mouseY){
     $("#content-page").css({"opacity": 0, "display": "block"}).animate({"opacity": 1});
@@ -125,7 +125,7 @@ YoutubeSexy.prototype.playVideo = function(videoResult, posterResult, mouseX, mo
   this.loadCommentSection(this.playing, videoResult, posterResult, videoResult.statistics.commentCount);
   this.loadRecommendedSection(this.playing);
   this.loadSocialbladeStatisticsSection(this.playing);
-  
+
   //Initialize
   $("#youtubeVideoTabs").tabs();
 
@@ -153,29 +153,29 @@ YoutubeSexy.prototype.loadCommentSection = function(videoId, videoResult, poster
 		for(var itemIndex in result.items){
 			//Basics
 			var item = result.items[itemIndex];
-			
+
 			var commentRow = this.ui.generateNewElement("div", ["row"], undefined, commentSectionDiv, {"margin-bottom": "4px"});
 			var commentColumn = this.ui.generateNewElement("div", ["col", "s12"], undefined, commentRow, undefined);
-			
+
 			//Commenter JSON
 			var commenterData = {
 				"tag": "common"
 			};
 			if(videoResult.snippet.channelId === item.snippet.topLevelComment.snippet.authorChannelId.value) commenterData.tag = "owner";
 			else if(verifyFeatured(posterResult, item.snippet.topLevelComment.snippet.authorChannelId.value)) commenterData.tag = "featured";
-			
+
 			//Comment Author
 			var commenterRow = this.ui.generateNewElement("div", ["row"], undefined, commentColumn, {"margin-bottom": "2px"});
 			var commenterColumn = this.ui.generateNewElement("div", ["col", "s12"], undefined, commenterRow, undefined);
 			var commenterChip = this.ui.getUserIcon(item.snippet.topLevelComment.snippet.authorChannelId.value, "100%");
 			commenterColumn.appendChild(commenterChip);
-			
+
 			console.log(item);
 			//Content
 			var contentRow = this.ui.generateNewElement("div", ["row"], undefined, commentColumn, {"margin-bottom": "2px"});
 			var contentColumn = this.ui.generateNewElement("div", ["col", "s12"], undefined, contentRow, undefined);
 			appendCommentHTML(item.snippet.topLevelComment.snippet.textDisplay, contentColumn);
-			
+
 			//Like & Dislike Buttons
 			var rateRow = this.ui.generateNewElement("div", ["row"], undefined, commentColumn, {"margin-bottom": "2px"});
 			var columnLike = this.ui.generateNewElement("div", ["col", "s6"], undefined, rateRow, {"padding-right": "0px"});
@@ -191,7 +191,7 @@ YoutubeSexy.prototype.loadCommentSection = function(videoId, videoResult, poster
 		    columnDislike, {"margin": "0px"});
 		  var dislikeImg  = this.ui.generateNewElement("img", undefined, undefined, dislikeChip, {"margin-right": "0px"});
 		  dislikeImg.src = "img/dislike.png";
-		  
+
 		  //Interactables
 		  var likeClick = () => {
 		    if(!authVerify()) return;
@@ -215,7 +215,7 @@ YoutubeSexy.prototype.loadCommentSection = function(videoId, videoResult, poster
 
 		  $(dislikeChip).click(dislikeClick);
 		  $(likeChip).click(likeClick);
-			
+
 		  //Comment separator
 			var div = this.ui.generateNewElement("div", ["commentSeparator"], undefined, commentSectionDiv, undefined);
 		}
@@ -224,7 +224,7 @@ YoutubeSexy.prototype.loadCommentSection = function(videoId, videoResult, poster
 }
 
 function appendCommentHTML(comment, master){
-	
+
 	var urlRegex = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig; //Credit: http://stackoverflow.com/a/8943487
 	var attachments = [];
 
@@ -249,20 +249,20 @@ function appendCommentHTML(comment, master){
 
 	comment = comment.replace(boldRegex, (text) => {return "<a class=\"white-text\" style=\"font-style: bold;\">" + text + "</a>"});
 	comment = comment.replace(italicRegex, (text) => {return "<a class=\"white-text\" style=\"font-style: oblique;\">" + text + "</a>"});
-	
+
 	for(var attachmentIndex in attachments){
-		
+
 	}
-	
+
 	var commentAnchor = youtubeSexy.ui.generateNewElement("a", ["white-text"], undefined, master, {"word-wrap": "break-word"});
 	$(commentAnchor).html(comment);
-	
+
 	return commentAnchor;
-	
+
 }
 
 function verifyFeatured(channelResult, poster){
-	
+
 	if(channelResult.brandingSettings.channel.featuredChannelsUrls){
 		var featuredUrls = channelResult.brandingSettings.channel.featuredChannelsUrls;
 		for(var urlIndex in featuredUrls){
@@ -270,9 +270,9 @@ function verifyFeatured(channelResult, poster){
 			if(url === poster) return true;
 		}
 	}
-	
+
 	return false;
-	
+
 }
 
 YoutubeSexy.prototype.loadRecommendedSection = function(videoId){
