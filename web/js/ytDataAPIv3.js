@@ -82,7 +82,7 @@ YTDataAPI.prototype.requestAuth = function(){
           
           win.close();
 
-          this.verify(acToken, () => {
+          youtubeSexy.ytDataAPI.verify(acToken, () => {
             this.authAccessToken = new AuthAccessToken(acToken, tokenType, expiresIn);
             this.authenticated = true;
             console.log("Authenticated!");
