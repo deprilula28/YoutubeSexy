@@ -13,7 +13,7 @@ YoutubeSexy.prototype.playVideo = function(videoResult, posterResult, mouseX, mo
   console.log("Preparing to play video...");
   $("#main-page").removeClass("blurInFrames").removeClass("blurOutFrames");
 
-  $("body").css({"overflow": "hidden"});
+  $("body").css({"tabsoverflow": "hidden"});
 
   var inVideo = $('#content-page').children().length > 0;
   $("#content-page").empty();
@@ -45,12 +45,14 @@ YoutubeSexy.prototype.playVideo = function(videoResult, posterResult, mouseX, mo
   var swatches = vibrant.swatches();
   this.vibrantColor = swatches.DarkVibrant.getHex();
 
+  $(".tab a").css({"color": this.vibrantColor});
+  $(".indicator").css({"background-color": this.vibrantColor});
   $("nav").animate({"background-color": this.vibrantColor});
 
   thumbnail.id = "youtubeVideoBackgroundOverlayImgSrc";
-  stackBlurImage("youtubeVideoBackgroundOverlayImgSrc", "youtubeVideoBackgroundOverlayCanvasObj", 100, 255);
+  stackBlurImage("youtubeVideoBackgroundOverlayImgSrc", "youtubeVideoBackgroundOverlayCanvasObj", 60, 255);
   var ctx = document.getElementById("youtubeVideoBackgroundOverlayCanvasObj").getContext("2d");
-  ctx.fillStyle = "rgba(0, 0, 0, 0.3)";
+  ctx.fillStyle = "rgba(0, 0, 0, 0.6)";
   ctx.fillRect(0, 0, $(window).height(), $(window).width());
   thumbnail.id = "";
   $("#youtubeVideoBackgroundOverlayCanvasObj").css({"width": "110%", "height": "120%"});
@@ -63,7 +65,9 @@ YoutubeSexy.prototype.playVideo = function(videoResult, posterResult, mouseX, mo
   }
 
   //Content page filing
-  $("#youtubeVideoTabs").tabs();
+  $("#youtubeVideoTabs").tabs({"onShow": (tab) => {
+		console.log("Tab:", tab);
+	}});
   $("#youtubeVideoTitleLabel").get(0).textContent = videoResult.snippet.title;
   $("#youtubeVideoViewsLabel").get(0).textContent = prettifyNumber(videoResult.statistics.viewCount) + " views";
   $("#channelYoutubeVideoChipPlaceholder").empty();
