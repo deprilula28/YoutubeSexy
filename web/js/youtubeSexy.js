@@ -11,7 +11,13 @@ window.onload = () => {
 
   youtubeSexy = new YoutubeSexy();
   youtubeSexy.ytDataAPI.startAPILib();
+  
+  try{
   youtubeSexy.options.load();
+  }catch(e){
+  	console.log(e.stack);
+  }
+  
   $(".customScrollBarWrapper").css({"left": ($(window).width() - 10) + "px", "height": ($(window).height() - 85) + "px"})
 
   $("body").resize((event) => {
