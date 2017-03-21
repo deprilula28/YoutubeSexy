@@ -1,4 +1,4 @@
-  
+
 YoutubeSexy.prototype.playVideo = function(videoResult, posterResult, mouseX, mouseY, thumbnail){
 
   if(this.playing == videoResult.id){
@@ -6,7 +6,6 @@ YoutubeSexy.prototype.playVideo = function(videoResult, posterResult, mouseX, mo
     return;
   }
 
-  if(handleLeave) handleLeave(true);
   this.playing = videoResult.id;
   $(".top-text").get(0).textContent = videoResult.snippet.title;
   $("#bigVideoIFrame").get(0).src = "https://www.youtube.com/embed/" + this.playing + "?autoplay=1&enablejsapi=1&theme=light&showinfo=0";
@@ -18,28 +17,6 @@ YoutubeSexy.prototype.playVideo = function(videoResult, posterResult, mouseX, mo
   var inVideo = $('#content-page').children().length > 0;
   $("#content-page").empty();
 	$("#content-page").get(0).appendChild($("#youtubePage").get(0));
-
-  handleLeave = (toVideo) => {
-  	this.playing = undefined;
-    $("#content-page").animate({"opacity": 0});
-    $("body").css({"overflow": ""});
-    $("nav").css({"height": "64px"}).animate({"background-color": "#3f51b5"});
-    $("#main-page").removeClass("blurInFrames").addClass("blurOutFrames").animate({"opacity": 1});
-
-    setTimeout(() => {
-    	$(".content").get(0).appendChild($("#youtubePage").get(0));
-      $("#main-page").removeClass("blurOutFrames").css({"opacity": ""});
-      $("#youtubePage").css({"display": "none"});
-      $("#content-page").css({"display": "none", "opacity": 1}).empty();
-    }, 500);
-    $(".top-text").get(0).textContent = "Home";
-
-    handleLeave = undefined;
-
-    if(!toVideo){
-    	//Put video in small window view
-    }
-  };
 
   var vibrant = new Vibrant(thumbnail);
   var swatches = vibrant.swatches();
@@ -136,6 +113,24 @@ YoutubeSexy.prototype.playVideo = function(videoResult, posterResult, mouseX, mo
 
   //Initialize
   $("#youtubeVideoTabs").tabs();
+
+  handleLeave = (onDone) => {
+  	this.playing = undefined;
+    $("#content-page").animate({"opacity": 0});
+    $("body").css({"overflow": ""});
+    $("nav").css({"height": "64px"}).animate({"background-color": "#3f51b5"});
+    $("#main-page").removeClass("blurInFrames").addClass("blurOutFrames").animate({"opacity": 1});
+
+    setTimeout(() => {
+      document.getElementById("pageContent").appendChild($("#youtubePage").get(0));
+      $("#main-page").removeClass("blurOutFrames").css({"opacity": ""});
+      $("#youtubePage").css({"display": "none"});
+      $("#content-page").css({"display": "none", "opacity": 1}).empty();
+
+      onDone();
+    }, 500);
+    $(".top-text").get(0).textContent = "Home";
+  };
 
 }
 

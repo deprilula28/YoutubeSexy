@@ -95,6 +95,7 @@ YTDataAPI.prototype.requestAuth = function(){
             youtubeSexy.loadingPage = true;
             $("#loadingcircle").css({"display": ""});
             $("#main-page").empty();
+            $(".upload-button").css({"display": ""});
 
             youtubeSexy.ytDataAPI.googleAPIGet("https://www.googleapis.com/auth/userinfo.profile", {}, (json) => {
 

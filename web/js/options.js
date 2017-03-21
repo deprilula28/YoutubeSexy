@@ -15,7 +15,21 @@ OptionManager.prototype.load = function(){
 	this.subscriberCountChannelPageUpdateRate = this.getOption("subscriberCountChannelPageUpdateRate", 2000); // 2 Seconds default
 	
 	this.save();
-	
+
+	var subCountUpdateRatePageSlider = document.getElementById("subCountUpdateRate");
+	/*
+	noUiSlider.create(subCountUpdateRatePageSlider, {
+		"start": [this.subscriberCountChannelPageUpdateRate],
+		"connect": false,
+		"range": {
+			'min': 100,
+			'max': 8000
+		}
+	});
+	*/
+
+	$(".modal").modal();
+
 }
 
 OptionManager.prototype.changeOptionInJSON = function(option, newValue){
