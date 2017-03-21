@@ -13,7 +13,7 @@ window.onload = () => {
   youtubeSexy.ytDataAPI.startAPILib();
   
   try{
-  youtubeSexy.options.load();
+   youtubeSexy.options.load();
   }catch(e){
   	console.log(e.stack);
   }
@@ -207,8 +207,12 @@ YoutubeSexy.prototype.showChannelPreview = function(results, element){
     baseCSS);
   $(div).animate(animationCSS, 150, "linear", () => {});
 
-  var banner = this.ui.generateNewElement("img", ["channelBanner"], undefined, div, {"width": "200%"});
-  banner.src = results.brandingSettings.image.bannerImageUrl;
+  var bannerDIV = this.ui.generateNewElement("div", undefined, undefined, div, {"height": "99.05px", "max-height": "99.05px", "min-height": "99.05px"})
+
+  if(results.brandingSettings.image){
+    var banner = this.ui.generateNewElement("img", ["channelBanner"], undefined, bannerDIV, {"width": "200%"});
+    banner.src = results.brandingSettings.image.bannerImageUrl;
+  }
 
   var userImg = this.ui.generateNewElement("img", ["circular", "z-depth-4"], undefined, div,
     {"z-index": "10000", "position": "fixed", "width": "64px", "height": "64px", "left": (x + 118) + "px", "top":
