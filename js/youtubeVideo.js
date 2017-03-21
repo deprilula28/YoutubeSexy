@@ -1,4 +1,4 @@
-
+  
 YoutubeSexy.prototype.playVideo = function(videoResult, posterResult, mouseX, mouseY, thumbnail){
 
   if(this.playing == videoResult.id){

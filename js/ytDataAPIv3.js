@@ -55,7 +55,7 @@ function getURL(redirect){
 function getScope(){
 
 	return "https://www.googleapis.com/auth/yt-analytics.readonly%20https://www.googleapis.com/auth/yt-analytics-monetary.readonly%20https://www.googleapis.com/auth/youtube%20https://www.googleapis.com/auth/youtube.readonly" +
-			"%20https://www.googleapis.com/auth/youtube.upload%20https://www.googleapis.com/auth/youtubepartner";
+			"%20https://www.googleapis.com/auth/youtube.upload%20https://www.googleapis.com/auth/youtubepartner%20https://www.googleapis.com/auth/plus.login";
 
 }
 
@@ -71,22 +71,22 @@ YTDataAPI.prototype.requestAuth = function(){
     try{
       if(win.document.URL.indexOf(redirect) == 0){
           window.clearInterval(pollTimer);
-
+          
           var url = win.document.URL;
           acToken = gup(url, 'access_token');
           tokenType = gup(url, 'token_type');
           expiresIn = gup(url, 'expires_in');
 
           console.log("Received authentication request, verifying token...");
-          Materialize.toast("Received authentication request, verifying token...", 4000);
+          Materialize.toast("Authenticating...", 4000);
           
           win.close();
 
           youtubeSexy.ytDataAPI.verify(acToken, () => {
-            this.authAccessToken = new AuthAccessToken(acToken, tokenType, expiresIn);
-            this.authenticated = true;
+            youtubeSexy.ytDataAPI.authAccessToken = new AuthAccessToken(acToken, tokenType, expiresIn);
+            youtubeSexy.ytDataAPI.authenticated = true;
             console.log("Authenticated!");
-            Materialize.toast("Authenticated successfully, loading main page", 4000);
+            Materialize.toast("Finished authenticating!", 4000);
 
             $("#sidebar").empty();
             
@@ -96,7 +96,11 @@ YTDataAPI.prototype.requestAuth = function(){
             $("#loadingcircle").css({"display": ""});
             $("#main-page").empty();
 
-            this.googleAPIGet("https://www.googleapis.com/youtube/v3/activities", {
+            youtubeSexy.ytDataAPI.googleAPIGet("https://www.googleapis.com/auth/userinfo.profile", {}, (json) => {
+
+            });
+
+            youtubeSexy.ytDataAPI.googleAPIGet("https://www.googleapis.com/youtube/v3/activities", {
               "part": "snippet,statistics",
               "maxResults": 50,
               "home": true
