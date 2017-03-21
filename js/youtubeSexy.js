@@ -259,7 +259,7 @@ YoutubeSexy.prototype.showChannelPage = function(channelId, donotaddbreadcrumb){
   $(".top-text").get(0).textContent = "Loading...";
 
   if(!donotaddbreadcrumb){
-    handleLeave = () => {
+    handleLeave = (onDone) => {
       window.clearInterval(this.activeChannelPage.pollTimer);
       $(".top-text").get(0).textContent = "Home";
       this.activeChannelPage.unload();
@@ -272,9 +272,9 @@ YoutubeSexy.prototype.showChannelPage = function(channelId, donotaddbreadcrumb){
       setTimeout(() => {
         $("#main-page").removeClass("blurOutFrames");
         $("#content-page").css({"display": "none", "opacity": 1}).removeClass("blurInFrames").empty();
+        
+       onDone();
       }, 500);
-      
-      handleLeave = undefined;
     };
   }
 
