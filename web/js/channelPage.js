@@ -153,7 +153,7 @@ YoutubeChannelPage.prototype.createChannelPage = function(){
     }else{
       var scroll = $(".channelPageWrapper").scrollTop();
       var progress = scroll / 260.0;
-      $("#main-page").animate({"opacity": 1});
+      $("#main-page").animate({"opacity": 0.3});
       $(subCountDIV).css({"left": "150px", "top": lerp(300, 57, progress) + "px"});
       $(userSubscriberCount).animate({"font-size": "24px"}).css({"filter": ""});
       $(contentPage).removeClass("blurInFrames").addClass("blurOutFrames").css({"pointer-events": "", "overflow-y": "scroll"});
@@ -166,10 +166,11 @@ YoutubeChannelPage.prototype.createChannelPage = function(){
   };
   $(userSubscriberCount).click(subCountClick);
   
+  //Container
   var container = uiMan.generateNewElement("div", ["container"], undefined, div, undefined);
   var containerRow = uiMan.generateNewElement("div", ["row"], undefined, container, undefined);
   var containerColumn = uiMan.generateNewElement("div", ["col", "s12"], undefined, containerRow, undefined);
-
+  
   var tabsRow = uiMan.generateNewElement("div", ["row"], undefined, informationDiv, undefined);
   var tabsColumn = uiMan.generateNewElement("div", ["col", "s12"], undefined, tabsRow, undefined);
 
