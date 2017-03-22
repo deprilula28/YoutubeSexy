@@ -12,6 +12,11 @@ function YoutubeChannelPage(channelId, response){
 
   this.createChannelPage();
 
+  $(window).resize((event) => {
+    if(this.subscriberCountPanel){
+      $(this.subCountDIV).css({"top": ($(window).height() / 2 - 48) + "px", "left": ($(window).width() / 2 - this.userSubscriberCountA.clientWidth / 2)});
+    }
+  });
   $(".channelPageWrapper").get(0).onscroll = (event) => {
     if(youtubeSexy.activeChannelPage){
       var scroll = $(".channelPageWrapper").scrollTop();
@@ -44,7 +49,7 @@ function YoutubeChannelPage(channelId, response){
 
       var img = this.userImg;
       var name = this.userNameA;
-      var subscribers = this.userSubscriberCountA;
+      var subscribers = this.subCountDIV;
       var informationDiv = this.informationDiv;
 
       var progress = scroll / 260.0;
@@ -121,11 +126,45 @@ YoutubeChannelPage.prototype.createChannelPage = function(){
   var userName = uiMan.generateNewElement("a", ["white-text", "truncate"], chnl.snippet.title,
     div, {"font-size": "24px", "position": "fixed", "z-index": "15000", "left": "150px", "top": "275px"});
 
+  var subCountDIV = uiMan.generateNewElement("div", undefined, undefined,
+    div, {"left": "150px", "font-size": "24px", "position": "fixed", "z-index": "15000", "top": "300px", "cursor": "pointer"});
   var userSubscriberCount = uiMan.generateNewElement("a", ["white-text", "truncate"], prettifyNumber(chnl.statistics.subscriberCount) + " subscribers",
-    div, {"left": "150px", "font-size": "24px", "position": "fixed", "z-index": "15000", "top": "300px"});
+    subCountDIV, {"font-size": "24px", "cursor": "pointer"});
 
   this.userNameA = userName;
   this.userSubscriberCountA = userSubscriberCount;
+  this.subCountDIV = subCountDIV;
+  this.subscriberCountPanel = false;
+
+  //Subscriber count click to go fullscreen
+  var subCountClick = (e) => {
+    this.subscriberCountPanel = !this.subscriberCountPanel;
+
+    if(this.subscriberCountPanel){
+      $(userSubscriberCount).css({"font-size": "72px"});
+      var widthText = userSubscriberCount.clientWidth;
+      $(userSubscriberCount).css({"font-size": "24px"});
+
+      $(userSubscriberCount).animate({"font-size": "72px"}).css({"filter": "blur(0px)"});
+      $(subCountDIV).animate({"top": ($(window).height() / 2 - 48) + "px", "left": ($(window).width() / 2 - widthText / 2)}).css({"pointer-events": ""});
+      $("#main-page").animate({"opacity": 0});
+      $(contentPage).addClass("blurInFrames").css({"pointer-events": "none", "overflow-y": "hidden"});
+      $(".content").get(0).appendChild(subCountDIV);
+    }else{
+      var scroll = $(".channelPageWrapper").scrollTop();
+      var progress = scroll / 260.0;
+      $("#main-page").animate({"opacity": 1});
+      $(subCountDIV).css({"left": "150px", "top": lerp(300, 57, progress) + "px"});
+      $(userSubscriberCount).animate({"font-size": "24px"}).css({"filter": ""});
+      $(contentPage).removeClass("blurInFrames").addClass("blurOutFrames").css({"pointer-events": "", "overflow-y": "scroll"});
+
+      setTimeout(function() {
+        $(contentPage).removeClass("blurOutFrames");
+        contentPage.appendChild(subCountDIV);
+      }, 500);
+    }
+  };
+  $(userSubscriberCount).click(subCountClick);
   
   var container = uiMan.generateNewElement("div", ["container"], undefined, div, undefined);
   var containerRow = uiMan.generateNewElement("div", ["row"], undefined, container, undefined);
