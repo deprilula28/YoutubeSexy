@@ -253,7 +253,10 @@ YoutubeSexy.prototype.showChannelPage = function(channelId, donotaddbreadcrumb){
   
   youtubeSexy.hideChannelPreviews();
   console.log("Loading channel page for channel ID: " + channelId);
-  $("#main-page").addClass("blurInFrames");
+  
+  var backgroundType = this.options.backgroundType;
+  if(backgroundType == "backgroundBlur") $("#main-page").addClass("blurInFrames");
+  
   $("body").css({"overflow": "hidden"});
   $("#content-page").empty();
   $(".top-text").get(0).textContent = "Loading...";
@@ -264,16 +267,16 @@ YoutubeSexy.prototype.showChannelPage = function(channelId, donotaddbreadcrumb){
       $(".top-text").get(0).textContent = "Home";
       this.activeChannelPage.unload();
       this.activeChannelPage = undefined;
-      $("#main-page").removeClass("blurInFrames").addClass("blurOutFrames");
+      if(backgroundType == "backgroundBlur") $("#main-page").removeClass("blurInFrames").addClass("blurOutFrames");
       $("#content-page").animate({"opacity": 0});
       $("body").css({"overflow": ""});
       $("nav").css({"height": "64px"}).animate({"background-color": "#3f51b5"});
 
       setTimeout(() => {
-        $("#main-page").removeClass("blurOutFrames");
+      	if(backgroundType == "backgroundBlur") $("#main-page").removeClass("blurOutFrames");
         $("#content-page").css({"display": "none", "opacity": 1}).removeClass("blurInFrames").empty();
         
-       onDone();
+        onDone();
       }, 500);
     };
   }

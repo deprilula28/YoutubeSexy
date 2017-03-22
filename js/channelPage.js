@@ -88,7 +88,7 @@ YoutubeChannelPage.prototype.createChannelPage = function(){
 
   var uiMan = youtubeSexy.ui;
   var chnl = this.response;
-
+  
   $(".top-text").get(0).textContent = "";
   
   var contentPage = document.getElementById("content-page");
@@ -107,11 +107,23 @@ YoutubeChannelPage.prototype.createChannelPage = function(){
     this.vibrantColor = swatches.DarkVibrant.getHex();
 
     $("nav").animate({"background-color": this.vibrantColor});
-    $(".vibrantColored").animate({"background-color": this.vibrantColor})
+    $(".vibrantColored").animate({"background-color": this.vibrantColor});
+    
+    if(youtubeSexy.options.backgroundType == "thumbnailBlur"){
+    	var overlay = uiMan.generateNewElement("div", ["thumbnailBackgroundOverlay"], undefined, contentPage, undefined)
+    	var canvas = uiMan.generateNewElement("canvas", ["thumbnailBackgroundOverlayCanvas"], undefined, overlay, undefined);
+    	canvas.id = "thumbnailBackgroundOverlayCanvasObj";
+    	banner.id = "thumbnailBackgroundOverlayCanvasImgSrc";
+      stackBlurImage("thumbnailBackgroundOverlayCanvasImgSrc", "thumbnailBackgroundOverlayCanvasObj", 60, 255);
+      var ctx = canvas.getContext("2d");
+      ctx.fillStyle = "rgba(0, 0, 0, 0.6)";
+      ctx.fillRect(0, 0, $(window).height() * 3, $(window).width() * 3);
+      banner.id = "";
+      $(canvas).css({"width": "110%", "height": "120%"});
+    }
   });
 
   this.banner = banner;
-
   var informationRow = uiMan.generateNewElement("div", ["row"], undefined, div, undefined);
   var informationColumn = uiMan.generateNewElement("div", ["col", "s12"], undefined, informationRow, {"padding": "0px"});
   var informationDiv = uiMan.generateNewElement("div", ["vibrantColored"], undefined, informationColumn, {"width": "100%",
@@ -147,17 +159,17 @@ YoutubeChannelPage.prototype.createChannelPage = function(){
 
       $(userSubscriberCount).animate({"font-size": "72px"}).css({"filter": "blur(0px)"});
       $(subCountDIV).animate({"top": ($(window).height() / 2 - 48) + "px", "left": ($(window).width() / 2 - widthText / 2)}).css({"pointer-events": ""});
-      $("#main-page").animate({"opacity": 0});
       $(contentPage).addClass("blurInFrames").css({"pointer-events": "none", "overflow-y": "hidden"});
       $(".content").get(0).appendChild(subCountDIV);
+      $("#main-page").animate({"opacity": 0});
     }else{
       var scroll = $(".channelPageWrapper").scrollTop();
       var progress = scroll / 260.0;
-      $("#main-page").animate({"opacity": 0.3});
       $(subCountDIV).css({"left": "150px", "top": lerp(300, 57, progress) + "px"});
       $(userSubscriberCount).animate({"font-size": "24px"}).css({"filter": ""});
       $(contentPage).removeClass("blurInFrames").addClass("blurOutFrames").css({"pointer-events": "", "overflow-y": "scroll"});
-
+      $("#main-page").animate({"opacity": youtubeSexy.options.backgroundType == "thumbnailBlur" ? 1 : 0.3});
+      
       setTimeout(function() {
         $(contentPage).removeClass("blurOutFrames");
         contentPage.appendChild(subCountDIV);

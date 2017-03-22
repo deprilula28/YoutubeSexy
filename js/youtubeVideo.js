@@ -26,13 +26,20 @@ YoutubeSexy.prototype.playVideo = function(videoResult, posterResult, mouseX, mo
   $(".indicator").css({"background-color": this.vibrantColor});
   $("nav").animate({"background-color": this.vibrantColor});
 
-  thumbnail.id = "youtubeVideoBackgroundOverlayImgSrc";
-  stackBlurImage("youtubeVideoBackgroundOverlayImgSrc", "youtubeVideoBackgroundOverlayCanvasObj", 60, 255);
-  var ctx = document.getElementById("youtubeVideoBackgroundOverlayCanvasObj").getContext("2d");
-  ctx.fillStyle = "rgba(0, 0, 0, 0.6)";
-  ctx.fillRect(0, 0, $(window).height(), $(window).width());
-  thumbnail.id = "";
-  $("#youtubeVideoBackgroundOverlayCanvasObj").css({"width": "110%", "height": "120%"});
+  var backgroundType = youtubeSexy.options.backgroundType;
+  if(backgroundType == "thumbnailBlur"){
+  	$(".thumbnailBackgroundOverlay").css({"display": ""});
+	  thumbnail.id = "thumbnailBackgroundOverlayCanvasImgSrc";
+	  stackBlurImage("thumbnailBackgroundOverlayCanvasImgSrc", "thumbnailBackgroundOverlayCanvasObj", 60, 255);
+	  var ctx = document.getElementById("thumbnailBackgroundOverlayCanvasObj").getContext("2d");
+	  ctx.fillStyle = "rgba(0, 0, 0, 0.6)";
+	  ctx.fillRect(0, 0, $(window).height(), $(window).width());
+	  thumbnail.id = "";
+	  $("#thumbnailBackgroundOverlayCanvasObj").css({"width": "110%", "height": "120%"});
+  }else if(backgroundType == "backgroundBlur"){
+  	$("#main-page").removeClass("blurOutFrames");
+  	$(".thumbnailBackgroundOverlay").css({"display": "none"});
+  }
 
   //Appear animation
   if(mouseX && mouseY){
