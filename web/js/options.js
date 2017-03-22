@@ -13,6 +13,7 @@ OptionManager.prototype.load = function(){
 	this.blackThemed = this.getOption("themeColor", true);
 	this.subscriberCountChannelUpdateRate = this.getOption("subscriberCountChannelUpdateRate", -1); // Never default
 	this.subscriberCountChannelPageUpdateRate = this.getOption("subscriberCountChannelPageUpdateRate", 2000); // 2 Seconds default
+	this.backgroundType = this.getOption("backgroundType", "thumbnailBlur"); // Thumbnail blur default
 	
 	this.save();
 
@@ -42,7 +43,7 @@ OptionManager.prototype.changeOptionInJSON = function(option, newValue){
 
 OptionManager.prototype.save = function(){
 	
-	youtubeSexy.cookies.setCookie("options", this.optionsJSON.toString(), 365);
+	youtubeSexy.cookies.setCookie("options", JSON.stringify(this.optionsJSON), 365);
 	
 }
 
