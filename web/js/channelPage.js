@@ -87,7 +87,6 @@ YoutubeChannelPage.prototype.unload = function(){
 
 YoutubeChannelPage.prototype.createChannelPage = function(){
 
-	youtubeSexy.ui.unloadSearchBar();
   var uiMan = youtubeSexy.ui;
   var chnl = this.response;
   
@@ -145,13 +144,22 @@ YoutubeChannelPage.prototype.createChannelPage = function(){
 
   var subCountDIV = uiMan.generateNewElement("div", undefined, undefined,
     div, {"left": "150px", "font-size": "24px", "position": "fixed", "z-index": "15000", "top": "300px", "cursor": "pointer"});
-  var userSubscriberCount = uiMan.generateNewElement("a", ["white-text", "truncate"], prettifyNumber(chnl.statistics.subscriberCount) + " subscribers",
+  var userSubscriberCount = uiMan.generateNewElement("a", ["white-text", "truncate", "odometer"], undefined,
     subCountDIV, {"font-size": "24px", "cursor": "pointer"});
 
   this.userNameA = userName;
   this.userSubscriberCountA = userSubscriberCount;
   this.subCountDIV = subCountDIV;
   this.subscriberCountPanel = false;
+
+  this.subcountOdometer = new Odometer({
+    "el": userSubscriberCount,
+    "value": chnl.statistics.subscriberCount,
+
+    // Any option (other than auto and selector) can be passed in here
+    format: '(,ddd)',
+    theme: 'minimal'
+  });
 
   //Subscriber count click to go fullscreen
   var subCountClick = (e) => {
@@ -160,9 +168,8 @@ YoutubeChannelPage.prototype.createChannelPage = function(){
     if(this.subscriberCountPanel){
       $(userSubscriberCount).css({"font-size": "72px"});
       var widthText = userSubscriberCount.clientWidth;
-      $(userSubscriberCount).css({"font-size": "24px"});
+      $(userSubscriberCount).css({"font-size": "24px"}).animate({"font-size": "72px"});
 
-      $(userSubscriberCount).animate({"font-size": "72px"}).css({"filter": "blur(0px)"});
       $(subCountDIV).animate({"top": ($(window).height() / 2 - 48) + "px", "left": ($(window).width() / 2 - widthText / 2)}).css({"pointer-events": ""});
       $(contentPage).addClass("blurInFrames").css({"pointer-events": "none"});
       $(".channelPageWrapper").css({"overflow-y": "hidden"});
@@ -320,7 +327,7 @@ YoutubeChannelPage.prototype.callSubUpdate = function(chnl){
 	}, (result) => {
 		for(var channelIndex in result.items){
 			var channel = result.items[channelIndex];
-			this.userSubscriberCountA.textContent = prettifyNumber(channel.statistics.subscriberCount) + " subscribers";
+      this.subcountOdometer.update(channel.statistics.subscriberCount);
   	  break;
 		}
 	});
@@ -357,7 +364,7 @@ YoutubeChannelPage.prototype.loadVideoPage = function(){
     }
 
     if(json.nextPageToken) this.nextPageToken = json.nextPageToken;
-    else if(this.prelaoder) $(this.preloader).remove();
+    else if(this.preloader) $(this.preloader).remove();
 
     youtubeSexy.ytDataAPI.googleAPIGet("https://www.googleapis.com/youtube/v3/videos", {
       "part": "snippet,statistics",
