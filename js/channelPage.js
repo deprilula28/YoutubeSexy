@@ -23,7 +23,6 @@ function YoutubeChannelPage(channelId, response){
       var scroll = $(".channelPageWrapper").scrollTop();
       var offset = (this.preloader.getBoundingClientRect().top - document.body.getBoundingClientRect().top);
 
-
       if(this.preloader && !this.loadingPage && offset < $(window).height()){
         console.log("Loading new page");
         this.loadingPage = true;
@@ -88,6 +87,7 @@ YoutubeChannelPage.prototype.unload = function(){
 
 YoutubeChannelPage.prototype.createChannelPage = function(){
 
+	youtubeSexy.ui.unloadSearchBar();
   var uiMan = youtubeSexy.ui;
   var chnl = this.response;
   
@@ -119,12 +119,12 @@ YoutubeChannelPage.prototype.createChannelPage = function(){
     	var canvas = uiMan.generateNewElement("canvas", ["thumbnailBackgroundOverlayCanvas"], undefined, overlay, undefined);
     	canvas.id = "thumbnailBackgroundOverlayCanvasObj";
     	banner.id = "thumbnailBackgroundOverlayCanvasImgSrc";
-      stackBlurImage("thumbnailBackgroundOverlayCanvasImgSrc", "thumbnailBackgroundOverlayCanvasObj", 60, 255);
+      stackBlurImage("thumbnailBackgroundOverlayCanvasImgSrc", "thumbnailBackgroundOverlayCanvasObj", 20, 255);
       var ctx = canvas.getContext("2d");
       ctx.fillStyle = "rgba(0, 0, 0, 0.6)";
       ctx.fillRect(0, 0, $(window).height() * 3, $(window).width() * 3);
       banner.id = "";
-      $(canvas).css({"width": "110%", "height": "120%"});
+      $(canvas).css({"width": "110%", "height": "110%"});
     }
   });
 
@@ -340,7 +340,6 @@ YoutubeChannelPage.prototype.loadVideoPage = function(){
     "channelId": this.channelId
   };
   if(this.nextPageToken) jsonReq.pageToken = this.nextPageToken;
-  else $(this.preloader).remove();
 
   youtubeSexy.ytDataAPI.googleAPIGet("https://www.googleapis.com/youtube/v3/search", jsonReq, (json) => {
     var items = json.items;
@@ -356,6 +355,9 @@ YoutubeChannelPage.prototype.loadVideoPage = function(){
 
       itemIdInputString = itemIdInputString + item.id.videoId;
     }
+
+    if(json.nextPageToken) this.nextPageToken = json.nextPageToken;
+    else if(this.prelaoder) $(this.preloader).remove();
 
     youtubeSexy.ytDataAPI.googleAPIGet("https://www.googleapis.com/youtube/v3/videos", {
       "part": "snippet,statistics",

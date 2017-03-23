@@ -7,6 +7,7 @@ String.prototype.replaceAll = String.prototype.replaceAll || function(needle, re
 var youtubeSexy;
 
 window.onload = () => {
+  
   $(".button-collapse").sideNav();
 
   youtubeSexy = new YoutubeSexy();
@@ -29,6 +30,8 @@ window.onload = () => {
   });
 
   $("#loadingcircle").initAppear();
+  youtubeSexy.ui.loadSearchButton();
+
 }
 
 function YoutubeSexy(){
