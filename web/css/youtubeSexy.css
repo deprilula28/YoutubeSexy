@@ -180,3 +180,10 @@
     height: 200vw;
   }
 }
+
+.annoyingGithubInvite {
+  position: fixed;
+  z-index: 9999;
+  left: 30vw;
+  top: 30vh;
+}
