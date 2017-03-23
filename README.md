@@ -7,6 +7,9 @@ There is a bunch of functionality missing still, but you can try it out here:<br
 The website version doesn't have the latest features, you can get those by using github's download to ZIP function.<br>
 You can then unzip it and open the web/index.html file with Chrome (From my tests, it doesn't work properly locally with Firefox or Edge).
 
+## Progress
+I made a trello page to track progress, you can find it [here](https://trello.com/b/1oVQUcSW/youtubesexy).
+
 ## Additional Credits
 - [Stack Overflow](https://stackoverflow.com)
 - [Materialize CSS](http://materializecss.com)
