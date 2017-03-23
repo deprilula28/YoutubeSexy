@@ -23,6 +23,7 @@ function YoutubeChannelPage(channelId, response){
       var scroll = $(".channelPageWrapper").scrollTop();
       var offset = (this.preloader.getBoundingClientRect().top - document.body.getBoundingClientRect().top);
 
+
       if(this.preloader && !this.loadingPage && offset < $(window).height()){
         console.log("Loading new page");
         this.loadingPage = true;
@@ -295,6 +296,7 @@ YoutubeChannelPage.prototype.createChannelPage = function(){
 
   var loading = youtubeSexy.ui.createCirclePreloaderDIV("blue", "big");
   videosDIV.appendChild(loading);
+  this.videosDIV = videosDIV;
   this.preloader = loading;
   this.setupPollTimer(chnl);
   
@@ -327,6 +329,10 @@ YoutubeChannelPage.prototype.callSubUpdate = function(chnl){
 
 YoutubeChannelPage.prototype.loadVideoPage = function(){
 
+  if(this.preloader){ 
+    $(".content").get(0).appendChild(this.preloader);
+    $(this.preloader).css({"display": "none"});
+  }
 	this.loadingPage = true;
   var jsonReq = {
     "part": "snippet",
@@ -358,6 +364,11 @@ YoutubeChannelPage.prototype.loadVideoPage = function(){
       for(var videoIndex in result.items){
         var video = result.items[videoIndex];
         this.videoRow.appendChild(youtubeSexy.ui.createFullVideoDIV(video, true));
+      }
+
+      if(this.preloader){
+        this.videosDIV.appendChild(this.preloader);
+        $(this.preloader).css({"display": ""});
       }
       this.loadingPage = false;
     });
