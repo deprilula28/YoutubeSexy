@@ -18,3 +18,4 @@ I made a trello page to track progress, you can find it [here](https://trello.co
 - [Vibrant.js](http://jariz.github.io/vibrant.js/)
 - Well everything JS related uses [jquery](https://jquery.com/), I'll credit it either way
 - [Electron](https://electron.atom.io)
+- [Stack Blur](http://www.quasimondo.com/StackBlurForCanvas/StackBlurDemo.html)
