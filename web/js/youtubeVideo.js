@@ -12,7 +12,7 @@ YoutubeSexy.prototype.playVideo = function(videoResult, posterResult, mouseX, mo
   console.log("Preparing to play video...");
   $("#main-page").removeClass("blurInFrames").removeClass("blurOutFrames");
 
-  $("body").css({"tabsoverflow": "hidden"});
+  $("body").css({"overflow": "hidden"});
 
   var inVideo = $('#content-page').children().length > 0;
   $("#content-page").empty();
@@ -27,6 +27,7 @@ YoutubeSexy.prototype.playVideo = function(videoResult, posterResult, mouseX, mo
   $("nav").animate({"background-color": this.vibrantColor});
 
   var backgroundType = youtubeSexy.options.backgroundType;
+	
   if(backgroundType == "thumbnailBlur"){
   	$(".thumbnailBackgroundOverlay").css({"display": ""});
 	  thumbnail.id = "thumbnailBackgroundOverlayCanvasImgSrc";
@@ -121,6 +122,7 @@ YoutubeSexy.prototype.playVideo = function(videoResult, posterResult, mouseX, mo
   //Initialize
   $("#youtubeVideoTabs").tabs();
 
+	//Handle Leave
   handleLeave = (onDone) => {
   	this.playing = undefined;
     $("#content-page").animate({"opacity": 0});

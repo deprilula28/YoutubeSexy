@@ -74,14 +74,14 @@ UIManager.prototype.getUserIcon = function(channelId, widthShow, commenterData){
       return;
     }
   });
-  
+
   if(commenterData){
   	var tag = commenterData.tag;
-  	
+
   	if(tag === "owner") $(chip).css({"background-color": "#00C0AD"});
   	else if(tag === "featured") $(chip).css({"background-color": "#EC4646"});
   }
-  
+
   return chip;
 
 }
@@ -195,7 +195,7 @@ UIManager.prototype.createFullVideoDIV = function(video, doNotPutChannelChip, ch
       	for(var itemIndex in result.items){
       		var item = result.items[itemIndex];
         	youtubeSexy.playVideo(video, item, e.pageX, e.pageY, img);
-      		
+
       		break;
       	}
       });
@@ -232,7 +232,7 @@ UIManager.prototype.createFullVideoDIV = function(video, doNotPutChannelChip, ch
     	Materialize.toast("Video successfully disliked.", 5000);
     });
   }
-
+	
   $(dislikeChip).click(dislikeClick);
   $(likeChip).click(likeClick);
 
