@@ -32,7 +32,6 @@
 		<script src="js/youtubeUI.js"></script>
 		<script src="js/youtubeSexy.js"></script>
 		<script src="js/youtubeVideo.js"></script>
-		<script src="js/lazyload.js"></script>
 		<script src="js/utils.js"></script>
 		<script src="js/channelPage.js"></script>
 		<script src="js/sidebarPanel.js"></script>
@@ -41,6 +40,7 @@
 		<script src="js/appear.js"></script>
 		<script src="js/blur.js"></script>
 		<script src="js/cookies.js"></script>
+		<script src="js/search.js"></script>
 		
 		<script>
 			(function(i, s, o, g, r, a, m){
@@ -70,15 +70,16 @@
 			<div id="top-bar" class="z-depth-4 navbar-fixed">
 				<nav style="background-color: #3f51b5">
 					<div class="nav-wrapper">
+						<!-- Search Hide -->
 						<!-- Menu Button -->
-						<a class="waves-effect waves-light button-collapse show-on-large" data-activates="sidebar"> 
+						<a class="waves-effect waves-light button-collapse show-on-large search-icon-hide" data-activates="sidebar"> 
 							<i class="material-icons white-text">menu</i>
 						</a> 
 						
-						<a class="top-text" style="text-overflow: ellipsis; white-space: nowrap; width: 100%;">Home</a>
+						<a class="top-text search-icon-hide" style="text-overflow: ellipsis; white-space: nowrap; width: 100%;">Home</a>
 
 						<!-- Right Side of the bar -->
-						<div class="right nav-wrapper-right-align">
+						<div class="right nav-wrapper-right-align search-icon-hide">
 							<!-- Upload Button -->
 							<img style="display: none;"
 								class="upload-button btn-floating btn-flat waves-effect waves-light"
@@ -89,10 +90,23 @@
 								<i class="material-icons white-text">search</i>
 							</a>
 
-							<div id="authenticateButton"
-								class="chip waves-effect waves-light large grey darken-2">
+							<div id="authenticateButton" class="chip waves-effect waves-light large grey darken-2">
 								<img src="img/UserPic.jpg" /> 
 								<a class="white-text" onclick="youtubeSexy.ytDataAPI.requestAuth();">Authenticate</a>
+							</div>
+						</div>
+
+						<!-- Search Show -->
+						<div class="row">
+							<div class="col s12">
+								<div class="row">
+									<form action="" class="search-icon-show">
+										<div class="input-field col s12">
+											<!-- Search Bar -->
+											<input type="text" id="searchInput">
+										</div>
+									</form>
+								</div>
 							</div>
 						</div>
 					</div>

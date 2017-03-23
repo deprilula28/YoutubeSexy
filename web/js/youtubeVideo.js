@@ -6,6 +6,7 @@ YoutubeSexy.prototype.playVideo = function(videoResult, posterResult, mouseX, mo
     return;
   }
 
+	this.ui.unloadSearchBar();
   this.playing = videoResult.id;
   $(".top-text").get(0).textContent = videoResult.snippet.title;
   $("#bigVideoIFrame").get(0).src = "https://www.youtube.com/embed/" + this.playing + "?autoplay=1&enablejsapi=1&theme=light&showinfo=0";
@@ -31,12 +32,12 @@ YoutubeSexy.prototype.playVideo = function(videoResult, posterResult, mouseX, mo
   if(backgroundType == "thumbnailBlur"){
   	$(".thumbnailBackgroundOverlay").css({"display": ""});
 	  thumbnail.id = "thumbnailBackgroundOverlayCanvasImgSrc";
-	  stackBlurImage("thumbnailBackgroundOverlayCanvasImgSrc", "thumbnailBackgroundOverlayCanvasObj", 60, 255);
+	  stackBlurImage("thumbnailBackgroundOverlayCanvasImgSrc", "thumbnailBackgroundOverlayCanvasObj", 20, 255);
 	  var ctx = document.getElementById("thumbnailBackgroundOverlayCanvasObj").getContext("2d");
 	  ctx.fillStyle = "rgba(0, 0, 0, 0.6)";
 	  ctx.fillRect(0, 0, $(window).height(), $(window).width());
 	  thumbnail.id = "";
-	  $("#thumbnailBackgroundOverlayCanvasObj").css({"width": "110%", "height": "120%"});
+	  $("#thumbnailBackgroundOverlayCanvasObj").css({"width": "110%", "height": "110%"});
 		if(doDelete) $(thumbnail).remove();
   }else if(backgroundType == "backgroundBlur"){
   	$("#main-page").removeClass("blurOutFrames");

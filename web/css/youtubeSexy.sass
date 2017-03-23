@@ -1,5 +1,5 @@
 .nav-wrapper
-  margin-left: 20px
+  overflow: hidden
 
 .nav-wrapper-right-align
   margin-right: 20px
@@ -44,12 +44,7 @@
   overflow-y: auto
 
 .blurInFrames
-  -webkit-animation-name: blurIn
-  -webkit-animation-duration: 0.5s
-  -moz-animation-name: blurIn
-  -moz-animation-duration: 0.5s
-  animation-name: blurIn
-  animation-duration: 0.5s
+  animation: blurIn 0.5s linear
   pointer-events: none
   filter: blur(8px)
   -mozfilter: blur(8px)
@@ -77,12 +72,7 @@
 
 
 .blurOutFrames
-  -webkit-animation-name: blurOut
-  -webkit-animation-duration: 0.5s
-  -moz-animation-name: blurOut
-  -moz-animation-duration: 0.5s
-  animation-name: blurOut
-  animation-duration: 0.5s
+  animation: blurOut 0.5s linear
   filter: blur(0px)
   -webkitfilter: blur(0px)
   opacity: 1
@@ -126,12 +116,7 @@
   font-size: 12px
 
 .videoSmallPlayerAnimation
-  -webkit-animation-name: blurOut
-  -webkit-animation-duration: 0.5s
-  -moz-animation-name: blurOut
-  -moz-animation-duration: 0.5s
-  animation-name: blurOut
-  animation-duration: 0.5s
+  animation: blurOut 0.5s linear
 
 .thumbnailBackgroundOverlay
   position: fixed
@@ -147,3 +132,21 @@
   transform: translate(-5%, -5%)
   -webkittransform: translate(-5%, -5%)
   -moztransform: translate(-5%, -5%)
+
+.searchEffectRipple
+  animation: searchEffectWaveRipple 0.3s ease-in
+  background-color: #FF4500
+  opacity: 0.99
+  border-radius: 50%
+  position: relative
+  z-index: -1
+
+@keyframes searchEffectWaveRipple
+  0%
+    transform: translate(0vw, 0vw)
+    width: 0vw
+    height: 0vw
+  100%
+    transform: translate(-100vw, -100vw)
+    width: 200vw
+    height: 200vw
