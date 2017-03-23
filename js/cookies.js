@@ -1,6 +1,28 @@
 function Cookies(){
 
+    if(!this.getCookie("annoyingGithubInviteClosed") || this.getCookie("annoyingGithubInviteClosed") !== "true"){
+        setTimeout(() => {
+            $(".content").addClass("blurInFrames");
+            $(".annoyingGithubInvite").css({"display": ""});
+            youtubeSexy.cookies.setCookie("annoyingGithubInviteClosed", "true", 700);
+            console.log("Annoying github invite displayed.");
+        }, 120000); // 2 Minutes
+        console.log("Displaying annoying github invite in 1 minute!");
+    }else{
+        this.setCookie("annoyingGithubInviteClosed", "true", 700);
+        $(".annoyingGithubInvite").remove();
+    } 
 
+}
+
+function hideAnnoyingGithubInvite(){
+
+    $(".content").removeClass("blurInFrames").addClass("blurOutFrames");
+    $(".annoyingGithubInvite").remove();
+
+    setTimeout(function() {
+        $(".content").removeClass("blurOutFrames");
+    }, 500);
 
 }
 
