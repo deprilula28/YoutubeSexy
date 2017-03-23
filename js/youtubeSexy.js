@@ -248,7 +248,6 @@ var handleLeave = undefined;
 
 YoutubeSexy.prototype.showChannelPage = function(channelId, donotaddbreadcrumb){
 
-	if(handleLeave) handleLeave();
   $("#main-page").removeClass("blurInFrames").removeClass("blurOutFrames");
   
   youtubeSexy.hideChannelPreviews();
@@ -274,7 +273,8 @@ YoutubeSexy.prototype.showChannelPage = function(channelId, donotaddbreadcrumb){
 
       setTimeout(() => {
       	if(backgroundType == "backgroundBlur") $("#main-page").removeClass("blurOutFrames");
-        $("#content-page").css({"display": "none", "opacity": 1}).removeClass("blurInFrames").empty();
+        $("#content-page").css({"display": "none", "opacity": 1}).empty();
+        if(backgroundType == "backgroundBlur") $("#content-page").removeClass("blurInFrames");
         
         onDone();
       }, 500);

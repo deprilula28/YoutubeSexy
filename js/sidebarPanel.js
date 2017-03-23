@@ -13,11 +13,17 @@ UIManager.prototype.loadSidebarPanelNoAuth = function(){
 UIManager.prototype.loadBasics = function(){
 
   this.addButton("Home", () => {
-    $("nav").animate({"background-color": "#3f51b5"});
+    if(handleLeave){
+      handleLeave(() => {
+        console.log("Going home");
+        $("nav").animate({"background-color": "#3f51b5"});
+      });
+      handleLeave = undefined;
+    }else console.log("Already home");
   });
 
   this.addButton("Options", () => {
-    console.log("Opening  options panel");
+    console.log("Opening options panel");
   	$("#optionModal").modal("open");
   });
 
@@ -28,10 +34,7 @@ UIManager.prototype.addButton = function(name, handleClicked){
   var li = this.uiMan.generateNewElement("li", ["bold"], undefined, this.sidebar, undefined);
   var btn = this.uiMan.generateNewElement("a", ["waves-effect", "waves-dark"], name, li, undefined);
   btn.onclick = function(){
-    if(handleLeave){
-      handleLeave(handleClicked);
-      handleLeave = undefined;
-    }else handleClicked();
+    handleClicked();
   }
 
 }

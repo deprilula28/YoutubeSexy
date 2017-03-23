@@ -1,6 +1,6 @@
 
-YoutubeSexy.prototype.playVideo = function(videoResult, posterResult, mouseX, mouseY, thumbnail){
-
+YoutubeSexy.prototype.playVideo = function(videoResult, posterResult, mouseX, mouseY, thumbnail, doDelete){
+	
   if(this.playing == videoResult.id){
     console.log("Attempted to open video already playing!");
     return;
@@ -37,6 +37,7 @@ YoutubeSexy.prototype.playVideo = function(videoResult, posterResult, mouseX, mo
 	  ctx.fillRect(0, 0, $(window).height(), $(window).width());
 	  thumbnail.id = "";
 	  $("#thumbnailBackgroundOverlayCanvasObj").css({"width": "110%", "height": "120%"});
+		if(doDelete) $(thumbnail).remove();
   }else if(backgroundType == "backgroundBlur"){
   	$("#main-page").removeClass("blurOutFrames");
   	$(".thumbnailBackgroundOverlay").css({"display": "none"});
