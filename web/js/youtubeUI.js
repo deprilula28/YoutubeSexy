@@ -185,8 +185,8 @@ UIManager.prototype.createFullVideoDIV = function(video, doNotPutChannelChip, ch
   if(video.statistics.dislikeCount) dislikesText.textContent = simplifyNumber(video.statistics.dislikeCount);
   else dislikesText.textContent = "";
 
-  var vidClick = (e) => {
-  	if(channelResult) youtubeSexy.playVideo(video, channelResult, e.pageX, e.pageY, img);
+  var finalVidClick = (e, doDelete) => {
+    if(channelResult) youtubeSexy.playVideo(video, channelResult, e.pageX, e.pageY, img);
   	else{
       youtubeSexy.ytDataAPI.googleAPIGet("https://www.googleapis.com/youtube/v3/channels", {
       	"part": "brandingSettings",
@@ -194,12 +194,26 @@ UIManager.prototype.createFullVideoDIV = function(video, doNotPutChannelChip, ch
       }, (result) => {
       	for(var itemIndex in result.items){
       		var item = result.items[itemIndex];
-        	youtubeSexy.playVideo(video, item, e.pageX, e.pageY, img);
+        	youtubeSexy.playVideo(video, item, e.pageX, e.pageY, img, doDelete);
 
       		break;
       	}
       });
   	}
+  }
+
+  var vidClick = (e) => {
+
+    if(handleLeave){
+      $(".content").get(0).appendChild(img);
+      $(img).css({"display": "none"});
+
+      handleLeave(() => {
+        finalVidClick(e, true);
+      });
+      handleLeave = undefined;
+    }else finalVidClick(e, false);
+  	
   }
 
   $(imgDiv).click(vidClick);

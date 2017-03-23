@@ -94,6 +94,9 @@ YoutubeChannelPage.prototype.createChannelPage = function(){
   
   var contentPage = document.getElementById("content-page");
   $(div).css({"width": "100%", "height": "100%"});
+  $(contentPage).css({"opacity": 0}).animate({"opacity": 1}, 500, "linear", () => {
+    $(contentPage).css({"opacity": ""});
+  });
 
   var div = uiMan.generateNewElement("div", ["channelPageWrapper"], undefined, contentPage, undefined);
 
