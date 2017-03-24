@@ -25,7 +25,7 @@ UIManager.prototype.loadSearchButton = function(){
         
         setTimeout(function() {
             $(wave).remove();
-            $("nav").css({"background-color": "#FF4500"}); 
+            $("nav").css({"background-color": "#D6D6D6"}); 
         }, 300);
     });
 
@@ -41,7 +41,7 @@ UIManager.prototype.unloadSearchBar = function(){
                 $(".search-icon-show").css({"opacity": "", "display": "none"});
             });
         });
-        $("nav").animate({"background-color": "#3f51b5"}, 600, "linear", () => {});
+        $("nav").animate({"background-color": "#FF4646"}, 600, "linear", () => {});
     }
 
 }
