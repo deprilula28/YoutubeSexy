@@ -129,7 +129,7 @@ YoutubeSexy.prototype.playVideo = function(videoResult, posterResult, mouseX, mo
   	this.playing = undefined;
     $("#content-page").animate({"opacity": 0});
     $("body").css({"overflow": ""});
-    $("nav").css({"height": "64px"}).animate({"background-color": "#3f51b5"});
+    $("nav").css({"height": "64px"}).animate({"background-color": "#d40000"});
     $("#main-page").removeClass("blurInFrames").addClass("blurOutFrames").animate({"opacity": 1});
 
     setTimeout(() => {

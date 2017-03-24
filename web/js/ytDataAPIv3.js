@@ -146,7 +146,7 @@ YTDataAPI.prototype.verify = function(token, handleSuccess){
 
 YTDataAPI.prototype.googleAPIGet = function(path, params, completeHandler){
 
-  var url = path + (this.authAccessToken ? "?access_token=" + this.authAccessToken : "?key=" + API_KEY);
+  var url = path + "?key=" + API_KEY + (this.authAccessToken ? "&access_token=" + this.authAccessToken : "");
 
   jQuery.each(params, (paramName, param) => url = url + "&" + paramName + "=" + (param + ""));
 

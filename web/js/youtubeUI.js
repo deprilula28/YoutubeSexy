@@ -80,6 +80,8 @@ UIManager.prototype.getUserIcon = function(channelId, widthShow, commenterData){
 
   	if(tag === "owner") $(chip).css({"background-color": "#00C0AD"});
   	else if(tag === "featured") $(chip).css({"background-color": "#EC4646"});
+
+    console.log(tag);
   }
 
   return chip;
@@ -136,18 +138,21 @@ UIManager.prototype.createFullVideoDIV = function(video, doNotPutChannelChip, ch
 
   var imgDiv = this.generateNewElement("div", undefined, undefined, column, {"width": "214px", "height": "120px"});
   var img = this.generateNewElement("img", ["center-align"], undefined, imgDiv,
-    {"width": "100%", "height": "100%", "cursor": "pointer"});
+    {"width": "100%", "height": "100%", "cursor": "pointer", "display": "none"});
+
+  var preloader = this.generateNewElement("div", ["bubblesAnimation"], undefined, imgDiv, undefined);
+  for(var i = 0; i < 5; i ++) this.generateNewElement("span", undefined, undefined, preloader, undefined);
 
   var rowVideoName = this.generateNewElement("div", ["row"], undefined, column, {"margin-bottom": "0px"});
   var columnVideoName = this.generateNewElement("div", ["col", "s12"], undefined, rowVideoName, undefined);
   var videoNameTextComp = this.generateNewElement("a", ["videoNameTextComponent", "truncate", this.darkThemed ? "white-text"
-    : "black-text"], "Loading...", columnVideoName, undefined);
+    : "black-text"], video.snippet.title, columnVideoName, undefined);
 
   //Views
   var rowVideoViews = this.generateNewElement("div", ["row"], undefined, column, {"margin-bottom": "0px"});
   var columnViews = this.generateNewElement("div", ["col", "s6"], undefined, rowVideoViews, {"padding-right": "0px"});
   var viewsTextComp = this.generateNewElement("a", ["videoNameTextComponent", "truncate", this.darkThemed ? "white-text"
-  : "black-text"], "Loading...", columnViews, {"font-size": "10px"});
+  : "black-text"], prettifyNumber(video.statistics.viewCount) + " views", columnViews, {"font-size": "10px"});
 
   //Like/Dislike
   var rowVideoInfo = this.generateNewElement("div", ["row"], undefined, column, {"margin-bottom": "10px"});
@@ -156,14 +161,16 @@ UIManager.prototype.createFullVideoDIV = function(video, doNotPutChannelChip, ch
     columnLike, {"margin": "0px"});
   var likeImg = this.generateNewElement("img", undefined, undefined, likeChip, {"margin-right": "0px"});
   likeImg.src = "img/like.png";
-  var likesText = this.generateNewElement("a", ["black-text", "truncate"], "0", likeChip, undefined)
+  var likesText = this.generateNewElement("a", ["black-text", "truncate"], video.statistics.likeCount ? simplifyNumber(video.statistics.likeCount) :
+    "", likeChip, undefined)
 
   var columnDislike = this.generateNewElement("div", ["col", "s4"], undefined, rowVideoInfo, {"padding": "0px"});
   var dislikeChip = this.generateNewElement("div", ["chip", "small", "waves-effect", "waves-dark"], undefined,
     columnDislike, {"margin": "0px"});
   var dislikeImg  = this.generateNewElement("img", undefined, undefined, dislikeChip, {"margin-right": "0px"});
   dislikeImg.src = "img/dislike.png";
-  var dislikesText = this.generateNewElement("a", ["black-text", "truncate"], "0", dislikeChip, undefined)
+  var dislikesText = this.generateNewElement("a", ["black-text", "truncate"], video.statistics.dislikeCount ? simplifyNumber(video.statistics.dislikeCount) :
+    "", dislikeChip, undefined)
 
   //User Icon
   var rowUserIcon = this.generateNewElement("div", ["row"], undefined, column, {"margin-bottom": "20px"});
@@ -174,16 +181,15 @@ UIManager.prototype.createFullVideoDIV = function(video, doNotPutChannelChip, ch
     columnUserIcon.appendChild(userIcon);
   }
 
+  $(img).load(() => {
+    $(preloader).remove();
+    $(img).css({"display" : "", "opacity": 0}).animate({"opacity": 1}, 100, "linear", () => { 
+      $(preloader).remove();
+      $(img).css({"opacity": ""}) 
+    });
+  });
   img.crossOrigin = "Anonymous";
   img.src = "https://crossorigin.me/" + video.snippet.thumbnails.high.url;
-
-  videoNameTextComp.textContent = video.snippet.title;
-
-  viewsTextComp.textContent = simplifyNumber(video.statistics.viewCount) + " views";
-  if(video.statistics.likeCount) likesText.textContent = simplifyNumber(video.statistics.likeCount);
-  else likesText.textContent = "";
-  if(video.statistics.dislikeCount) dislikesText.textContent = simplifyNumber(video.statistics.dislikeCount);
-  else dislikesText.textContent = "";
 
   var finalVidClick = (e, doDelete) => {
     if(channelResult) youtubeSexy.playVideo(video, channelResult, e.pageX, e.pageY, img);
