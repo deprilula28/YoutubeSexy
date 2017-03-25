@@ -1,17 +1,54 @@
 
-YoutubeSexy.prototype.playVideo = function(videoResult, posterResult, mouseX, mouseY, thumbnail, doDelete){
+YoutubeSexy.prototype.playVideo = function(videoResult, posterResult, mouseX, mouseY, thumbnail, doDelete, animation){
 	
   if(this.playing == videoResult.id){
     console.log("Attempted to open video already playing!");
     return;
   }
-
+  
 	this.ui.unloadSearchBar();
   this.playing = videoResult.id;
   $(".top-text").get(0).textContent = videoResult.snippet.title;
   $("#bigVideoIFrame").get(0).src = "https://www.youtube.com/embed/" + this.playing + "?autoplay=1&enablejsapi=1&theme=light&showinfo=0";
   console.log("Preparing to play video...");
   $("#main-page").removeClass("blurInFrames").removeClass("blurOutFrames");
+  
+  if(youtubeSexy.ui.displayingSmallVideo){
+		youtubeSexy.ui.displayingSmallVideo = false;
+  	$("#bigVideoIFrameContainer").get(0).appendChild($("#bigVideoIFrame").css({"height": "100%"}).get(0));
+  	$(".smallVideoPlayerWindowWrapper").removeClass("filled").css({"display": "none"});
+  }
+
+	//Handle Leave
+  handleLeave = (onDone) => {
+  	this.playing = undefined;
+		var videoIFrame = $("#bigVideoIFrame").css({"height": "90%"}).get(0);
+		$(".smallVideoPlayerWindowWrapper").addClass("filled").css({"width": videoIFrame.clientWidth, "height": videoIFrame.clientHeight, "top": "64px", 
+			"left": "0px", "display": "block"}).get(0).appendChild(videoIFrame);
+		$(".smallVideoPlayerTopBar").css({"background-color": this.vibrantColor});
+		$(".smallVideoPlayerTopBarTitle").text(videoResult.snippet.title);
+
+		youtubeSexy.ui.displayingSmallVideo = true;
+		youtubeSexy.ui.animateVideoIFrameSizing();
+
+    $("#content-page").animate({"opacity": 0});
+    $("body").css({"overflow": ""});
+    $("nav").css({"height": "64px"}).animate({"background-color": "#d40000"});
+		if(backgroundType == "backgroundBlur") $("#main-page").removeClass("blurInFrames").addClass("blurOutFrames").animate({"opacity": 1});
+		else $("#main-page").animate({"opacity": 1});
+    
+    setTimeout(() => {
+      document.getElementById("pageContent").appendChild($("#youtubePage").get(0));
+      if(backgroundType == "backgroundBlur") $("#main-page").removeClass("blurOutFrames").css({"opacity": ""});
+      else $("#main-page").css({"opacity": ""});
+      $("#youtubePage").css({"display": "none"});
+      $("#content-page").css({"display": "none", "opacity": 1}).empty();
+
+      onDone();
+    }, 500);
+
+    $(".top-text").get(0).textContent = "Home";
+  };
 
   $("body").css({"overflow": "hidden"});
 
@@ -48,7 +85,9 @@ YoutubeSexy.prototype.playVideo = function(videoResult, posterResult, mouseX, mo
   if(mouseX && mouseY){
     $("#content-page").css({"opacity": 0, "display": "block"}).animate({"opacity": 1});
     $("#youtubePage").css({"display": "block"});
-    $("#main-page").addClass("blurInFrames").animate({"opacity": 0});
+		
+		if(backgroundType == "backgroundBlur") $("#main-page").addClass("blurInFrames");
+		else $("#main-page").animate({"opacity": 0});
   }
 
   //Content page filing
@@ -124,30 +163,11 @@ YoutubeSexy.prototype.playVideo = function(videoResult, posterResult, mouseX, mo
   //Initialize
   $("#youtubeVideoTabs").tabs();
 
-	//Handle Leave
-  handleLeave = (onDone) => {
-  	this.playing = undefined;
-    $("#content-page").animate({"opacity": 0});
-    $("body").css({"overflow": ""});
-    $("nav").css({"height": "64px"}).animate({"background-color": "#d40000"});
-    $("#main-page").removeClass("blurInFrames").addClass("blurOutFrames").animate({"opacity": 1});
-
-    setTimeout(() => {
-      document.getElementById("pageContent").appendChild($("#youtubePage").get(0));
-      $("#main-page").removeClass("blurOutFrames").css({"opacity": ""});
-      $("#youtubePage").css({"display": "none"});
-      $("#content-page").css({"display": "none", "opacity": 1}).empty();
-
-      onDone();
-    }, 500);
-    $(".top-text").get(0).textContent = "Home";
-  };
-
 }
 
 YoutubeSexy.prototype.loadCommentSection = function(videoId, videoResult, posterResult, commentCount){
 
-	$(".commentAmountTitle").text("Amount of comments: " + commentCount);
+	$(".commentAmountTitle").text("Amount of comments: " + prettifyNumber(commentCount));
 	var commentSectionDiv = $("#commentSection").get(0);
 
   var authVerify = () => {

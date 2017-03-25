@@ -31,6 +31,7 @@ window.onload = () => {
 
   $("#loadingcircle").initAppear();
   youtubeSexy.ui.loadSearchButton();
+  youtubeSexy.ui.setupListeners();
 
 }
 
@@ -119,16 +120,13 @@ YoutubeSexy.prototype.loadMainMenuPage = function(activitiesResponse){
     var rowVideos = document.createElement("div");
     $(rowVideos).addClass("row");
     document.getElementById("main-page").appendChild(rowVideos);
-    var untilAdd = 4;
 
+    var delay = 0.0;
     var items = activitiesResponse.items;
     for(var itemIndex in items){
       var item = items[itemIndex];
-      rowVideos.appendChild(this.ui.createFullVideoDIV(item));
-      untilAdd --;
-      if(untilAdd <= 0){
-        untilAdd = 4;
-      }
+      rowVideos.appendChild(this.ui.createFullVideoDIV(item, false, undefined, delay));
+      delay += 0.05;
     }
   }
 
@@ -144,6 +142,7 @@ $(window).resize((event) => {
 
   $("#tabOverlayColumn").css({"height": ($(window).height() - 50) + "px"});
   $("#bigVideoIFrameContainer").css({"height": ($(window).height() - 200) + "px"});
+  youtubeSexy.ui.resizeIFrame();
   
 });
 
