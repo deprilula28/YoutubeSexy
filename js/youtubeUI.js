@@ -10,7 +10,7 @@ UIManager.prototype.loadFeaturedPage = function(){
 
     var rowTitle = document.createElement("div");
     $(rowTitle).addClass("row");
-    $(rowTitle).css({"margin-bottom": "0px"});
+    $(rowTitle).css({"margin-bottom": "0px", "opacity": 0});
     div.appendChild(rowTitle);
 
     var columnTitle = document.createElement("div");
@@ -24,11 +24,24 @@ UIManager.prototype.loadFeaturedPage = function(){
     columnTitle.appendChild(h4);
 
     var a = document.createElement("a");
-    $(a).addClass("videoNameTextComponent").addClass(youtubeSexy.ui.darkThemed ? "white-text" : "black-text");
+    $(a).addClass("videoNameTextComponent").addClass(youtubeSexy.ui.darkThemed ? "white-text" : "black-text").css({"opacity": 0});
     a.textContent = "Authenticate to view videos recommended for you.";
     div.appendChild(a);
 
-    youtubeSexy.loadMainMenuPage(json);
+    var delay = youtubeSexy.loadMainMenuPage(json);
+    setTimeout(function(){
+      $(rowTitle).css({"animation": "mainMenuAppearItem 0.6s ease-out"});
+      $(a).css({"animation": "mainMenuAppearItem 0.4s ease-out"});
+
+      setTimeout(() => {
+        $(a).css({"opacity": ""});
+      }, 400);
+
+      setTimeout(() => {
+        $(rowTitle).css({"opacity": ""});
+      }, 600);
+    }, Math.floor((delay / 2) * 1000));
+    
     youtubeSexy.loadingPage = false;
   });
 
@@ -133,9 +146,14 @@ UIManager.prototype.createVideoListDIV = function(title, items, delay){
 UIManager.prototype.createFullVideoDIV = function(video, doNotPutChannelChip, channelResult, delay){
 
   var column = this.generateNewElement("div", ["col", "s12", "m6", "l4"], undefined, undefined, {"height": "240px", "max-height": "240px", "width": "214px", "max-width": "214px", "overflow": "none",
-    "margin-right": "20px"});
+    "margin-right": "20px", "opacity": "0"});
 
-  if(delay) $(column).css({"animation": "mainMenuAppearItem 1s ease-out " + delay + "s"});
+  if(delay){
+    $(column).css({"animation": "mainMenuAppearItem 1s ease-out " + delay + "s"});
+    setTimeout(function() {
+      $(column).css({"opacity": ""});
+    }, 1000);
+  }else $(column).css({"opacity": ""});
 
   var imgDiv = this.generateNewElement("div", undefined, undefined, column, {"width": "214px", "height": "120px"});
   var img = this.generateNewElement("img", ["center-align"], undefined, imgDiv,
