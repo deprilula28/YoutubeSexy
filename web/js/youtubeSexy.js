@@ -31,7 +31,6 @@ window.onload = () => {
 
   $("#loadingcircle").initAppear();
   youtubeSexy.ui.loadSearchButton();
-  youtubeSexy.ui.setupListeners();
 
 }
 
@@ -128,6 +127,8 @@ YoutubeSexy.prototype.loadMainMenuPage = function(activitiesResponse){
       rowVideos.appendChild(this.ui.createFullVideoDIV(item, false, undefined, delay));
       delay += 0.05;
     }
+
+    return delay;
   }
 
 }
