@@ -88,7 +88,7 @@ UIManager.prototype.getUserIcon = function(channelId, widthShow, commenterData){
 
 }
 
-UIManager.prototype.createVideoListDIV = function(title, items){
+UIManager.prototype.createVideoListDIV = function(title, items, delay){
 
   var curi = 0;
   var mainPage = document.getElementById("main-page");
@@ -98,8 +98,7 @@ UIManager.prototype.createVideoListDIV = function(title, items){
   $(div).addClass("mainPageSection");
 
   var rowTitle = document.createElement("div");
-  $(rowTitle).addClass("row");
-  $(rowTitle).css({"margin-bottom": "0px"});
+  $(rowTitle).css({"margin-bottom": "0px", "animation": "mainMenuAppearItem 0.3s ease-in " + delay});
   div.appendChild(rowTitle);
 
   var columnTitle = document.createElement("div");
@@ -131,10 +130,12 @@ UIManager.prototype.createVideoListDIV = function(title, items){
 
 }
 
-UIManager.prototype.createFullVideoDIV = function(video, doNotPutChannelChip, channelResult){
+UIManager.prototype.createFullVideoDIV = function(video, doNotPutChannelChip, channelResult, delay){
 
   var column = this.generateNewElement("div", ["col", "s12", "m6", "l4"], undefined, undefined, {"height": "240px", "max-height": "240px", "width": "214px", "max-width": "214px", "overflow": "none",
     "margin-right": "20px"});
+
+  if(delay) $(column).css({"animation": "mainMenuAppearItem 1s ease-out " + delay + "s"});
 
   var imgDiv = this.generateNewElement("div", undefined, undefined, column, {"width": "214px", "height": "120px"});
   var img = this.generateNewElement("img", ["center-align"], undefined, imgDiv,
@@ -192,7 +193,7 @@ UIManager.prototype.createFullVideoDIV = function(video, doNotPutChannelChip, ch
   img.src = "https://crossorigin.me/" + video.snippet.thumbnails.high.url;
 
   var finalVidClick = (e, doDelete) => {
-    if(channelResult) youtubeSexy.playVideo(video, channelResult, e.pageX, e.pageY, img);
+    if(channelResult) youtubeSexy.playVideo(video, channelResult, e.pageX, e.pageY, img, undefined, "fade");
   	else{
       youtubeSexy.ytDataAPI.googleAPIGet("https://www.googleapis.com/youtube/v3/channels", {
       	"part": "brandingSettings",
@@ -200,7 +201,7 @@ UIManager.prototype.createFullVideoDIV = function(video, doNotPutChannelChip, ch
       }, (result) => {
       	for(var itemIndex in result.items){
       		var item = result.items[itemIndex];
-        	youtubeSexy.playVideo(video, item, e.pageX, e.pageY, img, doDelete);
+        	youtubeSexy.playVideo(video, item, e.pageX, e.pageY, img, doDelete, doDelete ? "radial-appearence" : "fade");
 
       		break;
       	}

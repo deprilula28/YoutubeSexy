@@ -11,7 +11,6 @@ OptionManager.prototype.load = function(){
 	this.optionsJSON = options;
 	
 	this.blackThemed = this.getOption("themeColor", true);
-	this.subscriberCountChannelUpdateRate = this.getOption("subscriberCountChannelUpdateRate", -1); // Never default
 	this.subscriberCountChannelPageUpdateRate = this.getOption("subscriberCountChannelPageUpdateRate", 2000); // 2 Seconds default
 	this.backgroundType = this.getOption("backgroundType", "thumbnailBlur"); // Thumbnail blur default
 	
@@ -49,7 +48,7 @@ OptionManager.prototype.save = function(){
 
 OptionManager.prototype.getOption = function(name, fallback){
 	
-	if(this.optionsJSON && this.optionsJSON[name]) return json.name;
+	if(this.optionsJSON && this.optionsJSON[name]) return this.optionsJSON[name];
 	else{
 		this.optionsJSON[name] = fallback;
 		return fallback;
