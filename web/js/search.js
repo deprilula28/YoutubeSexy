@@ -12,7 +12,7 @@ UIManager.prototype.loadSearchButton = function(){
         var searchButtonRect = searchButton.getBoundingClientRect();
         var wave = this.generateNewElement("div", ["searchEffectRipple"], undefined, navWrapper, {
             "left": (searchButtonRect.left + e.pageX) + "px",
-            "top": (-150 + (e.pageY - $(body).scrollTop() - searchButtonRect.top)) + "px"
+            "top": (-150 + (e.pageY - $(document.body).scrollTop() - searchButtonRect.top)) + "px"
         });
                          
         $(".search-icon-hide").css({"opacity": 1}).animate({"opacity": 0}, 300, "linear", () => {

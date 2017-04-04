@@ -2,7 +2,7 @@ function Cookies(){
 
     if(!this.getCookie("annoyingGithubInviteClosed") || this.getCookie("annoyingGithubInviteClosed") !== "true"){
         setTimeout(() => {
-            $(".content").addClass("blurInFrames");
+            $(".content").addClass("blurOutFrames");
             $(".annoyingGithubInvite").css({"display": ""});
             youtubeSexy.cookies.setCookie("annoyingGithubInviteClosed", "true", 700);
             console.log("Annoying github invite displayed.");

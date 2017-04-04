@@ -67,6 +67,7 @@
 .channelPageWrapper {
   overflow-y: scroll;
   overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
   width: 100%;
   height: 100%;
 }
@@ -118,6 +119,7 @@
 
 .popupScrollableElement {
   overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
 }
 
 .placeholder-breadcrumb {
