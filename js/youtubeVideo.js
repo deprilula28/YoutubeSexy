@@ -21,6 +21,7 @@ YoutubeSexy.prototype.playVideo = function(videoResult, posterResult, mouseX, mo
 
 	//Handle Leave
   handleLeave = (onDone) => {
+		$(".text-change").removeClass("black-text").addClass("white-text");
   	this.playing = undefined;
 		var videoIFrame = $("#bigVideoIFrame").css({"height": "90%"}).get(0);
 		$(".smallVideoPlayerWindowWrapper").addClass("filled").css({"width": videoIFrame.clientWidth, "height": videoIFrame.clientHeight, "top": "64px", 
@@ -33,7 +34,9 @@ YoutubeSexy.prototype.playVideo = function(videoResult, posterResult, mouseX, mo
 
     $("#content-page").animate({"opacity": 0});
     $("body").css({"overflow": ""});
-    $("nav").css({"height": "64px"}).animate({"background-color": "#d40000"});
+    $("nav").css({"height": "64px"}).animate({"background-color": "#d40000"}, 100, "linear", () => {
+			$("nav").css({"background-color": "#d40000"});
+		});
 		if(backgroundType == "backgroundBlur") $("#main-page").removeClass("blurInFrames").addClass("blurOutFrames").animate({"opacity": 1});
 		else $("#main-page").animate({"opacity": 1});
     
@@ -58,7 +61,8 @@ YoutubeSexy.prototype.playVideo = function(videoResult, posterResult, mouseX, mo
 
   var vibrant = new Vibrant(thumbnail);
   var swatches = vibrant.swatches();
-  this.vibrantColor = swatches.DarkVibrant.getHex();
+  this.vibrantColor = swatches.Vibrant.getHex();
+	$(".text-change").removeClass("white-text").addClass("black-text");
 
   $(".tab a").css({"color": this.vibrantColor});
   $(".indicator").css({"background-color": this.vibrantColor});
@@ -187,7 +191,6 @@ YoutubeSexy.prototype.loadCommentSection = function(videoId, videoResult, poster
 		for(var itemIndex in result.items){
 			//Basics
 			var item = result.items[itemIndex];
-
 			var commentRow = this.ui.generateNewElement("div", ["row"], undefined, commentSectionDiv, {"margin-bottom": "4px"});
 			var commentColumn = this.ui.generateNewElement("div", ["col", "s12"], undefined, commentRow, undefined);
 
@@ -201,7 +204,7 @@ YoutubeSexy.prototype.loadCommentSection = function(videoId, videoResult, poster
 			//Comment Author
 			var commenterRow = this.ui.generateNewElement("div", ["row"], undefined, commentColumn, {"margin-bottom": "2px"});
 			var commenterColumn = this.ui.generateNewElement("div", ["col", "s12"], undefined, commenterRow, undefined);
-			var commenterChip = this.ui.getUserIcon(item.snippet.topLevelComment.snippet.authorChannelId.value, "100%");
+			var commenterChip = this.ui.getUserIcon(item.snippet.topLevelComment.snippet.authorChannelId.value, "100%", commenterData);
 			commenterColumn.appendChild(commenterChip);
 
 			//Content
@@ -212,44 +215,44 @@ YoutubeSexy.prototype.loadCommentSection = function(videoId, videoResult, poster
 			//Like & Dislike Buttons
 			var rateRow = this.ui.generateNewElement("div", ["row"], undefined, commentColumn, {"margin-bottom": "2px"});
 			var columnLike = this.ui.generateNewElement("div", ["col", "s6"], undefined, rateRow, {"padding-right": "0px"});
-		  var likeChip = this.ui.generateNewElement("div", ["chip", "small", "waves-effect", "waves-dark"], undefined,
-		    columnLike, {"margin": "0px"});
-		  var likeImg = this.ui.generateNewElement("img", undefined, undefined, likeChip, {"margin-right": "0px"});
-		  likeImg.src = "img/like.png";
-		  var likesText = this.ui.generateNewElement("a", ["black-text", "truncate"], item.snippet.topLevelComment.likeCount ? prettifyNumber(item.snippet.topLevelComment.likeCount)
-		  		: "0", likeChip, undefined)
+			var likeChip = this.ui.generateNewElement("div", ["chip", "small", "waves-effect", "waves-dark"], undefined,
+				columnLike, {"margin": "0px"});
+			var likeImg = this.ui.generateNewElement("img", undefined, undefined, likeChip, {"margin-right": "0px"});
+			likeImg.src = "img/like.png";
+			var likesText = this.ui.generateNewElement("a", ["black-text", "truncate"], item.snippet.topLevelComment.snippet.likeCount ? 
+				prettifyNumber(item.snippet.topLevelComment.snippet.likeCount) : "", likeChip, undefined)
 
-		  var columnDislike = this.ui.generateNewElement("div", ["col", "s4"], undefined, rateRow, {"padding": "0px"});
-		  var dislikeChip = this.ui.generateNewElement("div", ["chip", "small", "waves-effect", "waves-dark"], undefined,
-		    columnDislike, {"margin": "0px"});
-		  var dislikeImg  = this.ui.generateNewElement("img", undefined, undefined, dislikeChip, {"margin-right": "0px"});
-		  dislikeImg.src = "img/dislike.png";
+			var columnDislike = this.ui.generateNewElement("div", ["col", "s4"], undefined, rateRow, {"padding": "0px"});
+			var dislikeChip = this.ui.generateNewElement("div", ["chip", "small", "waves-effect", "waves-dark"], undefined,
+				columnDislike, {"margin": "0px"});
+			var dislikeImg  = this.ui.generateNewElement("img", undefined, undefined, dislikeChip, {"margin-right": "0px"});
+			dislikeImg.src = "img/dislike.png";
 
-		  //Interactables
-		  var likeClick = () => {
-		    if(!authVerify()) return;
-		    youtubeSexy.ytDataAPI.googleAPIGet("https://www.googleapis.com/youtube/v3/videos/rate", {
-		      "id": video.snippet.id,
-		      "rating": "like"
-		    }, (result) => {
-			    Materialize.toast("Video successfully liked.", 5000);
-		    });
-		  }
+			//Interactables
+			var likeClick = () => {
+				if(!authVerify()) return;
+				youtubeSexy.ytDataAPI.googleAPIGet("https://www.googleapis.com/youtube/v3/videos/rate", {
+					"id": video.snippet.id,
+					"rating": "like"
+				}, (result) => {
+					Materialize.toast("Video successfully liked.", 5000);
+				});
+			}
 
-		  var dislikeClick = () => {
-		    if(!authVerify()) return;
-		    youtubeSexy.ytDataAPI.googleAPIGet("https://www.googleapis.com/youtube/v3/videos/rate", {
-		      "id": video.snippet.id,
-		      "rating": "dislike"
-		    }, (result) => {
-		    	Materialize.toast("Video successfully disliked.", 5000);
-		    });
-		  }
+			var dislikeClick = () => {
+				if(!authVerify()) return;
+				youtubeSexy.ytDataAPI.googleAPIGet("https://www.googleapis.com/youtube/v3/videos/rate", {
+					"id": video.snippet.id,
+					"rating": "dislike"
+				}, (result) => {
+					Materialize.toast("Video successfully disliked.", 5000);
+				});
+			}
 
-		  $(dislikeChip).click(dislikeClick);
-		  $(likeChip).click(likeClick);
+			$(dislikeChip).click(dislikeClick);
+			$(likeChip).click(likeClick);
 
-		  //Comment separator
+			//Comment separator
 			var div = this.ui.generateNewElement("div", ["commentSeparator"], undefined, commentSectionDiv, undefined);
 		}
 	});

@@ -273,7 +273,9 @@ YoutubeSexy.prototype.showChannelPage = function(channelId, donotaddbreadcrumb){
       if(backgroundType == "backgroundBlur") $("#main-page").removeClass("blurInFrames").addClass("blurOutFrames");
       $("#content-page").animate({"opacity": 0});
       $("body").css({"overflow": ""});
-      $("nav").css({"height": "64px"}).animate({"background-color": "#d40000"});
+      $("nav").css({"height": "64px"}).animate({"background-color": "#d40000"}, 100, "linear", () => {
+        $("nav").css({"background-color": "#d40000"});
+      });
 
       setTimeout(() => {
       	if(backgroundType == "backgroundBlur") $("#main-page").removeClass("blurOutFrames");
