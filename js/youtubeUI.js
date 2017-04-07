@@ -171,7 +171,7 @@ UIManager.prototype.createFullVideoDIV = function(video, doNotPutChannelChip, ch
   var rowVideoViews = this.generateNewElement("div", ["row"], undefined, column, {"margin-bottom": "0px"});
   var columnViews = this.generateNewElement("div", ["col", "s6"], undefined, rowVideoViews, {"padding-right": "0px"});
   var viewsTextComp = this.generateNewElement("a", ["videoNameTextComponent", "truncate", this.darkThemed ? "white-text"
-  : "black-text"], prettifyNumber(video.statistics.viewCount) + " views", columnViews, {"font-size": "10px"});
+  : "black-text"], video.statistics && video.statistics.viewCount ? prettifyNumber(video.statistics.viewCount) + " views" : "Unknown", columnViews, {"font-size": "10px"});
 
   //Like/Dislike
   var rowVideoInfo = this.generateNewElement("div", ["row"], undefined, column, {"margin-bottom": "10px"});
@@ -180,7 +180,7 @@ UIManager.prototype.createFullVideoDIV = function(video, doNotPutChannelChip, ch
     columnLike, {"margin": "0px"});
   var likeImg = this.generateNewElement("img", undefined, undefined, likeChip, {"margin-right": "0px"});
   likeImg.src = "img/like.png";
-  var likesText = this.generateNewElement("a", ["black-text", "truncate"], video.statistics.likeCount ? simplifyNumber(video.statistics.likeCount) :
+  var likesText = this.generateNewElement("a", ["black-text", "truncate"], video.statistics && video.statistics.likeCount ? simplifyNumber(video.statistics.likeCount) :
     "", likeChip, undefined)
 
   var columnDislike = this.generateNewElement("div", ["col", "s4"], undefined, rowVideoInfo, {"padding": "0px"});
@@ -188,7 +188,7 @@ UIManager.prototype.createFullVideoDIV = function(video, doNotPutChannelChip, ch
     columnDislike, {"margin": "0px"});
   var dislikeImg  = this.generateNewElement("img", undefined, undefined, dislikeChip, {"margin-right": "0px"});
   dislikeImg.src = "img/dislike.png";
-  var dislikesText = this.generateNewElement("a", ["black-text", "truncate"], video.statistics.dislikeCount ? simplifyNumber(video.statistics.dislikeCount) :
+  var dislikesText = this.generateNewElement("a", ["black-text", "truncate"], video.statistics && video.statistics.dislikeCount ? simplifyNumber(video.statistics.dislikeCount) :
     "", dislikeChip, undefined)
 
   //User Icon

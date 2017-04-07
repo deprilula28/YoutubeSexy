@@ -58,7 +58,7 @@ UIManager.prototype.generateNewElement = function(type, classes, textContent, ma
   if(textContent) element.textContent = textContent;
   if(master) master.appendChild(element);
   if(css) jqueryElement.css(css);
-
+  
   return element;
 
 }
