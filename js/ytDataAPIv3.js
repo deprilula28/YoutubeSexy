@@ -112,6 +112,12 @@ YTDataAPI.prototype.requestAuth = function(){
           });
       }else if(!win.document || !win) window.clearInterval(pollTimer);
     }catch(e){
+      if(e.stack.startsWith("TypeError: Cannot read property 'URL' of undefined")){
+        Materialize.toast("Cancelled authentication request.");
+        youtubeSexy.ui.loadFeaturedPage();
+        youtubeSexy.ui.loadSidebarPanelNoAuth();
+        window.clearInterval(pollTimer);
+      }
     	console.log(e.stack);
     }
   }, 100);
