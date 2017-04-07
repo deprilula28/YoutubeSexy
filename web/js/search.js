@@ -42,7 +42,9 @@ UIManager.prototype.unloadSearchBar = function(){
                 $(".search-icon-show").css({"opacity": "", "display": "none"});
             });
         });
-        $("nav").animate({"background-color": "#FF4646"}, 600, "linear", () => {});
+        $("nav").css({"height": "64px"}).animate({"background-color": "#d40000"}, 100, "linear", () => {
+			$("nav").css({"background-color": "#d40000"});
+		});
     }
 
 }

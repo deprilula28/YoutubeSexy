@@ -16,7 +16,9 @@ UIManager.prototype.loadBasics = function(){
     if(handleLeave){
       handleLeave(() => {
         console.log("Going home");
-        $("nav").animate({"background-color": "#FF4646"});
+        $("nav").css({"height": "64px"}).animate({"background-color": "#d40000"}, 100, "linear", () => {
+          $("nav").css({"background-color": "#d40000"});
+        });
         $("#main-page").css({"opacity": ""});
       });
       handleLeave = undefined;

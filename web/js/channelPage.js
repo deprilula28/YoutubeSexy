@@ -231,6 +231,9 @@ YoutubeChannelPage.prototype.createChannelPage = function(){
   this.loadTab(uiMan, false, "About", "about");
   this.loadTab(uiMan, false, "Channels", "channels");
 
+  $(tabs).tabs();
+  $(".indicator").css({"background-color": "#FFFFFF"});
+  
   // Videos
   var videosDIV = uiMan.generateNewElement("div", ["col", "s12"], undefined, tabsRow, undefined);
   videosDIV.id = "videos";
@@ -262,6 +265,7 @@ YoutubeChannelPage.prototype.createChannelPage = function(){
   var videoListRow = uiMan.generateNewElement("div", ["row"], undefined, videosDIV, undefined);
   this.videoRow = videoListRow;
   this.loadVideoPage();
+  if(!chnl.brandingSettings.channel.unsubscribedTrailer) $(videoListRow).css({"margin-top": "10px"});
 
   // About
   var aboutDIV = uiMan.generateNewElement("div", ["col", "s12"], undefined, tabsRow, undefined);
@@ -275,11 +279,11 @@ YoutubeChannelPage.prototype.createChannelPage = function(){
 
   var columnViews = uiMan.generateNewElement("div", ["col", "s12", "m4", "l4"], undefined, topRow, undefined);
   var viewsString = uiMan.generateNewElement("a", [youtubeSexy.ui.darkThemed ? "white-text" : "black-text",
-    "truncate"], simplifyNumber(chnl.statistics.viewCount) + " views", columnViews, {"font-size": "30px"});
+    "truncate"], prettifyNumber(chnl.statistics.viewCount) + " views", columnViews, {"font-size": "30px"});
 
   var columnVideos = uiMan.generateNewElement("div", ["col", "s12", "m4", "l4"], undefined, topRow, undefined);
   var videosString = uiMan.generateNewElement("a", [youtubeSexy.ui.darkThemed ? "white-text" : "black-text",
-  "truncate"], simplifyNumber(chnl.statistics.videoCount) + " videos", columnVideos, {"font-size": "30px"});
+  "truncate"], prettifyNumber(chnl.statistics.videoCount) + " videos", columnVideos, {"font-size": "30px"});
 
   var descriptionRow = uiMan.generateNewElement("div", ["row"], undefined, aboutDIV, {"margin-top": "20px"});
   var descriptionColumn = uiMan.generateNewElement("div", ["col", "s12"], undefined, descriptionRow, undefined);
@@ -308,9 +312,6 @@ YoutubeChannelPage.prototype.createChannelPage = function(){
       channelFeaturedChannels.appendChild(youtubeSexy.ui.getUserIcon(channel, "100%", chnl));
     }
   }
-
-  $(tabs).tabs();
-  $(".indicator").css({"color": "#FFFFFF"});
 
   var loading = youtubeSexy.ui.createCirclePreloaderDIV("blue", "big");
   videosDIV.appendChild(loading);
