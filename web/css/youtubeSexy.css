@@ -279,3 +279,7 @@
     opacity: 1;
   }
 }
+
+.search-icon-show-row {
+  display: none;
+}
