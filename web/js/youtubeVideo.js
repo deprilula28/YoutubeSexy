@@ -34,7 +34,8 @@ YoutubeSexy.prototype.playVideo = function(videoResult, posterResult, mouseX, mo
 
 			setTimeout(function(){
 				$(".smallVideoPlayerWindowWrapper").removeClass("filled").css({"display": "none", "animation": ""});
-				$(videoIFrame).remove();
+				videoIFrame.src = "";
+				$(".bigVideoIFrameContainer").get(0).appendChild(videoIFrame);
 			}, 250);
 		});
 
@@ -78,7 +79,10 @@ YoutubeSexy.prototype.playVideo = function(videoResult, posterResult, mouseX, mo
 
   var vibrant = new Vibrant(thumbnail);
   var swatches = vibrant.swatches();
-  this.vibrantColor = swatches.Vibrant.getHex();
+
+	if(swatches.Vibrant) this.vibrantColor = swatches.Vibrant.getHex();
+	else this.vibrantColor = "#d40000";
+	
 	$(".text-change").removeClass("white-text").addClass("black-text");
 
   $(".tab a").css({"color": this.vibrantColor});
