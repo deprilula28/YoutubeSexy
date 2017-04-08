@@ -23,18 +23,22 @@ UIManager.prototype.loadFeaturedPage = function(){
     h4.textContent = "Trending Videos";
     columnTitle.appendChild(h4);
 
+    var title = document.createElement("div");
+    $(title).css({"opacity": 0});
+    div.appendChild(title);
+    
     var a = document.createElement("a");
-    $(a).addClass("videoNameTextComponent").addClass(youtubeSexy.ui.darkThemed ? "white-text" : "black-text").css({"opacity": 0});
+    $(a).addClass("videoNameTextComponent").addClass(youtubeSexy.ui.darkThemed ? "white-text" : "black-text");
     a.textContent = "Authenticate to view videos recommended for you.";
-    div.appendChild(a);
+    title.appendChild(a);
 
     var delay = youtubeSexy.loadMainMenuPage(json);
     setTimeout(function(){
       $(rowTitle).css({"animation": "mainMenuAppearItem 0.6s ease-out"});
-      $(a).css({"animation": "mainMenuAppearItem 0.4s ease-out"});
+      $(title).css({"animation": "mainMenuAppearItem 0.6s ease-out"});
 
       setTimeout(() => {
-        $(a).css({"opacity": ""});
+        $(title).css({"opacity": ""});
       }, 400);
 
       setTimeout(() => {
