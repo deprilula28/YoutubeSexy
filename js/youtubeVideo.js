@@ -28,6 +28,14 @@ YoutubeSexy.prototype.playVideo = function(videoResult, posterResult, mouseX, mo
 			"left": "0px", "display": "block"}).get(0).appendChild(videoIFrame);
 		$(".smallVideoPlayerTopBar").css({"background-color": this.vibrantColor});
 		$(".smallVideoPlayerTopBarTitle").text(videoResult.snippet.title);
+		$(".smallVideoPlayerStopButton").click(function(){
+			$(".smallVideoPlayerWindowWrapper").css({"animation": "smallVideoPlayerDisappear 0.25s"});
+
+			setTimeout(function(){
+				$(".smallVideoPlayerWindowWrapper").removeClass("filled").css({"display": "none", "animation": ""});
+				$(videoIFrame).remove();
+			}, 250);
+		});
 
 		youtubeSexy.ui.displayingSmallVideo = true;
 		youtubeSexy.ui.animateVideoIFrameSizing();
