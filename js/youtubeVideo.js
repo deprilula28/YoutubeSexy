@@ -23,11 +23,12 @@ YoutubeSexy.prototype.playVideo = function(videoResult, posterResult, mouseX, mo
   handleLeave = (onDone) => {
 		$(".text-change").removeClass("black-text").addClass("white-text");
   	this.playing = undefined;
-		var videoIFrame = $("#bigVideoIFrame").css({"height": "90%"}).get(0);
+		var videoIFrame = $("#bigVideoIFrame").css({"height": "100%"}).get(0);
 		$(".smallVideoPlayerWindowWrapper").addClass("filled").css({"width": videoIFrame.clientWidth, "height": videoIFrame.clientHeight, "top": "64px", 
 			"left": "0px", "display": "block"}).get(0).appendChild(videoIFrame);
 		$(".smallVideoPlayerTopBar").css({"background-color": this.vibrantColor});
 		$(".smallVideoPlayerTopBarTitle").text(videoResult.snippet.title);
+
 		$(".smallVideoPlayerStopButton").click(function(){
 			$(".smallVideoPlayerWindowWrapper").css({"animation": "smallVideoPlayerDisappear 0.25s"});
 
@@ -35,6 +36,14 @@ YoutubeSexy.prototype.playVideo = function(videoResult, posterResult, mouseX, mo
 				$(".smallVideoPlayerWindowWrapper").removeClass("filled").css({"display": "none", "animation": ""});
 				$(videoIFrame).remove();
 			}, 250);
+		});
+
+		$(".smallVideoPlayerWindowWrapper").on("mouseover", function(){
+			$(".smallVideoPlayerTopBar").clearQueue().stop().animate({"top": "0px"}, 100, "easeOutQuad");
+		});
+
+		$(".smallVideoPlayerWindowWrapper").on("mouseleave", function(){
+			$(".smallVideoPlayerTopBar").clearQueue().stop().animate({"top": "-28px"}, 100, "easeOutQuad");
 		});
 
 		youtubeSexy.ui.displayingSmallVideo = true;
