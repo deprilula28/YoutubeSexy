@@ -110,10 +110,12 @@ YoutubeChannelPage.prototype.createChannelPage = function(){
   banner.addEventListener("load", () => {
     var vibrant = new Vibrant(banner);
     var swatches = vibrant.swatches();
-    this.vibrantColor = swatches.DarkVibrant.getHex();
 
-    $("nav").animate({"background-color": this.vibrantColor});
-    $(".vibrantColored").animate({"background-color": this.vibrantColor});
+    if(swatches.DarkVibrant){
+      this.vibrantColor = swatches.DarkVibrant.getHex();
+      $("nav").animate({"background-color": this.vibrantColor});
+      $(".vibrantColored").animate({"background-color": this.vibrantColor});
+    } 
     
     if(youtubeSexy.options.backgroundType == "thumbnailBlur"){
     	var overlay = uiMan.generateNewElement("div", ["thumbnailBackgroundOverlay"], undefined, contentPage, undefined)
@@ -319,6 +321,8 @@ YoutubeChannelPage.prototype.createChannelPage = function(){
   this.preloader = loading;
   this.setupPollTimer(chnl);
   
+  $(".vibrantColored").css({"background-color": "#d40000"});
+
 }
 
 YoutubeChannelPage.prototype.setupPollTimer = function(chnl){

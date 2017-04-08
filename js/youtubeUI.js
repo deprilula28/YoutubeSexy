@@ -151,7 +151,12 @@ UIManager.prototype.createFullVideoDIV = function(video, doNotPutChannelChip, ch
     setTimeout(function() {
       $(column).css({"opacity": ""});
     }, 1000);
-  }else $(column).css({"opacity": ""});
+  }else{
+    $(column).css({"animation": "mainMenuAppearItem 1s ease-out"});
+    setTimeout(function() {
+      $(column).css({"opacity": ""});
+    }, 1000);
+  } 
 
   var imgDiv = this.generateNewElement("div", undefined, undefined, column, {"width": "214px", "height": "120px"});
   var img = this.generateNewElement("img", ["center-align"], undefined, imgDiv,
@@ -206,7 +211,7 @@ UIManager.prototype.createFullVideoDIV = function(video, doNotPutChannelChip, ch
     });
   });
   img.crossOrigin = "Anonymous";
-  img.src = "https://crossorigin.me/" + video.snippet.thumbnails.high.url;
+  img.src = "https://crossorigin.me/" + video.snippet.thumbnails.medium.url;
 
   var finalVidClick = (e, doDelete) => {
     if(channelResult) youtubeSexy.playVideo(video, channelResult, e.pageX, e.pageY, img, undefined, "fade");

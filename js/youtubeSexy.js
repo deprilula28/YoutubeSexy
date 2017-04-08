@@ -134,9 +134,22 @@ YoutubeSexy.prototype.loadMainMenuPage = function(activitiesResponse){
 
 }
 
+var navShown = false;
+
 $(window).scroll((event) => {
 
   if(channelPreview) youtubeSexy.hideChannelPreviews();
+
+  var scrollTop = $(window).scrollTop();
+  if(scrollTop > 168 && !navShown){
+    navShown = true;
+    $("nav").css({"background-color": "#d40000", "box-shadow": ""});
+    $(".top-text").text("Home");
+  }else if(scrollTop <= 168 && navShown){
+    navShown = false;
+    $("nav").css({"background-color": "rgba(0, 0, 0, 0)", "box-shadow": "0px 0px 0px 0px rgba(0,0,0,0)"});
+    $(".top-text").text("");
+  }
   
 });
 
@@ -205,7 +218,7 @@ YoutubeSexy.prototype.showChannelPreview = function(results, element){
   }else{
     baseCSS.height = "0px";
     animationCSS.height = "400px";
-  };
+  }; 
 
   var div = this.ui.generateNewElement("div", ["card", "z-depth-5", "channelPreviewPopup"], undefined, document.body,
     baseCSS);
