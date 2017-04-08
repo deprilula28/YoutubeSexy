@@ -55,6 +55,10 @@
   overflow-y: auto;
 }
 
+#main-page {
+  transform: translateY(-170px);
+}
+
 .blurInFrames {
   animation: blurIn 0.5s linear;
   pointer-events: none;
@@ -284,4 +288,14 @@
 
 .search-icon-show-row {
   display: none;
+}
+
+.backgroundRedBox {
+  position: relative;
+  background-color: #d40000;
+  width: 100vw;
+  height: 232px;
+  top: -64px;
+  left: 0px;
+  z-index: -1;
 }
