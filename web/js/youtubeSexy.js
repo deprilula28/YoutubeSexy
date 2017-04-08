@@ -137,7 +137,7 @@ YoutubeSexy.prototype.loadMainMenuPage = function(activitiesResponse){
 var navShown = false;
 
 $(window).scroll((event) => {
-
+  
   if(channelPreview) youtubeSexy.hideChannelPreviews();
 
   var scrollTop = $(window).scrollTop();
