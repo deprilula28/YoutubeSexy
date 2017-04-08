@@ -299,3 +299,14 @@
   left: 0px;
   z-index: -1;
 }
+
+@keyframes smallVideoPlayerDisappear {
+  0% {
+    transform: translate(0px, 0px) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(15px, 15px) scale(0.75);
+    opacity: 0;
+  }
+}
