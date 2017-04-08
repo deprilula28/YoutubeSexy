@@ -143,11 +143,11 @@ $(window).scroll((event) => {
   var scrollTop = $(window).scrollTop();
   if(scrollTop > 168 && !navShown){
     navShown = true;
-    $("nav").css({"background-color": "#d40000", "box-shadow": ""});
+    $("nav").clearQueue().stop().css({"box-shadow": ""}).animate({"background-color": "#d40000"});
     $(".top-text").text("Home");
   }else if(scrollTop <= 168 && navShown){
     navShown = false;
-    $("nav").css({"background-color": "rgba(0, 0, 0, 0)", "box-shadow": "0px 0px 0px 0px rgba(0,0,0,0)"});
+    $("nav").clearQueue().stop().css({"box-shadow": "0px 0px 0px 0px rgba(0,0,0,0)"}).animate({"background-color": "rgba(212, 0, 0, 0)"});
     $(".top-text").text("");
   }
   
