@@ -6,7 +6,7 @@ YoutubeSexy.prototype.playVideo = function(videoResult, posterResult, mouseX, mo
     return;
   }
   
-	this.ui.unloadSearchBar();
+  this.ui.unloadSearchBar();
   this.playing = videoResult.id;
   $(".top-text").get(0).textContent = videoResult.snippet.title;
   $("#bigVideoIFrame").get(0).src = "https://www.youtube.com/embed/" + this.playing + "?autoplay=1&enablejsapi=1&theme=light&showinfo=0";
@@ -219,8 +219,10 @@ YoutubeSexy.prototype.loadCommentSection = function(videoId, videoResult, poster
 			var commenterData = {
 				"tag": "common"
 			};
-			if(videoResult.snippet.channelId === item.snippet.topLevelComment.snippet.authorChannelId.value) commenterData.tag = "owner";
-			else if(verifyFeatured(posterResult, item.snippet.topLevelComment.snippet.authorChannelId.value)) commenterData.tag = "featured";
+			if(videoResult.snippet.channelId === item.snippet.topLevelComment.snippet.authorChannelId.value){
+				commenterData.tag = "owner";
+				commenterData.color = this.vibrantColor;
+			}else if(verifyFeatured(posterResult, item.snippet.topLevelComment.snippet.authorChannelId.value)) commenterData.tag = "featured";
 
 			//Comment Author
 			var commenterRow = this.ui.generateNewElement("div", ["row"], undefined, commentColumn, {"margin-bottom": "2px"});
@@ -291,7 +293,7 @@ YoutubeSexy.prototype.loadCommentSection = function(videoId, videoResult, poster
 					//Content
 					var replyContentRow = youtubeSexy.ui.generateNewElement("div", ["row"], undefined, area, {"margin-bottom": "2px"});
 					var replyContentColumn = youtubeSexy.ui.generateNewElement("div", ["col", "s12"], undefined, replyContentRow, undefined);
-					appendCommentHTML(item.snippet.topLevelComment.snippet.textDisplay, replyContentColumn);
+					appendCommentHTML(replyItem.snippet.textOriginal, replyContentColumn);
 					
 					//Replier
 					var replierData = {
@@ -301,15 +303,13 @@ YoutubeSexy.prototype.loadCommentSection = function(videoId, videoResult, poster
 					else if(verifyFeatured(posterResult, replyItem.snippet.authorChannelId.value)) replierData.tag = "featured";
 
 					var replierColumn = youtubeSexy.ui.generateNewElement("div", ["col", "s12"], undefined, replierRow, undefined);
-					var replierChip = youtubeSexy.ui.getUserIcon(item.snippet.topLevelComment.snippet.authorChannelId.value, "100%", replierData);
+					var replierChip = youtubeSexy.ui.getUserIcon(replyItem.snippet.authorChannelId.value, "100%", replierData);
 					replierColumn.appendChild(replierChip);
 				}
 
 				var switchOnce = function(){
-					console.log(orderedItems);
-					if(currentIndex >= orderedItems.length) currentIndex = 0;
 					var replyItem = orderedItems[currentIndex];
-					console.log(replyItem);
+					console.log(currentIndex, orderedItems.length);
 
 					if(currentIndex > 0){
 						$(fullReplyArea).css({"opacity": 0}).animate({"opacity": 1}, 100, "linear", function(){
@@ -321,8 +321,9 @@ YoutubeSexy.prototype.loadCommentSection = function(videoId, videoResult, poster
 					}else switchLogic(replyItem);
 
 					if(item.snippet.totalReplyCount > 1){
-						setTimeout(switchOnce, 5000);
 						currentIndex ++;
+						if(currentIndex >= orderedItems.length) currentIndex = 0;
+						setTimeout(switchOnce, 5000);
 					} 
 				}
 
