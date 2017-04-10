@@ -95,8 +95,9 @@ UIManager.prototype.getUserIcon = function(channelId, widthShow, commenterData){
   if(commenterData){
   	var tag = commenterData.tag;
 
-  	if(tag === "owner") $(chip).css({"background-color": "#00C0AD"});
-  	else if(tag === "featured") $(chip).css({"background-color": "#EC4646"});
+  	if(tag === "owner"){
+      $(chip).css({"background-color": commenterData.color || "#00C0AD"});
+    }else if(tag === "featured") $(chip).css({"background-color": "#EC4646"});
   }
 
   return chip;
