@@ -10,6 +10,12 @@ UIManager.prototype.loadSidebarPanelNoAuth = function(){
 
 }
 
+UIManager.prototype.unloadSidebar = function(){
+
+  $("#sidebar").empty();
+
+}
+
 UIManager.prototype.loadBasics = function(){
 
   this.addButton("Home", () => {

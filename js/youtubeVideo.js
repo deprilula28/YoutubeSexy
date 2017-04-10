@@ -195,16 +195,16 @@ YoutubeSexy.prototype.loadCommentSection = function(videoId, videoResult, poster
 	$(".commentAmountTitle").text("Amount of comments: " + prettifyNumber(commentCount));
 	var commentSectionDiv = $("#commentSection").get(0);
 
-  var authVerify = () => {
+  var authVerify = (doLater) => {
     if(youtubeSexy.ytDataAPI.authenticated) return true;
     Materialize.toast("You need to be authenticated to perform this action!", 5000);
-    youtubeSexy.ytDataAPI.requestAuth();
+    youtubeSexy.ytDataAPI.requestAuth(doLater);
 
     return false;
   };
 
 	youtubeSexy.ytDataAPI.googleAPIGet("https://www.googleapis.com/youtube/v3/commentThreads", {
-		"part": "snippet",
+		"part": "snippet,replies",
 		"videoId": videoResult.id,
 		"maxResults": 50,
 		"textFormat": "plainText"
@@ -251,7 +251,7 @@ YoutubeSexy.prototype.loadCommentSection = function(videoId, videoResult, poster
 
 			//Interactables
 			var likeClick = () => {
-				if(!authVerify()) return;
+				if(!authVerify(likeClick)) return;
 				youtubeSexy.ytDataAPI.googleAPIGet("https://www.googleapis.com/youtube/v3/videos/rate", {
 					"id": video.snippet.id,
 					"rating": "like"
@@ -261,7 +261,7 @@ YoutubeSexy.prototype.loadCommentSection = function(videoId, videoResult, poster
 			}
 
 			var dislikeClick = () => {
-				if(!authVerify()) return;
+				if(!authVerify(dislikeClick)) return;
 				youtubeSexy.ytDataAPI.googleAPIGet("https://www.googleapis.com/youtube/v3/videos/rate", {
 					"id": video.snippet.id,
 					"rating": "dislike"
@@ -272,6 +272,62 @@ YoutubeSexy.prototype.loadCommentSection = function(videoId, videoResult, poster
 
 			$(dislikeChip).click(dislikeClick);
 			$(likeChip).click(likeClick);
+
+			if(item.snippet.totalReplyCount > 0 && item.replies && item.replies.comments){
+				var responsesRow = this.ui.generateNewElement("div", ["row"], undefined, commentColumn, {"margin-top": "5px", "margin-bottom": "5px"});
+				this.ui.generateNewElement("a", ["white-text"], item.snippet.totalReplyCount + " replies", responsesRow, undefined);
+			
+				var orderedItems = item.replies.comments;
+
+				var fullReplyArea = this.ui.generateNewElement("div", undefined, undefined, commentColumn, undefined);
+				var areaRow = this.ui.generateNewElement("div", ["row"], undefined, fullReplyArea, undefined);
+				var area = this.ui.generateNewElement("div", ["replyDisplayArea"], undefined, areaRow, undefined);
+				var replierRow = this.ui.generateNewElement("div", ["row"], undefined, fullReplyArea, undefined);
+				var currentIndex = 0;
+				
+				var switchLogic = function(replyItem){
+					$(area).empty();
+
+					//Content
+					var replyContentRow = youtubeSexy.ui.generateNewElement("div", ["row"], undefined, area, {"margin-bottom": "2px"});
+					var replyContentColumn = youtubeSexy.ui.generateNewElement("div", ["col", "s12"], undefined, replyContentRow, undefined);
+					appendCommentHTML(item.snippet.topLevelComment.snippet.textDisplay, replyContentColumn);
+					
+					//Replier
+					var replierData = {
+						"tag": "common"
+					};
+					if(videoResult.snippet.channelId === replyItem.snippet.authorChannelId.value) replierData.tag = "owner";
+					else if(verifyFeatured(posterResult, replyItem.snippet.authorChannelId.value)) replierData.tag = "featured";
+
+					var replierColumn = youtubeSexy.ui.generateNewElement("div", ["col", "s12"], undefined, replierRow, undefined);
+					var replierChip = youtubeSexy.ui.getUserIcon(item.snippet.topLevelComment.snippet.authorChannelId.value, "100%", replierData);
+					replierColumn.appendChild(replierChip);
+				}
+
+				var switchOnce = function(){
+					console.log(orderedItems);
+					if(currentIndex >= orderedItems.length) currentIndex = 0;
+					var replyItem = orderedItems[currentIndex];
+					console.log(replyItem);
+
+					if(currentIndex > 0){
+						$(fullReplyArea).css({"opacity": 0}).animate({"opacity": 1}, 100, "linear", function(){
+							switchLogic(replyItem);
+							$(fullReplyArea).animate({"opacity": 0}, 100, "linear", function(){
+								$(fullReplyArea).css({"opacity": ""});
+							})
+						});
+					}else switchLogic(replyItem);
+
+					if(item.snippet.totalReplyCount > 1){
+						setTimeout(switchOnce, 5000);
+						currentIndex ++;
+					} 
+				}
+
+				switchOnce();
+			}
 
 			//Comment separator
 			var div = this.ui.generateNewElement("div", ["commentSeparator"], undefined, commentSectionDiv, undefined);
@@ -312,7 +368,7 @@ function appendCommentHTML(comment, master){
 	}
 
 	var commentAnchor = youtubeSexy.ui.generateNewElement("a", ["white-text"], undefined, master, {"word-wrap": "break-word"});
-	$(commentAnchor).html(comment);
+	commentAnchor.innerHTML = comment;
 
 	return commentAnchor;
 

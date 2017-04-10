@@ -21,3 +21,16 @@ function lerp(a, b, progress){
   return a + progress * (b - a);
 
 }
+
+//Thanks to http://stackoverflow.com/a/488073/5572963
+function isScrolledIntoView(elem){
+
+  var docViewTop = $(window).scrollTop();
+  var docViewBottom = docViewTop + $(window).height();
+
+  var elemTop = $(elem).offset().top;
+  var elemBottom = elemTop + $(elem).height();
+
+  return ((elemBottom <= docViewBottom) && (elemTop >= docViewTop));
+
+}
