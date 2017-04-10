@@ -362,7 +362,6 @@ YoutubeChannelPage.prototype.loadVideoPage = function(){
     "maxResults": 25,
     "channelId": this.channelId
   };
-  if(this.nextPageToken) jsonReq.pageToken = this.nextPageToken;
 
   youtubeSexy.ytDataAPI.googleAPIGet("https://www.googleapis.com/youtube/v3/search", jsonReq, (json) => {
     var items = json.items;
@@ -380,7 +379,10 @@ YoutubeChannelPage.prototype.loadVideoPage = function(){
     }
 
     if(json.nextPageToken) this.nextPageToken = json.nextPageToken;
-    else if(this.preloader) $(this.preloader).remove();
+    else{
+      if(this.preloader) $(this.preloader).remove();
+      this.preloader = undefined;
+    } 
 
     youtubeSexy.ytDataAPI.googleAPIGet("https://www.googleapis.com/youtube/v3/videos", {
       "part": "snippet,statistics",

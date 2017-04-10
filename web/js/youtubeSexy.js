@@ -150,7 +150,7 @@ $(window).scroll((event) => {
     $("nav").clearQueue().stop().css({"box-shadow": "0px 0px 0px 0px rgba(0,0,0,0)"}).animate({"background-color": "rgba(212, 0, 0, 0)"});
     $(".top-text").text("");
   }
-  
+
 });
 
 $(window).resize((event) => {
@@ -342,5 +342,20 @@ YoutubeSexy.prototype.loadNewMenuMenuPage = function(){
       this.loadingPage = false;
     });
   }
+
+}
+
+$.fn.blurBackground = function(backgroundElementQuery){
+
+  var backgroundElement = $(backgroundElementQuery).get(0);
+
+  return this.each(function(){
+      var $element = $(this);
+      $element.css({"overflow": "hidden"});
+
+      var backElClone = backgroundElement.cloneNode(true);			
+      this.appendChild(backElClone);
+      $(backElClone).css({"filter": "blur(3px)", "pointer-events": "none"});
+  });
 
 }

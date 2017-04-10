@@ -59,7 +59,7 @@ function getScope(){
 
 }
 
-YTDataAPI.prototype.requestAuth = function(){
+YTDataAPI.prototype.requestAuth = function(runAfter){
 
   var win = window.open(getURL("https://deprilula28.github.io/YoutubeSexy/oauthFrame.html"), "Authenticate",
     "toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=" +
@@ -88,8 +88,8 @@ YTDataAPI.prototype.requestAuth = function(){
             console.log("Authenticated!");
             Materialize.toast("Finished authenticating!", 4000);
 
-            $("#sidebar").empty();
-            
+            $(".side-nav").empty();
+
             youtubeSexy.ui.loadSidebarPanelAuthenticated();
             youtubeSexy.cookies.setCookie("doAuthenticate", "true", 365);
             youtubeSexy.loadingPage = true;
@@ -109,11 +109,13 @@ YTDataAPI.prototype.requestAuth = function(){
               youtubeSexy.loadMainMenuPage(json);
               youtubeSexy.loadingPage = false;
             });
+
+            if(runAfter) runAfter();
           });
       }else if(!win.document || !win) window.clearInterval(pollTimer);
     }catch(e){
       if(e.stack.startsWith("TypeError: Cannot read property 'URL' of undefined")){
-        Materialize.toast("Cancelled authentication request.");
+        Materialize.toast("Cancelled authentication request.", 4000);
         youtubeSexy.ui.loadFeaturedPage();
         youtubeSexy.ui.loadSidebarPanelNoAuth();
         window.clearInterval(pollTimer);

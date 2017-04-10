@@ -18,7 +18,7 @@
 .commentSeparator {
   width: 100%;
   height: 1px;
-  background-color: #C3C3C3;
+  background-color: #c3c3c3;
   margin-bottom: 8px;
 }
 
@@ -324,4 +324,10 @@
 .smallVideoPlayerTopBar {
   position: relative;
   top: -28px;
+}
+
+.replyDisplayArea {
+  width: 100%;
+  height: 50px;
+  overflow: hidden;
 }

@@ -208,9 +208,8 @@ UIManager.prototype.createFullVideoDIV = function(video, doNotPutChannelChip, ch
   }
 
   $(img).load(() => {
-    $(preloader).remove();
+    $(preloader).css({"display": "none"});
     $(img).css({"display" : "", "opacity": 0}).animate({"opacity": 1}, 100, "linear", () => { 
-      $(preloader).remove();
       $(img).css({"opacity": ""}) 
     });
   });
@@ -251,16 +250,16 @@ UIManager.prototype.createFullVideoDIV = function(video, doNotPutChannelChip, ch
   $(imgDiv).click(vidClick);
   $(videoNameTextComp).click(vidClick);
 
-  var authVerify = () => {
+  var authVerify = (doLater) => {
     if(youtubeSexy.ytDataAPI.authenticated) return true;
     Materialize.toast("You need to be authenticated to perform this action!", 5000);
-    youtubeSexy.ytDataAPI.requestAuth();
+    youtubeSexy.ytDataAPI.requestAuth(doLater);
 
     return false;
   };
 
   var likeClick = () => {
-    if(!authVerify()) return;
+    if(!authVerify(likeClick)) return;
     youtubeSexy.ytDataAPI.googleAPIGet("https://www.googleapis.com/youtube/v3/videos/rate", {
       "id": video.snippet.id,
       "rating": "like"
@@ -270,7 +269,7 @@ UIManager.prototype.createFullVideoDIV = function(video, doNotPutChannelChip, ch
   }
 
   var dislikeClick = () => {
-    if(!authVerify()) return;
+    if(!authVerify(dislikeClick)) return;
     youtubeSexy.ytDataAPI.googleAPIGet("https://www.googleapis.com/youtube/v3/videos/rate", {
       "id": video.snippet.id,
       "rating": "dislike"
