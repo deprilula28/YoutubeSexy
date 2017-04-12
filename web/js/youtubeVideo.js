@@ -50,10 +50,10 @@ YoutubeSexy.prototype.playVideo = function(videoResult, posterResult, mouseX, mo
 		youtubeSexy.ui.displayingSmallVideo = true;
 		youtubeSexy.ui.animateVideoIFrameSizing();
 
-    $("#content-page").animate({"opacity": 0});
-    $("body").css({"overflow": ""});
-    $("nav").css({"height": "64px"}).animate({"background-color": "#d40000"}, 100, "linear", () => {
-			$("nav").css({"background-color": "#d40000"});
+		$("#content-page").animate({"opacity": 0});
+		$("body").css({"overflow": ""});
+		$("nav").css({"height": "64px"}).animate({"background-color": "#d40000"}, 100, "linear", () => {
+				$("nav").css({"background-color": "#d40000"});
 		});
 		if(backgroundType == "backgroundBlur") $("#main-page").removeClass("blurInFrames").addClass("blurOutFrames").animate({"opacity": 1});
 		else $("#main-page").animate({"opacity": 1});
@@ -75,15 +75,15 @@ YoutubeSexy.prototype.playVideo = function(videoResult, posterResult, mouseX, mo
 
   var inVideo = $('#content-page').children().length > 0;
   $("#content-page").empty();
-	$("#content-page").get(0).appendChild($("#youtubePage").get(0));
+  $("#content-page").get(0).appendChild($("#youtubePage").get(0));
 
   var vibrant = new Vibrant(thumbnail);
   var swatches = vibrant.swatches();
 
-	if(swatches.Vibrant) this.vibrantColor = swatches.Vibrant.getHex();
-	else this.vibrantColor = "#d40000";
-	
-	$(".text-change").removeClass("white-text").addClass("black-text");
+  if(swatches.Vibrant) this.vibrantColor = swatches.Vibrant.getHex();
+  else this.vibrantColor = "#d40000";
+
+  $(".text-change").removeClass("white-text").addClass("black-text");
 
   $(".tab a").css({"color": this.vibrantColor});
   $(".indicator").css({"background-color": this.vibrantColor});
@@ -108,11 +108,25 @@ YoutubeSexy.prototype.playVideo = function(videoResult, posterResult, mouseX, mo
 
   //Appear animation
   if(mouseX && mouseY){
-    $("#content-page").css({"opacity": 0, "display": "block"}).animate({"opacity": 1});
-    $("#youtubePage").css({"display": "block"});
-		
+	var fullscreenRipple = this.ui.generateNewElement("div", ["animationInRipple"], undefined, document.body, {"background-color": this.vibrantColor});
+	var fullscreenRippleRect = fullscreenRipple.getBoundingClientRect();
+
+	$(fullscreenRipple).css({
+		"left": (mouseX - 25) + "px",
+		"top": (mouseY - $(document.body).scrollTop() - 25) + "px"
+	});
+
+	setTimeout(function() {
+		$(fullscreenRipple).css({"opacity": 1}).animate({"opacity": 0}, 100, "linear", function(){
+			$(fullscreenRipple).remove();
+		});
+		$("#content-page").css({"opacity": 0, "display": "block"}).animate({"opacity": 1});
+		$("#youtubePage").css({"display": "block"});
+			
 		if(backgroundType == "backgroundBlur") $("#main-page").addClass("blurInFrames");
-		else $("#main-page").animate({"opacity": 0});
+		else $("#main-page").css({"opacity": 0});
+	}, 500);
+	
   }
 
   //Content page filing
@@ -323,7 +337,6 @@ function switchLogic(replyItem, area, videoResult, posterResult, replierRow, vib
 function switchOnce(fullReplyArea, orderedItems, item, currentIndex, area, videoResult, posterResult, replierRow, vibrantColor){
 
 	var replyItem = orderedItems[currentIndex];
-	console.log(currentIndex, orderedItems.length);
 
 	if(currentIndex > 0){
 		$(fullReplyArea).css({"opacity": 1}).animate({"opacity": 0}, 300, "linear", function(){

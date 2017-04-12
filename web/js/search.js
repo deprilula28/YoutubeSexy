@@ -11,7 +11,7 @@ UIManager.prototype.loadSearchButton = function(){
 
         var searchButtonRect = searchButton.getBoundingClientRect();
         var wave = this.generateNewElement("div", ["searchEffectRipple"], undefined, navWrapper, {
-            "left": (searchButtonRect.left + e.pageX) + "px",
+            "left": (e.pageX) + "px",
             "top": (-150 + (e.pageY - $(document.body).scrollTop() - searchButtonRect.top)) + "px"
         });
         $(".search-icon-show-row").css({"display": "block"});
