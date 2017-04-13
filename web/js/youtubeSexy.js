@@ -263,7 +263,7 @@ YoutubeSexy.prototype.showChannelPreview = function(results, element){
 
 var handleLeave = undefined;
 
-YoutubeSexy.prototype.showChannelPage = function(channelId, donotaddbreadcrumb){
+YoutubeSexy.prototype.showChannelPage = function(channelId, mouseX, mouseY){
 
   $("#main-page").removeClass("blurInFrames").removeClass("blurOutFrames");
   
@@ -277,28 +277,26 @@ YoutubeSexy.prototype.showChannelPage = function(channelId, donotaddbreadcrumb){
   $("#content-page").empty();
   $(".top-text").get(0).textContent = "Loading...";
 
-  if(!donotaddbreadcrumb){
-    handleLeave = (onDone) => {
-      window.clearInterval(this.activeChannelPage.pollTimer);
-      $(".top-text").get(0).textContent = "Home";
-      this.activeChannelPage.unload();
-      this.activeChannelPage = undefined;
-      if(backgroundType == "backgroundBlur") $("#main-page").removeClass("blurInFrames").addClass("blurOutFrames");
-      $("#content-page").animate({"opacity": 0});
-      $("body").css({"overflow": ""});
-      $("nav").css({"height": "64px"}).animate({"background-color": "#d40000"}, 100, "linear", () => {
-        $("nav").css({"background-color": "#d40000"});
-      });
+  handleLeave = (onDone) => {
+    window.clearInterval(this.activeChannelPage.pollTimer);
+    $(".top-text").get(0).textContent = "Home";
+    this.activeChannelPage.unload();
+    this.activeChannelPage = undefined;
+    if(backgroundType == "backgroundBlur") $("#main-page").removeClass("blurInFrames").addClass("blurOutFrames");
+    $("#content-page").animate({"opacity": 0});
+    $("body").css({"overflow": ""});
+    $("nav").css({"height": "64px"}).animate({"background-color": "#d40000"}, 100, "linear", () => {
+      $("nav").css({"background-color": "#d40000"});
+    });
 
-      setTimeout(() => {
-      	if(backgroundType == "backgroundBlur") $("#main-page").removeClass("blurOutFrames");
-        $("#content-page").css({"display": "none", "opacity": 1}).empty();
-        if(backgroundType == "backgroundBlur") $("#content-page").removeClass("blurInFrames");
-        
-        onDone();
-      }, 500);
-    };
-  }
+    setTimeout(() => {
+      if(backgroundType == "backgroundBlur") $("#main-page").removeClass("blurOutFrames");
+      $("#content-page").css({"display": "none", "opacity": 1}).empty();
+      if(backgroundType == "backgroundBlur") $("#content-page").removeClass("blurInFrames");
+      
+      onDone();
+    }, 500);
+  };
 
   youtubeSexy.ytDataAPI.googleAPIGet("https://www.googleapis.com/youtube/v3/channels", {
     "part": "snippet,brandingSettings,statistics",
@@ -307,7 +305,7 @@ YoutubeSexy.prototype.showChannelPage = function(channelId, donotaddbreadcrumb){
     for(var channelIndex in result.items){
       var channel = result.items[channelIndex];
       $("#content-page").css({"display": ""});
-      this.activeChannelPage = new YoutubeChannelPage(channelId, channel);
+      this.activeChannelPage = new YoutubeChannelPage(channelId, channel, mouseX, mouseY);
       return;
     }
 
