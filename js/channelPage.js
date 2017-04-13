@@ -1,4 +1,4 @@
-function YoutubeChannelPage(channelId, response){
+function YoutubeChannelPage(channelId, response, mouseX, mouseY){
 
   this.channelId = channelId;
   this.response = response;
@@ -10,7 +10,7 @@ function YoutubeChannelPage(channelId, response){
   this.maxScroll = 0;
   this.loadingPage = true;
 
-  this.createChannelPage();
+  this.createChannelPage(mouseX, mouseY);
 
   $(window).resize((event) => {
     if(this.subscriberCountPanel){
@@ -87,7 +87,7 @@ YoutubeChannelPage.prototype.unload = function(){
 
 }
 
-YoutubeChannelPage.prototype.createChannelPage = function(){
+YoutubeChannelPage.prototype.createChannelPage = function(mouseX, mouseY){
 
   var uiMan = youtubeSexy.ui;
   var chnl = this.response;
@@ -95,10 +95,8 @@ YoutubeChannelPage.prototype.createChannelPage = function(){
   $(".top-text").get(0).textContent = "";
   
   var contentPage = document.getElementById("content-page");
+  $(contentPage).css({"opacity": 0});
   $(div).css({"width": "100%", "height": "100%"});
-  $(contentPage).css({"opacity": 0}).animate({"opacity": 1}, 500, "linear", () => {
-    $(contentPage).css({"opacity": ""});
-  });
 
   var div = uiMan.generateNewElement("div", ["channelPageWrapper"], undefined, contentPage, undefined);
 
@@ -115,20 +113,37 @@ YoutubeChannelPage.prototype.createChannelPage = function(){
       this.vibrantColor = swatches.DarkVibrant.getHex();
       $("nav").animate({"background-color": this.vibrantColor});
       $(".vibrantColored").animate({"background-color": this.vibrantColor});
-    } 
+    }else this.vibrantColor = "#d4000";
     
-    if(youtubeSexy.options.backgroundType == "thumbnailBlur"){
-    	var overlay = uiMan.generateNewElement("div", ["thumbnailBackgroundOverlay"], undefined, contentPage, undefined)
-    	var canvas = uiMan.generateNewElement("canvas", ["thumbnailBackgroundOverlayCanvas"], undefined, overlay, undefined);
-    	canvas.id = "thumbnailBackgroundOverlayCanvasObj";
-    	banner.id = "thumbnailBackgroundOverlayCanvasImgSrc";
-      stackBlurImage("thumbnailBackgroundOverlayCanvasImgSrc", "thumbnailBackgroundOverlayCanvasObj", 20, 255);
-      var ctx = canvas.getContext("2d");
-      ctx.fillStyle = "rgba(0, 0, 0, 0.6)";
-      ctx.fillRect(0, 0, $(window).height() * 3, $(window).width() * 3);
-      banner.id = "";
-      $(canvas).css({"width": "110%", "height": "110%"});
-    }
+    var fullscreenRipple = uiMan.generateNewElement("div", ["animationInRipple"], undefined, document.body, {"background-color": this.vibrantColor});
+    var fullscreenRippleRect = fullscreenRipple.getBoundingClientRect();
+
+    $(fullscreenRipple).css({
+      "left": (mouseX - 25) + "px",
+      "top": (mouseY - $(document.body).scrollTop() - 25) + "px"
+    });
+
+    var overlay = uiMan.generateNewElement("div", ["thumbnailBackgroundOverlay"], undefined, contentPage, undefined)
+    var canvas = uiMan.generateNewElement("canvas", ["thumbnailBackgroundOverlayCanvas"], undefined, overlay, undefined);
+    canvas.id = "thumbnailBackgroundOverlayCanvasObj";
+    banner.id = "thumbnailBackgroundOverlayCanvasImgSrc";
+    stackBlurImage("thumbnailBackgroundOverlayCanvasImgSrc", "thumbnailBackgroundOverlayCanvasObj", 20, 255);
+    var ctx = canvas.getContext("2d");
+    ctx.fillStyle = "rgba(0, 0, 0, 0.6)";
+    ctx.fillRect(0, 0, $(window).height() * 3, $(window).width() * 3);
+    banner.id = "";
+    $(canvas).css({"width": "110%", "height": "110%"});
+
+    setTimeout(function(){
+      $(fullscreenRipple).css({"opacity": 1}).animate({"opacity": 0}, 100, "linear", function(){
+        $(fullscreenRipple).remove();
+      });
+      $("#content-page").css({"opacity": 0, "display": "block"}).animate({"opacity": 1});
+      $("#youtubePage").css({"display": "block"});
+        
+      if(youtubeSexy.options.backgroundType == "backgroundBlur") $("#main-page").addClass("blurInFrames");
+      else $("#main-page").css({"opacity": 0});
+    }, 500);
   });
 
   this.banner = banner;

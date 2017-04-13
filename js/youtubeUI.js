@@ -83,11 +83,11 @@ UIManager.prototype.getUserIcon = function(channelId, widthShow, commenterData){
         youtubeSexy.showChannelPreview(channel, chip);
       }, (event) => {
         youtubeSexy.hideChannelPreviews();
+      }).click((event) => {
+        youtubeSexy.showChannelPage(channelId, event.pageX, event.pageY);
+        console.log(event);
+        
       });
-
-      chip.onclick = (event) => {
-        youtubeSexy.showChannelPage(channelId);
-      };
       return;
     }
   });
