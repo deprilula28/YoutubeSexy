@@ -12,7 +12,7 @@ function YoutubeChannelPage(channelId, response, mouseX, mouseY){
 
   this.createChannelPage(mouseX, mouseY);
 
-  $(window).resize((event) => {
+  $(window).resize(function(event){
     if(this.subscriberCountPanel){
       $(this.subCountDIV).css({"top": ($(window).height() / 2 - 48) + "px", "left": ($(window).width() / 2 - this.userSubscriberCountA.clientWidth / 2)});
       $(this.userSubscriberCountAElement).css({"top": ($(window).height() / 2 - 72) + "px", "left": ($(window).width() / 2 - 
@@ -20,7 +20,7 @@ function YoutubeChannelPage(channelId, response, mouseX, mouseY){
     }
   });
   
-  $(".channelPageWrapper").get(0).onscroll = (event) => {
+  $(".channelPageWrapper").scroll(function(event){
     if(youtubeSexy.activeChannelPage){
       var scroll = $(".channelPageWrapper").scrollTop();
       var offset = (this.preloader.getBoundingClientRect().top - document.body.getBoundingClientRect().top);
@@ -77,7 +77,7 @@ function YoutubeChannelPage(channelId, response, mouseX, mouseY){
       $(name).css({"top": lerp(275, 32, progress) + "px"});
       $(subscribers).css({"top": lerp(300, 57, progress) + "px"});
     }
-  };
+  });
 
 }
 
@@ -87,13 +87,14 @@ YoutubeChannelPage.prototype.unload = function(){
 
 }
 
+//Create channel page
 YoutubeChannelPage.prototype.createChannelPage = function(mouseX, mouseY){
 
   var uiMan = youtubeSexy.ui;
   var chnl = this.response;
   
   $(".top-text").get(0).textContent = "";
-  
+//lol
   var contentPage = document.getElementById("content-page");
   $(contentPage).css({"opacity": 0});
   $(div).css({"width": "100%", "height": "100%"});
@@ -105,7 +106,7 @@ YoutubeChannelPage.prototype.createChannelPage = function(mouseX, mouseY){
   var banner = uiMan.generateNewElement("img", ["channelViewBanner"], undefined, bannerColumn, {"width": "100%", "height": "200px"});
   banner.crossOrigin = "Anonymous";
   banner.src = chnl.brandingSettings.image.bannerImageUrl;
-  banner.addEventListener("load", () => {
+  banner.addEventListener("load", function(){
     var vibrant = new Vibrant(banner);
     var swatches = vibrant.swatches();
 
@@ -141,10 +142,10 @@ YoutubeChannelPage.prototype.createChannelPage = function(mouseX, mouseY){
       $("#content-page").css({"opacity": 0, "display": "block"}).animate({"opacity": 1});
       $("#youtubePage").css({"display": "block"});
         
-      if(youtubeSexy.options.backgroundType == "backgroundBlur") $("#main-page").addClass("blurInFrames");
+      if(youtubeSexy.options.backgroundType === "backgroundBlur") $("#main-page").addClass("blurInFrames");
       else $("#main-page").css({"opacity": 0});
     }, 500);
-  });
+  })
 
   this.banner = banner;
   var informationRow = uiMan.generateNewElement("div", ["row"], undefined, div, undefined);
@@ -182,7 +183,7 @@ YoutubeChannelPage.prototype.createChannelPage = function(mouseX, mouseY){
   });
 
   //Subscriber count click to go fullscreen
-  var subCountClick = (e) => {
+  var subCountClick = function(e){
     this.subscriberCountPanel = !this.subscriberCountPanel;
 
     if(this.subscriberCountPanel){
@@ -197,20 +198,18 @@ YoutubeChannelPage.prototype.createChannelPage = function(mouseX, mouseY){
       $(userNameDIV).animate({"top": ($(window).height() / 2 - 72) + "px", "left": ($(window).width() / 2 - widthTextName / 2)}).css({"pointer-events": ""});
       $(contentPage).addClass("blurInFrames").css({"pointer-events": "none"});
       $(".channelPageWrapper").css({"overflow-y": "hidden"});
-      $(".content").get(0).appendChild(subCountDIV);
-      $(".content").get(0).appendChild(userNameDIV);
-      if(youtubeSexy.options.backgroundType == "thumbnailBlur") $("#main-page").css({"opacity": 0});
+      $(".content").append(subCountDIV, userNameDIV);
+      if(youtubeSexy.options.backgroundType === "thumbnailBlur") $("#main-page").css({"opacity": 0});
       else $("#main-page").animate({"opacity": 0});
     }else{
-      var scroll = $(".channelPageWrapper").scrollTop();
+      var scroll = $(".channelPageWrapper").css({"overflow-y": ""}).scrollTop();
       var progress = scroll / 260.0;
       $(userNameDIV).animate({"left": "150px", "top": lerp(275, 32, progress) + "px"});
       $(userName).animate({"font-size": "24px"});
       $(subCountDIV).animate({"left": "150px", "top": lerp(300, 57, progress) + "px"});
       $(userSubscriberCount).animate({"font-size": "24px"}).css({"filter": ""});
       $(contentPage).removeClass("blurInFrames").addClass("blurOutFrames").css({"pointer-events": ""});
-      if(youtubeSexy.options.backgroundType == "backgroundBlur") $("#main-page").animate({"opacity": 0.3});
-      $(".channelPageWrapper").css({"overflow-y": ""});
+      if(youtubeSexy.options.backgroundType === "backgroundBlur") $("#main-page").animate({"opacity": 0.3});
       
       setTimeout(function() {
         $("#main-page").css({"opacity": 1});
@@ -340,12 +339,11 @@ YoutubeChannelPage.prototype.createChannelPage = function(mouseX, mouseY){
 
 }
 
-YoutubeChannelPage.prototype.setupPollTimer = function(chnl){
+YoutubeChannelPage.prototype.setupPollTimer = function(channel){
 	
-	var pollTimer = window.setInterval(() => {
-		youtubeSexy.activeChannelPage.callSubUpdate(chnl);
+	this.pollTimer = window.setInterval(function(){
+		youtubeSexy.activeChannelPage.callSubUpdate(channel);
 	}, youtubeSexy.options.subscriberCountChannelPageUpdateRate);
-  this.pollTimer = pollTimer;
 	
 }
 
@@ -355,11 +353,11 @@ YoutubeChannelPage.prototype.callSubUpdate = function(chnl){
 		"part": "statistics",
 		"id": chnl.id,
 		"fields": "items/statistics/subscriberCount"
-	}, (result) => {
+	}, function(result){
 		for(var channelIndex in result.items){
 			var channel = result.items[channelIndex];
-      this.subcountOdometer.update(channel.statistics.subscriberCount);
-  	  break;
+            this.subcountOdometer.update(channel.statistics.subscriberCount);
+            break;
 		}
 	});
 	
@@ -378,7 +376,7 @@ YoutubeChannelPage.prototype.loadVideoPage = function(){
     "channelId": this.channelId
   };
 
-  youtubeSexy.ytDataAPI.googleAPIGet("https://www.googleapis.com/youtube/v3/search", jsonReq, (json) => {
+  youtubeSexy.ytDataAPI.googleAPIGet("https://www.googleapis.com/youtube/v3/search", jsonReq, function(json){
     var items = json.items;
     var itemIDs = [];
     var itemIdInputString = "";
@@ -402,7 +400,7 @@ YoutubeChannelPage.prototype.loadVideoPage = function(){
     youtubeSexy.ytDataAPI.googleAPIGet("https://www.googleapis.com/youtube/v3/videos", {
       "part": "snippet,statistics",
       "id": itemIdInputString
-    }, (result) => {
+    }, function(result){
       for(var videoIndex in result.items){
         var video = result.items[videoIndex];
         this.videoRow.appendChild(youtubeSexy.ui.createFullVideoDIV(video, true));

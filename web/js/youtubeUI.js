@@ -4,7 +4,7 @@ UIManager.prototype.loadFeaturedPage = function(){
     "part": "snippet,statistics",
     "chart": "mostPopular",
     "maxResults": 25
-  }, (json) => {
+  }, function(json){
     var div = document.createElement("div");
     document.getElementById("main-page").appendChild(div);
 
@@ -37,11 +37,11 @@ UIManager.prototype.loadFeaturedPage = function(){
       $(rowTitle).css({"animation": "mainMenuAppearItem 0.6s ease-out"});
       $(title).css({"animation": "mainMenuAppearItem 0.6s ease-out"});
 
-      setTimeout(() => {
+      setTimeout(function(){
         $(title).css({"opacity": ""});
       }, 400);
 
-      setTimeout(() => {
+      setTimeout(function(){
         $(rowTitle).css({"opacity": ""});
       }, 600);
     }, Math.floor((delay / 2) * 1000));
@@ -71,7 +71,7 @@ UIManager.prototype.getUserIcon = function(channelId, widthShow, commenterData){
   youtubeSexy.ytDataAPI.googleAPIGet("https://www.googleapis.com/youtube/v3/channels", {
     "part": "snippet,brandingSettings,statistics",
     "id": channelId
-  }, (result) => {
+  }, function(result){
     for(var channelIndex in result.items){
       var channel = result.items[channelIndex];
 
@@ -79,11 +79,11 @@ UIManager.prototype.getUserIcon = function(channelId, widthShow, commenterData){
       textNodeSubs.textContent = simplifyNumber(channel.statistics.subscriberCount);
       img.src = channel.snippet.thumbnails.high.url;
 
-      $(chip).hover((event) => {
+      $(chip).hover(function(event){
         youtubeSexy.showChannelPreview(channel, chip);
-      }, (event) => {
+      }, function(event){
         youtubeSexy.hideChannelPreviews();
-      }).click((event) => {
+      }).click(function(event){
         youtubeSexy.showChannelPage(channelId, event.pageX, event.pageY);
         console.log(event);
         
@@ -186,17 +186,15 @@ UIManager.prototype.createFullVideoDIV = function(video, doNotPutChannelChip, ch
   var columnLike = this.generateNewElement("div", ["col", "s6"], undefined, rowVideoInfo, {"padding-right": "0px"});
   var likeChip = this.generateNewElement("div", ["chip", "small", "waves-effect", "waves-dark"], undefined,
     columnLike, {"margin": "0px"});
-  var likeImg = this.generateNewElement("img", undefined, undefined, likeChip, {"margin-right": "0px"});
-  likeImg.src = "img/like.png";
-  var likesText = this.generateNewElement("a", ["black-text", "truncate"], video.statistics && video.statistics.likeCount ? simplifyNumber(video.statistics.likeCount) :
+  var likeIcon = this.generateNewElement("i", ["material-icons", "black-text"], "thumb_up", likeChip, {"margin-right": "4px"});
+  var likesText = this.generateNewElement("a", ["black-text", "truncate", "right"], video.statistics && video.statistics.likeCount ? simplifyNumber(video.statistics.likeCount) :
     "", likeChip, undefined)
 
   var columnDislike = this.generateNewElement("div", ["col", "s4"], undefined, rowVideoInfo, {"padding": "0px"});
   var dislikeChip = this.generateNewElement("div", ["chip", "small", "waves-effect", "waves-dark"], undefined,
     columnDislike, {"margin": "0px"});
-  var dislikeImg  = this.generateNewElement("img", undefined, undefined, dislikeChip, {"margin-right": "0px"});
-  dislikeImg.src = "img/dislike.png";
-  var dislikesText = this.generateNewElement("a", ["black-text", "truncate"], video.statistics && video.statistics.dislikeCount ? simplifyNumber(video.statistics.dislikeCount) :
+  var dislikeIcon  = this.generateNewElement("i", ["material-icons", "black-text"], "thumb_down", dislikeChip, {"margin-right": "4px"});
+  var dislikesText = this.generateNewElement("a", ["black-text", "truncate", "right"], video.statistics && video.statistics.dislikeCount ? simplifyNumber(video.statistics.dislikeCount) :
     "", dislikeChip, undefined)
 
   //User Icon
@@ -208,22 +206,22 @@ UIManager.prototype.createFullVideoDIV = function(video, doNotPutChannelChip, ch
     columnUserIcon.appendChild(userIcon);
   }
 
-  $(img).load(() => {
+  $(img).load(function(){
     $(preloader).css({"display": "none"});
-    $(img).css({"display" : "", "opacity": 0}).animate({"opacity": 1}, 100, "linear", () => { 
+    $(img).css({"display" : "", "opacity": 0}).animate({"opacity": 1}, 100, "linear", function(){
       $(img).css({"opacity": ""}) 
     });
   });
   img.crossOrigin = "Anonymous";
   img.src = "https://crossorigin.me/" + video.snippet.thumbnails.medium.url;
 
-  var finalVidClick = (e, doDelete) => {
+  var finalVidClick = function(e, doDelete){
     if(channelResult) youtubeSexy.playVideo(video, channelResult, e.pageX, e.pageY, img, undefined, "fade");
   	else{
       youtubeSexy.ytDataAPI.googleAPIGet("https://www.googleapis.com/youtube/v3/channels", {
       	"part": "brandingSettings",
       	"id": video.snippet.channelId
-      }, (result) => {
+      }, function(result){
       	for(var itemIndex in result.items){
       		var item = result.items[itemIndex];
         	youtubeSexy.playVideo(video, item, e.pageX, e.pageY, img, doDelete, doDelete ? "radial-appearence" : "fade");
@@ -234,13 +232,13 @@ UIManager.prototype.createFullVideoDIV = function(video, doNotPutChannelChip, ch
   	}
   }
 
-  var vidClick = (e) => {
+  var vidClick = function(e){
 
     if(handleLeave){
       $(".content").get(0).appendChild(img);
       $(img).css({"display": "none"});
 
-      handleLeave(() => {
+      handleLeave(function(){
         finalVidClick(e, true);
       });
       handleLeave = undefined;
@@ -251,7 +249,7 @@ UIManager.prototype.createFullVideoDIV = function(video, doNotPutChannelChip, ch
   $(imgDiv).click(vidClick);
   $(videoNameTextComp).click(vidClick);
 
-  var authVerify = (doLater) => {
+  var authVerify = function(doLater){
     if(youtubeSexy.ytDataAPI.authenticated) return true;
     Materialize.toast("You need to be authenticated to perform this action!", 5000);
     youtubeSexy.ytDataAPI.requestAuth(doLater);
@@ -259,22 +257,22 @@ UIManager.prototype.createFullVideoDIV = function(video, doNotPutChannelChip, ch
     return false;
   };
 
-  var likeClick = () => {
+  var likeClick = function(){
     if(!authVerify(likeClick)) return;
     youtubeSexy.ytDataAPI.googleAPIGet("https://www.googleapis.com/youtube/v3/videos/rate", {
       "id": video.snippet.id,
       "rating": "like"
-    }, (result) => {
+    }, function(result){
 	    Materialize.toast("Video successfully liked.", 5000);
     });
   }
 
-  var dislikeClick = () => {
+  var dislikeClick = function(){
     if(!authVerify(dislikeClick)) return;
     youtubeSexy.ytDataAPI.googleAPIGet("https://www.googleapis.com/youtube/v3/videos/rate", {
       "id": video.snippet.id,
       "rating": "dislike"
-    }, (result) => {
+    }, function(result){
     	Materialize.toast("Video successfully disliked.", 5000);
     });
   }

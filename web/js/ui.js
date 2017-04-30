@@ -9,7 +9,7 @@ UIManager.prototype.toggleTheme = function(){
   this.darkThemed = !this.darkThemed;
 
   if(this.darkThemed){
-      $("body").animate({"background-color": "#FFFFFF"}, 100, "linear", () => {
+      $("body").animate({"background-color": "#FFFFFF"}, 100, "linear", function(){
         $("body").addClass("grey").addClass("darken-3");
         $("body").css("background-color", "");
         $("#authenticateButton").removeClass("waves-light");
@@ -19,7 +19,7 @@ UIManager.prototype.toggleTheme = function(){
       $(".videoNameTextComponent").addClass("white-text").removeClass("black-text");
       $(".nav-wrapper-right-align .chip").addClass("grey").addClass("darken-3");
   }else{
-      $("body").animate({"background-color": "#424242"}, 100, "linear", () => {
+      $("body").animate({"background-color": "#424242"}, 100, "linear", function(){
         $("body").css("background-color", "");
         $("body").removeClass("grey").removeClass("darken-3");
         $("#authenticateButton").addClass("waves-light");

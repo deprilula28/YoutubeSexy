@@ -18,11 +18,11 @@ UIManager.prototype.unloadSidebar = function(){
 
 UIManager.prototype.loadBasics = function(){
 
-  this.addButton("Home", () => {
+  this.addButton("Home", function(){
     if(handleLeave){
-      handleLeave(() => {
+      handleLeave(function(){
         console.log("Going home");
-        $("nav").css({"height": "64px"}).animate({"background-color": "#d40000"}, 100, "linear", () => {
+        $("nav").css({"height": "64px"}).animate({"background-color": "#d40000"}, 100, "linear", function(){
           $("nav").css({"background-color": "#d40000"});
         });
         $("#main-page").css({"opacity": ""});
@@ -31,7 +31,7 @@ UIManager.prototype.loadBasics = function(){
     }else console.log("Already home");
   });
 
-  this.addButton("Options", () => {
+  this.addButton("Options", function(){
     console.log("Opening options panel");
   	$("#optionModal").modal("open");
   });

@@ -6,7 +6,7 @@ String.prototype.replaceAll = String.prototype.replaceAll || function(needle, re
 
 var youtubeSexy;
 
-window.onload = () => {
+window.onload = function(){
   
   $(".button-collapse").sideNav();
 
@@ -21,11 +21,11 @@ window.onload = () => {
   
   $(".customScrollBarWrapper").css({"left": ($(window).width() - 10) + "px", "height": ($(window).height() - 85) + "px"})
 
-  $("body").resize((event) => {
+  $("body").resize(function(event){
     $(".customScrollBarWrapper").css({"left": ($(window).width() - 10) + "px", "height": ($(window).height() - 85) + "px"});
   });
 
-  $("#loadingcircle").on('appear', () => {
+  $("#loadingcircle").on('appear', function(){
   	if(!youtubeSexy.loadingPage) youtubeSexy.loadNewMenuMenuPage();
   });
 
@@ -62,7 +62,7 @@ YoutubeSexy.prototype.gotoHome = function(){
       "part": "snippet",
       "maxResults": 15,
       "home": true
-    }, (json) => {
+    }, function(json){
       this.loadMainMenuPage(json);
       this.loadingPage = false;
     });
@@ -98,7 +98,7 @@ YoutubeSexy.prototype.loadMainMenuPage = function(activitiesResponse){
     youtubeSexy.ytDataAPI.googleAPIGet("https://www.googleapis.com/youtube/v3/videos", {
       "part": "snippet,statistics",
       "id": itemIdInputString
-    }, (result) => {
+    }, function(result){
       for(var itemIndex in result.items){
         var item = result.items[itemIndex];
         var channelTitle = item.snippet.channelTitle;
@@ -107,7 +107,7 @@ YoutubeSexy.prototype.loadMainMenuPage = function(activitiesResponse){
         interpreterJSON[channelTitle].push(item);
       }
 
-      jQuery.each(interpreterJSON, (title, itemList) => {
+      jQuery.each(interpreterJSON, function(title, itemList){
         for(var itemIndex in itemList){
           var item = itemList[itemIndex];
 
@@ -136,7 +136,7 @@ YoutubeSexy.prototype.loadMainMenuPage = function(activitiesResponse){
 
 var navShown = false;
 
-$(window).scroll((event) => {
+$(window).scroll(function(event){
   
   if(channelPreview) youtubeSexy.hideChannelPreviews();
 
@@ -153,7 +153,7 @@ $(window).scroll((event) => {
 
 });
 
-$(window).resize((event) => {
+$(window).resize(function(event){
 
   $("#tabOverlayColumn").css({"height": ($(window).height() - 50) + "px"});
   $("#bigVideoIFrameContainer").css({"height": ($(window).height() - 200) + "px"});
@@ -165,7 +165,7 @@ YoutubeSexy.prototype.hideChannelPreviews = function (){
 
   if(channelPreview){
     var prev = $(channelPreview);
-    $(channelPreview).animate({"opacity": 0}, 100, "linear", () => {
+    $(channelPreview).animate({"opacity": 0}, 100, "linear", function(){
       prev.remove();
     });
     channelPreview = undefined;
@@ -181,7 +181,7 @@ YoutubeSexy.prototype.showChannelPreview = function(results, element){
 
   if(channelPreview){
     var prev = $(channelPreview);
-    $(channelPreview).animate({"opacity": 0}, 100, "linear", () => {
+    $(channelPreview).animate({"opacity": 0}, 100, "linear", function(){
       prev.remove();
     });
     channelPreview = undefined;
@@ -222,7 +222,7 @@ YoutubeSexy.prototype.showChannelPreview = function(results, element){
 
   var div = this.ui.generateNewElement("div", ["card", "z-depth-5", "channelPreviewPopup"], undefined, document.body,
     baseCSS);
-  $(div).animate(animationCSS, 150, "linear", () => {});
+  $(div).animate(animationCSS, 150, "linear");
 
   var bannerDIV = this.ui.generateNewElement("div", undefined, undefined, div, {"height": "99.05px", "max-height": "99.05px", "min-height": "99.05px"})
 
@@ -271,28 +271,29 @@ YoutubeSexy.prototype.showChannelPage = function(channelId, mouseX, mouseY){
   console.log("Loading channel page for channel ID: " + channelId);
   
   var backgroundType = this.options.backgroundType;
-  if(backgroundType == "backgroundBlur") $("#main-page").addClass("blurInFrames");
+  if(backgroundType === "backgroundBlur") $("#main-page").addClass("blurInFrames");
   
   $("body").css({"overflow": "hidden"});
   $("#content-page").empty();
   $(".top-text").get(0).textContent = "Loading...";
 
-  handleLeave = (onDone) => {
+  handleLeave = function(onDone){
     window.clearInterval(this.activeChannelPage.pollTimer);
     $(".top-text").get(0).textContent = "Home";
     this.activeChannelPage.unload();
     this.activeChannelPage = undefined;
-    if(backgroundType == "backgroundBlur") $("#main-page").removeClass("blurInFrames").addClass("blurOutFrames");
+    if(backgroundType === "backgroundBlur") $("#main-page").removeClass("blurInFrames").addClass("blurOutFrames");
     $("#content-page").animate({"opacity": 0});
     $("body").css({"overflow": ""});
-    $("nav").css({"height": "64px"}).animate({"background-color": "#d40000"}, 100, "linear", () => {
+    $("nav").css({"height": "64px"}).animate({"background-color": "#d40000"}, 100, "linear",function(){
       $("nav").css({"background-color": "#d40000"});
     });
 
-    setTimeout(() => {
-      if(backgroundType == "backgroundBlur") $("#main-page").removeClass("blurOutFrames");
-      $("#content-page").css({"display": "none", "opacity": 1}).empty();
-      if(backgroundType == "backgroundBlur") $("#content-page").removeClass("blurInFrames");
+    setTimeout(function(){
+      if(backgroundType === "backgroundBlur") $("#main-page").removeClass("blurOutFrames");
+      var $contentPage = $("#content-page");
+      $contentPage.css({"display": "none", "opacity": 1}).empty();
+      if(backgroundType === "backgroundBlur") $contentPage.removeClass("blurInFrames");
       
       onDone();
     }, 500);
@@ -301,7 +302,7 @@ YoutubeSexy.prototype.showChannelPage = function(channelId, mouseX, mouseY){
   youtubeSexy.ytDataAPI.googleAPIGet("https://www.googleapis.com/youtube/v3/channels", {
     "part": "snippet,brandingSettings,statistics",
     "id": channelId
-  }, (result) => {
+  }, function(result){
     for(var channelIndex in result.items){
       var channel = result.items[channelIndex];
       $("#content-page").css({"display": ""});
@@ -325,7 +326,7 @@ YoutubeSexy.prototype.loadNewMenuMenuPage = function(){
       "maxResults": 25,
       "home": true,
       "pageToken": this.lastPageToken
-    }, (json) => {
+    }, function(json){
       this.loadMainMenuPage(json);
       this.loadingPage = false;
     });
@@ -335,7 +336,7 @@ YoutubeSexy.prototype.loadNewMenuMenuPage = function(){
       "chart": "mostPopular",
       "maxResults": 25,
       "pageToken": this.lastPageToken
-    }, (json) => {
+    }, function(json){
       this.loadMainMenuPage(json);
       this.loadingPage = false;
     });
