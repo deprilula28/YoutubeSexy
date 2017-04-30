@@ -10,7 +10,7 @@ function YTDataAPI(){
 
 YTDataAPI.prototype.startAPILib = function(){
 
-  if(youtubeSexy.cookies.getCookie("doAuthenticate") && youtubeSexy.cookies.getCookie("doAuthenticate") == "true"){
+  if(youtubeSexy.cookies.getCookie("doAuthenticate") && youtubeSexy.cookies.getCookie("doAuthenticate") === "true"){
     console.log("Automatic authentication based on cookie.");
     this.requestAuth();
   }else if(this.authenticated){
@@ -18,7 +18,7 @@ YTDataAPI.prototype.startAPILib = function(){
       "part": "snippet,statistics",
       "maxResults": 50,
       "home": true
-    }, (json) => {
+    }, function(json){
       youtubeSexy.loadMainMenuPage(json);
       youtubeSexy.loadingPage = false;
     });
@@ -69,7 +69,7 @@ YTDataAPI.prototype.requestAuth = function(runAfter){
 
   var pollTimer = window.setInterval(function(){
     try{
-      if(win.document.URL.indexOf(redirect) == 0){
+      if(win.document.URL.indexOf(redirect) === 0){
           window.clearInterval(pollTimer);
           
           var url = win.document.URL;
@@ -82,7 +82,7 @@ YTDataAPI.prototype.requestAuth = function(runAfter){
           
           win.close();
 
-          youtubeSexy.ytDataAPI.verify(acToken, () => {
+          youtubeSexy.ytDataAPI.verify(acToken, function(){
             youtubeSexy.ytDataAPI.authAccessToken = new AuthAccessToken(acToken, tokenType, expiresIn);
             youtubeSexy.ytDataAPI.authenticated = true;
             console.log("Authenticated!");
@@ -97,7 +97,7 @@ YTDataAPI.prototype.requestAuth = function(runAfter){
             $("#main-page").empty();
             $(".upload-button").css({"display": ""});
 
-            youtubeSexy.ytDataAPI.googleAPIGet("https://www.googleapis.com/auth/userinfo.profile", {}, (json) => {
+            youtubeSexy.ytDataAPI.googleAPIGet("https://www.googleapis.com/auth/userinfo.profile", {}, function(json){
 
             });
 
@@ -105,7 +105,7 @@ YTDataAPI.prototype.requestAuth = function(runAfter){
               "part": "snippet,statistics",
               "maxResults": 50,
               "home": true
-            }, (json) => {
+            }, function(json){
               youtubeSexy.loadMainMenuPage(json);
               youtubeSexy.loadingPage = false;
             });
@@ -136,12 +136,12 @@ YTDataAPI.prototype.verify = function(token, handleSuccess){
 	request.open('GET', url, true);
 	request.onreadystatechange = function(e){
 
-		if(!received && request.readyState == 4){
+		if(!received && request.readyState === 4){
 			received = true;
       var response = JSON.parse(request.responseText);
 
       if(response.hasOwnProperty("error")) Materialize.toast("Invalid token; Try again", 5000);
-      else if(response.audience != "143036117535-r44koj2e0bf9emon2k6kc18g6pkgorh1.apps.googleusercontent.com")
+      else if(response.audience !== "143036117535-r44koj2e0bf9emon2k6kc18g6pkgorh1.apps.googleusercontent.com")
         Materialize.toast("Bad response; Try again", 5000);
       else handleSuccess();
 		}
@@ -156,7 +156,7 @@ YTDataAPI.prototype.googleAPIGet = function(path, params, completeHandler){
 
   var url = path + "?key=" + API_KEY + (this.authAccessToken ? "&access_token=" + this.authAccessToken : "");
 
-  jQuery.each(params, (paramName, param) => url = url + "&" + paramName + "=" + (param + ""));
+  jQuery.each(params, function(paramName, param){ url = url + "&" + paramName + "=" + (param + "") });
 
 	var request = new XMLHttpRequest();
 	var received = false;
@@ -164,7 +164,7 @@ YTDataAPI.prototype.googleAPIGet = function(path, params, completeHandler){
 	request.open('GET', url, true);
 	request.onreadystatechange = function(e){
 
-		if(!received && request.readyState == 4){
+		if(!received && request.readyState === 4){
 			received = true;
       var json = JSON.parse(request.responseText);
 

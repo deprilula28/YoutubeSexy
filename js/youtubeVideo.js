@@ -1,30 +1,34 @@
 
 YoutubeSexy.prototype.playVideo = function(videoResult, posterResult, mouseX, mouseY, thumbnail, doDelete, animation){
 	
-  if(this.playing == videoResult.id){
+  if(this.playing === videoResult.id){
     console.log("Attempted to open video already playing!");
     return;
   }
-  
+  var smallVideoPlayerWindowWrapper = $(".smallVideoPlayerWindowWrapper");
+  var bigVideoFrame = $("#bigVideoIFrame");
+  var mainPage = $("#main-page");
+  var contentPage = $("#content-page");
+
   this.ui.unloadSearchBar();
   this.playing = videoResult.id;
   $(".top-text").get(0).textContent = videoResult.snippet.title;
-  $("#bigVideoIFrame").get(0).src = "https://www.youtube.com/embed/" + this.playing + "?autoplay=1&enablejsapi=1&theme=light&showinfo=0";
+  bigVideoFrame.attr("src", "https://www.youtube.com/embed/" + this.playing + "?autoplay=1&enablejsapi=1&theme=light&showinfo=0");
   console.log("Preparing to play video...");
-  $("#main-page").removeClass("blurInFrames").removeClass("blurOutFrames");
+  mainPage.removeClass("blurInFrames").removeClass("blurOutFrames");
   
   if(youtubeSexy.ui.displayingSmallVideo){
 		youtubeSexy.ui.displayingSmallVideo = false;
-  	$("#bigVideoIFrameContainer").get(0).appendChild($("#bigVideoIFrame").css({"height": "100%"}).get(0));
+  	$("#bigVideoIFrameContainer").get(0).appendChild(bigVideoFrame.css({"height": "100%"}).get(0));
   	$(".smallVideoPlayerWindowWrapper").removeClass("filled").css({"display": "none"});
   }
 
 	//Handle Leave
-  handleLeave = (onDone) => {
-		$(".text-change").removeClass("black-text").addClass("white-text");
-  	this.playing = undefined;
-		var videoIFrame = $("#bigVideoIFrame").css({"height": "100%"}).get(0);
-		$(".smallVideoPlayerWindowWrapper").addClass("filled").css({"width": videoIFrame.clientWidth, "height": videoIFrame.clientHeight, "top": "64px", 
+  handleLeave = function(onDone){
+      $(".text-change").removeClass("black-text").addClass("white-text");
+      youtubeSexy.playing = undefined;
+		var videoIFrame = bigVideoFrame.css({"height": "100%"}).get(0);
+		smallVideoPlayerWindowWrapper.addClass("filled").css({"width": videoIFrame.clientWidth, "height": videoIFrame.clientHeight, "top": "64px",
 			"left": "0px", "display": "block"}).get(0).appendChild(videoIFrame);
 		$(".smallVideoPlayerTopBar").css({"background-color": this.vibrantColor});
 		$(".smallVideoPlayerTopBarTitle").text(videoResult.snippet.title);
@@ -37,33 +41,30 @@ YoutubeSexy.prototype.playVideo = function(videoResult, posterResult, mouseX, mo
 				videoIFrame.src = "";
 				$(".bigVideoIFrameContainer").get(0).appendChild(videoIFrame);
 			}, 250);
-		});
-
-		$(".smallVideoPlayerWindowWrapper").on("mouseover", function(){
+		}).on("mouseover", function(){
 			$(".smallVideoPlayerTopBar").clearQueue().stop().animate({"top": "0px"}, 100, "easeOutQuad");
-		});
-
-		$(".smallVideoPlayerWindowWrapper").on("mouseleave", function(){
+		}).on("mouseleave", function(){
 			$(".smallVideoPlayerTopBar").clearQueue().stop().animate({"top": "-28px"}, 100, "easeOutQuad");
 		});
 
 		youtubeSexy.ui.displayingSmallVideo = true;
 		youtubeSexy.ui.animateVideoIFrameSizing();
 
-		$("#content-page").animate({"opacity": 0});
+		contentPage.animate({"opacity": 0});
 		$("body").css({"overflow": ""});
-		$("nav").css({"height": "64px"}).animate({"background-color": "#d40000"}, 100, "linear", () => {
+		$("nav").css({"height": "64px"}).animate({"background-color": "#d40000"}, 100, "linear", function(){
 				$("nav").css({"background-color": "#d40000"});
 		});
-		if(backgroundType == "backgroundBlur") $("#main-page").removeClass("blurInFrames").addClass("blurOutFrames").animate({"opacity": 1});
+		if(backgroundType === "backgroundBlur") $("#main-page").removeClass("blurInFrames").addClass("blurOutFrames").animate({"opacity": 1});
 		else $("#main-page").animate({"opacity": 1});
     
-    setTimeout(() => {
-      document.getElementById("pageContent").appendChild($("#youtubePage").get(0));
-      if(backgroundType == "backgroundBlur") $("#main-page").removeClass("blurOutFrames").css({"opacity": ""});
-      else $("#main-page").css({"opacity": ""});
-      $("#youtubePage").css({"display": "none"});
-      $("#content-page").css({"display": "none", "opacity": 1}).empty();
+    setTimeout(function(){
+      var youtubePage = $("#youtubePage");
+      $("#pageContent").append(youtubePage);
+      if(backgroundType === "backgroundBlur") mainPage.removeClass("blurOutFrames").css({"opacity": ""});
+      else mainPage.css({"opacity": ""});
+      youtubePage.css({"display": "none"});
+      contentPage.css({"display": "none", "opacity": 1}).empty();
 
       onDone();
     }, 500);
@@ -73,9 +74,8 @@ YoutubeSexy.prototype.playVideo = function(videoResult, posterResult, mouseX, mo
 
   $("body").css({"overflow": "hidden"});
 
-  var inVideo = $('#content-page').children().length > 0;
-  $("#content-page").empty();
-  $("#content-page").get(0).appendChild($("#youtubePage").get(0));
+  var inVideo = contentPage.children().length > 0;
+  contentPage.empty().append($("#youtubePage"));
 
   var vibrant = new Vibrant(thumbnail);
   var swatches = vibrant.swatches();
@@ -91,7 +91,7 @@ YoutubeSexy.prototype.playVideo = function(videoResult, posterResult, mouseX, mo
 
   var backgroundType = youtubeSexy.options.backgroundType;
 	
-  if(backgroundType == "thumbnailBlur"){
+  if(backgroundType === "thumbnailBlur"){
   	$(".thumbnailBackgroundOverlay").css({"display": ""});
 	  thumbnail.id = "thumbnailBackgroundOverlayCanvasImgSrc";
 	  stackBlurImage("thumbnailBackgroundOverlayCanvasImgSrc", "thumbnailBackgroundOverlayCanvasObj", 20, 255);
@@ -101,7 +101,7 @@ YoutubeSexy.prototype.playVideo = function(videoResult, posterResult, mouseX, mo
 	  thumbnail.id = "";
 	  $("#thumbnailBackgroundOverlayCanvasObj").css({"width": "110%", "height": "110%"});
 		if(doDelete) $(thumbnail).remove();
-  }else if(backgroundType == "backgroundBlur"){
+  }else if(backgroundType === "backgroundBlur"){
   	$("#main-page").removeClass("blurOutFrames");
   	$(".thumbnailBackgroundOverlay").css({"display": "none"});
   }
@@ -123,21 +123,16 @@ YoutubeSexy.prototype.playVideo = function(videoResult, posterResult, mouseX, mo
 		$("#content-page").css({"opacity": 0, "display": "block"}).animate({"opacity": 1});
 		$("#youtubePage").css({"display": "block"});
 			
-		if(backgroundType == "backgroundBlur") $("#main-page").addClass("blurInFrames");
+		if(backgroundType === "backgroundBlur") $("#main-page").addClass("blurInFrames");
 		else $("#main-page").css({"opacity": 0});
 	}, 500);
 	
   }
 
-  //Content page filing
-  $("#youtubeVideoTabs").tabs({"onShow": (tab) => {
-		console.log("Tab:", tab);
-	}});
   $("#youtubeVideoTitleLabel").get(0).textContent = videoResult.snippet.title;
   $("#youtubeVideoViewsLabel").get(0).textContent = prettifyNumber(videoResult.statistics.viewCount) + " views";
-  $("#channelYoutubeVideoChipPlaceholder").empty();
-  $("#channelYoutubeVideoChipPlaceholder").get(0).appendChild(this.ui.getUserIcon(videoResult.snippet.channelId, "100%"));
-  $("#bigVideoIFrameContainer").css({"height": ($(window).height() - 200) + "px"});
+  $("#channelYoutubeVideoChipPlaceholder").empty().append(this.ui.getUserIcon(videoResult.snippet.channelId, "100%"));
+  bigVideoFrame.css({"height": ($(window).height() - 200) + "px"});
 
   //Like/Dislike
   $("#ldshadpYoutubeVideoChipPlaceholder").empty();
@@ -156,7 +151,7 @@ YoutubeSexy.prototype.playVideo = function(videoResult, posterResult, mouseX, mo
   dislikeImg.src = "img/dislike.png";
   var dislikesText = this.ui.generateNewElement("a", ["black-text", "truncate"], prettifyNumber(videoResult.statistics.dislikeCount), dislikeChip, undefined)
 
-  var authVerify = () => {
+  var authVerify = function(){
     if(youtubeSexy.ytDataAPI.authenticated) return true;
     Materialize.toast("You need to be authenticated to perform this action!", 5000);
     youtubeSexy.ytDataAPI.requestAuth();
@@ -164,22 +159,22 @@ YoutubeSexy.prototype.playVideo = function(videoResult, posterResult, mouseX, mo
     return false;
   };
 
-  var likeClick = () => {
+  var likeClick = function(){
     if(!authVerify()) return;
     youtubeSexy.ytDataAPI.googleAPIGet("https://www.googleapis.com/youtube/v3/videos/rate", {
       "id": video.snippet.id,
       "rating": "like"
-    }, (result) => {
+    }, function(result){
 	    Materialize.toast("Video successfully liked.", 5000);
     });
   }
 
-  var dislikeClick = () => {
+  var dislikeClick = function(){
     if(!authVerify()) return;
     youtubeSexy.ytDataAPI.googleAPIGet("https://www.googleapis.com/youtube/v3/videos/rate", {
       "id": video.snippet.id,
       "rating": "dislike"
-    }, (result) => {
+    }, function(result){
     	Materialize.toast("Video successfully disliked.", 5000);
     });
   }
@@ -209,7 +204,7 @@ YoutubeSexy.prototype.loadCommentSection = function(videoId, videoResult, poster
 	$(".commentAmountTitle").text("Amount of comments: " + prettifyNumber(commentCount));
 	var commentSectionDiv = $("#commentSection").get(0);
 
-  var authVerify = (doLater) => {
+  var authVerify = function(doLater){
     if(youtubeSexy.ytDataAPI.authenticated) return true;
     Materialize.toast("You need to be authenticated to perform this action!", 5000);
     youtubeSexy.ytDataAPI.requestAuth(doLater);
@@ -222,7 +217,7 @@ YoutubeSexy.prototype.loadCommentSection = function(videoId, videoResult, poster
 		"videoId": videoResult.id,
 		"maxResults": 50,
 		"textFormat": "plainText"
-	}, (result) => {
+	}, function(result){
 		for(var itemIndex in result.items){
 			//Basics
 			var item = result.items[itemIndex];
@@ -266,22 +261,22 @@ YoutubeSexy.prototype.loadCommentSection = function(videoId, videoResult, poster
 			dislikeImg.src = "img/dislike.png";
 
 			//Interactables
-			var likeClick = () => {
+			var likeClick = function(){
 				if(!authVerify(likeClick)) return;
 				youtubeSexy.ytDataAPI.googleAPIGet("https://www.googleapis.com/youtube/v3/videos/rate", {
 					"id": video.snippet.id,
 					"rating": "like"
-				}, (result) => {
+				}, function(result){
 					Materialize.toast("Video successfully liked.", 5000);
 				});
 			}
 
-			var dislikeClick = () => {
+			var dislikeClick = function(){
 				if(!authVerify(dislikeClick)) return;
 				youtubeSexy.ytDataAPI.googleAPIGet("https://www.googleapis.com/youtube/v3/videos/rate", {
 					"id": video.snippet.id,
 					"rating": "dislike"
-				}, (result) => {
+				}, function(result){
 					Materialize.toast("Video successfully disliked.", 5000);
 				});
 			}
@@ -367,10 +362,10 @@ function appendCommentHTML(comment, master, vibrantColor){
 
 	var boldRegex = /\*(.|\n)*?\*/ig;
 	var italicRegex = /_(.|\n)*?_/ig;
-	comment = comment.replace(boldRegex, (text) => {return "<a class=\"white-text\" style=\"font-style: bold;\">" + text + "</a>"});
-	comment = comment.replace(italicRegex, (text) => {return "<a class=\"white-text\" style=\"font-style: oblique;\">" + text + "</a>"});
+	comment = comment.replace(boldRegex, function(text){return "<a class=\"white-text\" style=\"font-style: bold;\">" + text + "</a>"});
+	comment = comment.replace(italicRegex, function(text){return "<a class=\"white-text\" style=\"font-style: oblique;\">" + text + "</a>"});
 
-	comment = comment.replace(urlRegex, (url) => {
+	comment = comment.replace(urlRegex, function(url){
 		try{
 			if(url.startsWith("http://www.youtube.com") || url.startsWith("https://www.youtube.com") || url.startsWith("www.youtube.com")){
 				var videoLink = url.split("v=")[1];

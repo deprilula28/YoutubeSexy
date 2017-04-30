@@ -1,7 +1,7 @@
 function Cookies(){
 
     if(!this.getCookie("annoyingGithubInviteClosed") || this.getCookie("annoyingGithubInviteClosed") !== "true"){
-        setTimeout(() => {
+        setTimeout(function(){
             $(".content").addClass("blurInFrames");
             $(".annoyingGithubInvite").css({"display": "", "opacity": 0}).animate({"opacity": 1});
             youtubeSexy.cookies.setCookie("annoyingGithubInviteClosed", "true", 700);
@@ -18,7 +18,7 @@ function Cookies(){
 function hideAnnoyingGithubInvite(){
 
     $(".content").removeClass("blurInFrames").addClass("blurOutFrames");
-    $(".annoyingGithubInvite").css({"display": "", "opacity": 1}).animate({"opacity": 0}, 100, "linear", () => {
+    $(".annoyingGithubInvite").css({"display": "", "opacity": 1}).animate({"opacity": 0}, 100, "linear", function(){
         $(".annoyingGithubInvite").remove();
     }).remove();
 
