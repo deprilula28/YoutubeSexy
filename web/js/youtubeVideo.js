@@ -20,7 +20,7 @@ YoutubeSexy.prototype.playVideo = function(videoResult, posterResult, mouseX, mo
   if(youtubeSexy.ui.displayingSmallVideo){
 		youtubeSexy.ui.displayingSmallVideo = false;
   	$("#bigVideoIFrameContainer").get(0).appendChild(bigVideoFrame.css({"height": "100%"}).get(0));
-  	$(".smallVideoPlayerWindowWrapper").removeClass("filled").css({"display": "none"});
+  	smallVideoPlayerWindowWrapper.removeClass("filled").css({"display": "none"});
   }
 
 	//Handle Leave
@@ -28,16 +28,16 @@ YoutubeSexy.prototype.playVideo = function(videoResult, posterResult, mouseX, mo
       $(".text-change").removeClass("black-text").addClass("white-text");
       youtubeSexy.playing = undefined;
 		var videoIFrame = bigVideoFrame.css({"height": "100%"}).get(0);
-		smallVideoPlayerWindowWrapper.addClass("filled").css({"width": videoIFrame.clientWidth, "height": videoIFrame.clientHeight, "top": "64px",
-			"left": "0px", "display": "block"}).get(0).appendChild(videoIFrame);
+		smallVideoPlayerWindowWrapper.addClass("filled").css({"width": videoIFrame.clientWidth, "height": videoIFrame.clientHeight,
+			"display": "block"}).get(0).appendChild(videoIFrame);
 		$(".smallVideoPlayerTopBar").css({"background-color": this.vibrantColor});
 		$(".smallVideoPlayerTopBarTitle").text(videoResult.snippet.title);
 
-		$(".smallVideoPlayerStopButton").click(function(){
-			$(".smallVideoPlayerWindowWrapper").css({"animation": "smallVideoPlayerDisappear 0.25s"});
+		smallVideoPlayerWindowWrapper.click(function(){
+			smallVideoPlayerWindowWrapper.css({"animation": "smallVideoPlayerDisappear 0.25s"});
 
 			setTimeout(function(){
-				$(".smallVideoPlayerWindowWrapper").removeClass("filled").css({"display": "none", "animation": ""});
+				smallVideoPlayerWindowWrapper.removeClass("filled").css({"display": "none", "animation": ""});
 				videoIFrame.src = "";
 				$(".bigVideoIFrameContainer").get(0).appendChild(videoIFrame);
 			}, 250);

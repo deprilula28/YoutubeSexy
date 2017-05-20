@@ -157,7 +157,6 @@ $(window).resize(function(event){
 
   $("#tabOverlayColumn").css({"height": ($(window).height() - 50) + "px"});
   $("#bigVideoIFrameContainer").css({"height": ($(window).height() - 200) + "px"});
-  youtubeSexy.ui.resizeIFrame();
   
 });
 
