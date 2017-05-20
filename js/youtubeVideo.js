@@ -212,17 +212,20 @@ YoutubeSexy.prototype.loadCommentSection = function(videoId, videoResult, poster
     return false;
   };
 
+  var ui = this.ui;
+
 	youtubeSexy.ytDataAPI.googleAPIGet("https://www.googleapis.com/youtube/v3/commentThreads", {
 		"part": "snippet,replies",
 		"videoId": videoResult.id,
 		"maxResults": 50,
 		"textFormat": "plainText"
-	}, function(result){
+	}, (result) => {
+		
 		for(var itemIndex in result.items){
 			//Basics
 			var item = result.items[itemIndex];
-			var commentRow = this.ui.generateNewElement("div", ["row"], undefined, commentSectionDiv, {"margin-bottom": "4px"});
-			var commentColumn = this.ui.generateNewElement("div", ["col", "s12"], undefined, commentRow, undefined);
+			var commentRow = ui.generateNewElement("div", ["row"], undefined, commentSectionDiv, {"margin-bottom": "4px"});
+			var commentColumn = ui.generateNewElement("div", ["col", "s12"], undefined, commentRow, undefined);
 
 			//Commenter JSON
 			var commenterData = {
@@ -234,30 +237,30 @@ YoutubeSexy.prototype.loadCommentSection = function(videoId, videoResult, poster
 			}else if(verifyFeatured(posterResult, item.snippet.topLevelComment.snippet.authorChannelId.value)) commenterData.tag = "featured";
 
 			//Comment Author
-			var commenterRow = this.ui.generateNewElement("div", ["row"], undefined, commentColumn, {"margin-bottom": "2px"});
-			var commenterColumn = this.ui.generateNewElement("div", ["col", "s12"], undefined, commenterRow, undefined);
-			var commenterChip = this.ui.getUserIcon(item.snippet.topLevelComment.snippet.authorChannelId.value, "100%", commenterData);
+			var commenterRow = ui.generateNewElement("div", ["row"], undefined, commentColumn, {"margin-bottom": "2px"});
+			var commenterColumn = ui.generateNewElement("div", ["col", "s12"], undefined, commenterRow, undefined);
+			var commenterChip = ui.getUserIcon(item.snippet.topLevelComment.snippet.authorChannelId.value, "100%", commenterData);
 			commenterColumn.appendChild(commenterChip);
 
 			//Content
-			var contentRow = this.ui.generateNewElement("div", ["row"], undefined, commentColumn, {"margin-bottom": "2px"});
-			var contentColumn = this.ui.generateNewElement("div", ["col", "s12"], undefined, contentRow, undefined);
+			var contentRow = ui.generateNewElement("div", ["row"], undefined, commentColumn, {"margin-bottom": "2px"});
+			var contentColumn = ui.generateNewElement("div", ["col", "s12"], undefined, contentRow, undefined);
 			appendCommentHTML(item.snippet.topLevelComment.snippet.textDisplay, contentColumn, this.vibrantColor);
 
 			//Like & Dislike Buttons
-			var rateRow = this.ui.generateNewElement("div", ["row"], undefined, commentColumn, {"margin-bottom": "2px"});
-			var columnLike = this.ui.generateNewElement("div", ["col", "s6"], undefined, rateRow, {"padding-right": "0px"});
-			var likeChip = this.ui.generateNewElement("div", ["chip", "small", "waves-effect", "waves-dark"], undefined,
+			var rateRow = ui.generateNewElement("div", ["row"], undefined, commentColumn, {"margin-bottom": "2px"});
+			var columnLike = ui.generateNewElement("div", ["col", "s6"], undefined, rateRow, {"padding-right": "0px"});
+			var likeChip = ui.generateNewElement("div", ["chip", "small", "waves-effect", "waves-dark"], undefined,
 				columnLike, {"margin": "0px"});
-			var likeImg = this.ui.generateNewElement("img", undefined, undefined, likeChip, {"margin-right": "0px"});
+			var likeImg = ui.generateNewElement("img", undefined, undefined, likeChip, {"margin-right": "0px"});
 			likeImg.src = "img/like.png";
-			var likesText = this.ui.generateNewElement("a", ["black-text", "truncate"], item.snippet.topLevelComment.snippet.likeCount ? 
+			var likesText = ui.generateNewElement("a", ["black-text", "truncate"], item.snippet.topLevelComment.snippet.likeCount ? 
 				prettifyNumber(item.snippet.topLevelComment.snippet.likeCount) : "", likeChip, undefined)
 
-			var columnDislike = this.ui.generateNewElement("div", ["col", "s4"], undefined, rateRow, {"padding": "0px"});
-			var dislikeChip = this.ui.generateNewElement("div", ["chip", "small", "waves-effect", "waves-dark"], undefined,
+			var columnDislike = ui.generateNewElement("div", ["col", "s4"], undefined, rateRow, {"padding": "0px"});
+			var dislikeChip = ui.generateNewElement("div", ["chip", "small", "waves-effect", "waves-dark"], undefined,
 				columnDislike, {"margin": "0px"});
-			var dislikeImg  = this.ui.generateNewElement("img", undefined, undefined, dislikeChip, {"margin-right": "0px"});
+			var dislikeImg  = ui.generateNewElement("img", undefined, undefined, dislikeChip, {"margin-right": "0px"});
 			dislikeImg.src = "img/dislike.png";
 
 			//Interactables
@@ -285,21 +288,21 @@ YoutubeSexy.prototype.loadCommentSection = function(videoId, videoResult, poster
 			$(likeChip).click(likeClick);
 
 			if(item.snippet.totalReplyCount > 0 && item.replies && item.replies.comments){
-				var responsesRow = this.ui.generateNewElement("div", ["row"], undefined, commentColumn, {"margin-top": "5px", "margin-bottom": "5px"});
-				this.ui.generateNewElement("a", ["white-text"], item.snippet.totalReplyCount + " replies", responsesRow, undefined);
+				var responsesRow = ui.generateNewElement("div", ["row"], undefined, commentColumn, {"margin-top": "5px", "margin-bottom": "5px"});
+				ui.generateNewElement("a", ["white-text"], item.snippet.totalReplyCount + " replies", responsesRow, undefined);
 			
 				var orderedItems = item.replies.comments;
 
-				var fullReplyArea = this.ui.generateNewElement("div", undefined, undefined, commentColumn, undefined);
-				var areaRow = this.ui.generateNewElement("div", ["row"], undefined, fullReplyArea, undefined);
-				var area = this.ui.generateNewElement("div", ["replyDisplayArea"], undefined, areaRow, undefined);
-				var replierRow = this.ui.generateNewElement("div", ["row"], undefined, fullReplyArea, undefined);
+				var fullReplyArea = ui.generateNewElement("div", undefined, undefined, commentColumn, undefined);
+				var areaRow = ui.generateNewElement("div", ["row"], undefined, fullReplyArea, undefined);
+				var area = ui.generateNewElement("div", ["replyDisplayArea"], undefined, areaRow, undefined);
+				var replierRow = ui.generateNewElement("div", ["row"], undefined, fullReplyArea, undefined);
 				
 				switchOnce(fullReplyArea, orderedItems, item, 0, area, videoResult, posterResult, replierRow, this.vibrantColor);
 			}
 
 			//Comment separator
-			var div = this.ui.generateNewElement("div", ["commentSeparator"], undefined, commentSectionDiv, undefined);
+			var div = ui.generateNewElement("div", ["commentSeparator"], undefined, commentSectionDiv, undefined);
 		}
 	});
 

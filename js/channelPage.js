@@ -12,7 +12,7 @@ function YoutubeChannelPage(channelId, response, mouseX, mouseY){
 
   this.createChannelPage(mouseX, mouseY);
 
-  $(window).resize(function(event){
+  $(window).resize((event) => {
     if(this.subscriberCountPanel){
       $(this.subCountDIV).css({"top": ($(window).height() / 2 - 48) + "px", "left": ($(window).width() / 2 - this.userSubscriberCountA.clientWidth / 2)});
       $(this.userSubscriberCountAElement).css({"top": ($(window).height() / 2 - 72) + "px", "left": ($(window).width() / 2 - 
@@ -20,15 +20,17 @@ function YoutubeChannelPage(channelId, response, mouseX, mouseY){
     }
   });
   
-  $(".channelPageWrapper").scroll(function(event){
+  var wrapper = $(".channelPageWrapper");
+  console.log("registering")
+  wrapper.scroll(() => {
     if(youtubeSexy.activeChannelPage){
-      var scroll = $(".channelPageWrapper").scrollTop();
+      var scroll = wrapper.scrollTop();
       var offset = (this.preloader.getBoundingClientRect().top - document.body.getBoundingClientRect().top);
       
       if(this.preloader && !this.loadingPage && offset < $(window).height()){
         console.log("Loading new page");
         this.loadingPage = true;
-        this.loadVideoPage();
+        this.loadVideoPage(this.videoListRow);
       }
 
       var tabs = this.tabs;
@@ -183,7 +185,7 @@ YoutubeChannelPage.prototype.createChannelPage = function(mouseX, mouseY){
   });
 
   //Subscriber count click to go fullscreen
-  var subCountClick = function(e){
+  var subCountClick = (e) => {
     this.subscriberCountPanel = !this.subscriberCountPanel;
 
     if(this.subscriberCountPanel){
@@ -279,8 +281,8 @@ YoutubeChannelPage.prototype.createChannelPage = function(mouseX, mouseY){
   }
 
   var videoListRow = uiMan.generateNewElement("div", ["row"], undefined, videosDIV, undefined);
-  this.videoRow = videoListRow;
-  this.loadVideoPage();
+  this.loadVideoPage(videoListRow);
+  this.videoListRow = videoListRow;
   if(!chnl.brandingSettings.channel.unsubscribedTrailer) $(videoListRow).css({"margin-top": "10px"});
 
   // About
@@ -341,8 +343,8 @@ YoutubeChannelPage.prototype.createChannelPage = function(mouseX, mouseY){
 
 YoutubeChannelPage.prototype.setupPollTimer = function(channel){
 	
-	this.pollTimer = window.setInterval(function(){
-		youtubeSexy.activeChannelPage.callSubUpdate(channel);
+	this.pollTimer = window.setInterval(() => {
+		this.callSubUpdate(channel);
 	}, youtubeSexy.options.subscriberCountChannelPageUpdateRate);
 	
 }
@@ -353,7 +355,7 @@ YoutubeChannelPage.prototype.callSubUpdate = function(chnl){
 		"part": "statistics",
 		"id": chnl.id,
 		"fields": "items/statistics/subscriberCount"
-	}, function(result){
+	}, (result) =>{
 		for(var channelIndex in result.items){
 			var channel = result.items[channelIndex];
             this.subcountOdometer.update(channel.statistics.subscriberCount);
@@ -363,7 +365,7 @@ YoutubeChannelPage.prototype.callSubUpdate = function(chnl){
 	
 }
 
-YoutubeChannelPage.prototype.loadVideoPage = function(){
+YoutubeChannelPage.prototype.loadVideoPage = function(videoListRow){
 
   if(this.preloader){ 
     $(".content").get(0).appendChild(this.preloader);
@@ -403,7 +405,7 @@ YoutubeChannelPage.prototype.loadVideoPage = function(){
     }, function(result){
       for(var videoIndex in result.items){
         var video = result.items[videoIndex];
-        this.videoRow.appendChild(youtubeSexy.ui.createFullVideoDIV(video, true));
+        videoListRow.appendChild(youtubeSexy.ui.createFullVideoDIV(video, true));
       }
 
       if(this.preloader){
