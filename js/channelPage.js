@@ -126,14 +126,8 @@ YoutubeChannelPage.prototype.createChannelPage = function(mouseX, mouseY){
     });
 
     var overlay = uiMan.generateNewElement("div", ["thumbnailBackgroundOverlay"], undefined, contentPage, undefined)
-    var canvas = uiMan.generateNewElement("canvas", ["thumbnailBackgroundOverlayCanvas"], undefined, overlay, undefined);
-    canvas.id = "thumbnailBackgroundOverlayCanvasObj";
-    banner.id = "thumbnailBackgroundOverlayCanvasImgSrc";
-    stackBlurImage("thumbnailBackgroundOverlayCanvasImgSrc", "thumbnailBackgroundOverlayCanvasObj", 20, 255);
-    var ctx = canvas.getContext("2d");
-    ctx.fillStyle = "rgba(0, 0, 0, 0.6)";
-    ctx.fillRect(0, 0, $(window).height() * 3, $(window).width() * 3);
-    banner.id = "";
+    var canvas = $(".thumbnailBackgroundOverlayCanvas").get(0); 
+    youtubeSexy.gl.blurImageToCanvas(banner);
     $(canvas).css({"width": "110%", "height": "110%"});
 
     setTimeout(function(){
