@@ -21,7 +21,6 @@ function YoutubeChannelPage(channelId, response, mouseX, mouseY){
   });
   
   var wrapper = $(".channelPageWrapper");
-  console.log("registering")
   wrapper.scroll(() => {
     if(youtubeSexy.activeChannelPage){
       var scroll = wrapper.scrollTop();
@@ -34,7 +33,7 @@ function YoutubeChannelPage(channelId, response, mouseX, mouseY){
       }
 
       var tabs = this.tabs;
-
+      
       if(scroll > 260 && this.fixed) return;
       else if(scroll <= 260 && this.fixed){
         // Unfixing
@@ -355,7 +354,7 @@ YoutubeChannelPage.prototype.callSubUpdate = function(chnl){
 		"part": "statistics",
 		"id": chnl.id,
 		"fields": "items/statistics/subscriberCount"
-	}, (result) =>{
+	}, (result) => {
 		for(var channelIndex in result.items){
 			var channel = result.items[channelIndex];
             this.subcountOdometer.update(channel.statistics.subscriberCount);
@@ -378,7 +377,7 @@ YoutubeChannelPage.prototype.loadVideoPage = function(videoListRow){
     "channelId": this.channelId
   };
 
-  youtubeSexy.ytDataAPI.googleAPIGet("https://www.googleapis.com/youtube/v3/search", jsonReq, function(json){
+  youtubeSexy.ytDataAPI.googleAPIGet("https://www.googleapis.com/youtube/v3/search", jsonReq, (json) => {
     var items = json.items;
     var itemIDs = [];
     var itemIdInputString = "";
@@ -402,7 +401,7 @@ YoutubeChannelPage.prototype.loadVideoPage = function(videoListRow){
     youtubeSexy.ytDataAPI.googleAPIGet("https://www.googleapis.com/youtube/v3/videos", {
       "part": "snippet,statistics",
       "id": itemIdInputString
-    }, function(result){
+    }, (result) => {
       for(var videoIndex in result.items){
         var video = result.items[videoIndex];
         videoListRow.appendChild(youtubeSexy.ui.createFullVideoDIV(video, true));

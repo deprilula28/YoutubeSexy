@@ -112,7 +112,7 @@ YoutubeSexy.prototype.loadMainMenuPage = function(activitiesResponse){
           var item = itemList[itemIndex];
 
         }
-        this.ui.createVideoListDIV(title, itemList);
+        youtubeSexy.ui.createVideoListDIV(title, itemList);
       });
     });
 
@@ -326,8 +326,8 @@ YoutubeSexy.prototype.loadNewMenuMenuPage = function(){
       "home": true,
       "pageToken": this.lastPageToken
     }, function(json){
-      this.loadMainMenuPage(json);
-      this.loadingPage = false;
+      youtubeSexy.loadMainMenuPage(json);
+      youtubeSexy.loadingPage = false;
     });
   }else{
     this.ytDataAPI.googleAPIGet("https://www.googleapis.com/youtube/v3/videos", {
@@ -335,9 +335,9 @@ YoutubeSexy.prototype.loadNewMenuMenuPage = function(){
       "chart": "mostPopular",
       "maxResults": 25,
       "pageToken": this.lastPageToken
-    }, function(json){
-      this.loadMainMenuPage(json);
-      this.loadingPage = false;
+    }, (json) => {
+      youtubeSexy.loadMainMenuPage(json);
+      youtubeSexy.loadingPage = false;
     });
   }
 
