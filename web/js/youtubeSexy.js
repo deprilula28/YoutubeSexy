@@ -40,6 +40,7 @@ function YoutubeSexy(){
   this.cookies = new Cookies();
   this.options = new OptionManager();
   this.ytDataAPI = new YTDataAPI();
+  this.gl = new WebGL();
   this.video = undefined;
   this.loadingPage = true;
   this.lastPageToken = undefined;
