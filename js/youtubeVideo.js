@@ -34,7 +34,7 @@ YoutubeSexy.prototype.playVideo = function(videoResult, posterResult, mouseX, mo
 		$(".smallVideoPlayerTopBarTitle").text(videoResult.snippet.title);
 
 		smallVideoPlayerWindowWrapper.click(function(){
-			smallVideoPlayerWindowWrapper.css({"animation": "smallVideoPlayerDisappear 0.25s"});
+			smallVideoPlayerWindowWrapper.css({"transform": "translate(15px, 15px) scale(0.75)", "opacity": 0, "animation": "smallVideoPlayerDisappear 0.25s"});
 
 			setTimeout(function(){
 				smallVideoPlayerWindowWrapper.removeClass("filled").css({"display": "none", "animation": ""});
