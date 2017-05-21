@@ -152,22 +152,16 @@ YTDataAPI.prototype.verify = function(token, handleSuccess){
 
 }
 
-YTDataAPI.prototype.googleAPIGet = function(path, params, completeHandler){
+YTDataAPI.prototype.googleAPIGet = function(path, params, completeHandler, errorHandler){
 
   var url = path + "?key=" + API_KEY + (this.authAccessToken ? "&access_token=" + this.authAccessToken : "");
 
-  jQuery.each(params, function(paramName, param){ url = url + "&" + paramName + "=" + (param + "") });
+  $.each(params, function(paramName, param){ url = url + "&" + paramName + "=" + (param + "") });
 
-	var request = new XMLHttpRequest();
-	var received = false;
-
-	request.open('GET', url, true);
-	request.onreadystatechange = function(e){
-
-		if(!received && request.readyState === 4){
-			received = true;
-      var json = JSON.parse(request.responseText);
-
+  $.ajax({
+    "url": url,
+    "contentType": "application/json"
+  }).done(function(json){
       if(json.hasOwnProperty("error")){
         var errorAlert = "An error has been returned by the Youtube API! Error Code: " + json.error.code + "\n" +
           "Message: " + json.error.message + "\n\nFull error log:";
@@ -182,12 +176,11 @@ YTDataAPI.prototype.googleAPIGet = function(path, params, completeHandler){
 
         console.log(errorAlert);
         alert(errorAlert);
-      }else completeHandler(JSON.parse(request.responseText));
-		}
-
-	}
-
-	request.send(null);
+      }else completeHandler(json);
+  }).error(function(jqXHR, textStatus, errorThrown){
+    if(errorHandler) errorHandler(textStatus, errorThrown);
+    else alert("Error: " + textStatus + " (" + errorThrown + ")");
+  })
 
 }
 
