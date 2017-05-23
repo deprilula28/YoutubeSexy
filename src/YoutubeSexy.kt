@@ -8,6 +8,6 @@ class YoutubeSexy {
     val playlist = false
 
     init {
-
+        ytDataAPI.startAPILibrary(cookies)
     }
 }
