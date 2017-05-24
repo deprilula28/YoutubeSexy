@@ -42,3 +42,11 @@ class ULBodyElementAppendable(val sourceElement: HTMLElement): HTMLBodyAppendabl
     }
 
 }
+
+class JQueryAppendable(val jq: `$`) : HTMLBodyAppendable() {
+
+    override fun appendElement(element: HTMLElement) {
+        jq.append(element)
+    }
+
+}

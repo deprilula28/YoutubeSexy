@@ -1,7 +1,17 @@
 import jquery.MouseClickEvent
 import jquery.MouseEvent
+import org.w3c.dom.HTMLElement
 import kotlin.js.Json
 
+operator fun StringBuilder.plusAssign(str: String) {
+    this.append(str)
+}
+
+fun Json.forEach(f: (String, String) -> Unit) {
+    this.forEach(f)
+}
+
+external fun alert(str: String)
 external fun stackBlurImage(imageID: String, canvasID: String, radius: Int, blurAlphaChannel: Int)
 external fun `$`(query: dynamic): `$`
 external fun setTimeout(callback: () -> Unit, time: Number)
@@ -42,6 +52,7 @@ external class `$` {
     fun change(handler: () -> Unit): `$`
 
     fun append(str: String): `$`
+    fun append(element: HTMLElement): `$`
     fun ready(handler: () -> Unit): `$`
     fun text(text: String): `$`
     fun slideUp(): `$`
@@ -50,4 +61,8 @@ external class `$` {
     fun next(): `$`
     fun parent(): `$`
     fun `val`(): String?
+}
+
+fun `$`.appendBuilder(appendFunction: HTMLBodyAppendable.() -> Unit) {
+    appendFunction.invoke(JQueryAppendable(this))
 }

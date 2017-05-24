@@ -8,6 +8,13 @@ class YoutubeSexy {
     val playlist = false
 
     init {
+        console.log("Loading YoutubeSexy...")
         ytDataAPI.startAPILibrary(cookies)
     }
+}
+
+fun main(args: Array<String>) {
+
+    YoutubeSexy()
+
 }
