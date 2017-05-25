@@ -15,17 +15,23 @@ class YTDataAPI {
     val authenticated = false
     lateinit var accessToken: String
 
-    fun startAPILibrary(cookieManager: CookieManager) {
+    fun startAPILibrary(youtubeSexy: YoutubeSexy) {
+
+        val cookieManager = youtubeSexy.cookies
 
         if (cookieManager.getCookie("doAuthenticate") != null && cookieManager.getCookie("doAuthenticate") === "true") {
             console.log("Requesting authentication because of a cookie.")
         } else if(authenticated) {
-
+            googleAPIGet("https://www.googleapis.com/youtube/v3/activities",
+                    json("part" to "snippet, statistics", "maxResults" to 50, "home" to true), {
+                youtubeSexy.loadMainMenuPage(it)
+                youtubeSexy.loadingPage = false
+            })
         }
 
     }
 
-    fun googleAPIGet(path: String, params: Json, complete: (json: Json) -> Unit, error: (textStatus: String, errorThrown: String) -> Unit) {
+    fun googleAPIGet(path: String, params: Json, complete: (json: Json) -> Unit) {
 
         var url = "$path?key=$API_KEY${if(authenticated) "&access_token=$accessToken" else ""}"
 
@@ -55,6 +61,7 @@ class YTDataAPI {
                 alert(errorAlert.toString())
             }else complete(json)
         }
+        xhttp.send()
 
     }
 

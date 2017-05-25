@@ -1,6 +1,7 @@
 import jquery.MouseClickEvent
 import jquery.MouseEvent
 import org.w3c.dom.HTMLElement
+import org.w3c.dom.events.Event
 import kotlin.js.Json
 
 operator fun StringBuilder.plusAssign(str: String) {
@@ -11,6 +12,9 @@ fun Json.forEach(f: (String, String) -> Unit) {
     this.forEach(f)
 }
 
+external class Materialize {
+    fun toast(message: String, time: Number)
+}
 external fun alert(str: String)
 external fun stackBlurImage(imageID: String, canvasID: String, radius: Int, blurAlphaChannel: Int)
 external fun `$`(query: dynamic): `$`
@@ -18,6 +22,8 @@ external fun setTimeout(callback: () -> Unit, time: Number)
 external fun decodeURIComponent(encodedURIComponent: String): String
 
 external class `$` {
+    fun on(string: String, handleFunction: (Event) -> Unit)
+
     fun css(json: Json): `$`
     fun animate(json: Json): `$`
     fun animate(json: Json, time: Number, animation: String, callback: () -> Unit): `$`
