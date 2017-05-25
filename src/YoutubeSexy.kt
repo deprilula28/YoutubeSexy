@@ -38,7 +38,7 @@ class YoutubeSexy {
 
             var delay = 0.0
             (mainMenuSource["items"] as Array<Json>).forEach {
-                ui.generateVideo(it, null, delay).invoke(HTMLBodyElementAppendable(videosRow as HTMLElement))
+                ui.generateVideo(it, null, delay, ytDataAPI).invoke(HTMLBodyElementAppendable(videosRow as HTMLElement))
                 delay += 0.05
             }
         }

@@ -5,7 +5,7 @@ class UIManager {
 
     val darkThemed = true
 
-    fun generateVideo(item: Json, channel: Json?, delay: Number, channelChip: Boolean = true, ytDataAPI: YTDataAPI): HTMLBodyAppendable.() -> Unit {
+    fun generateVideo(item: Json, channel: Json?, delay: Number, ytDataAPI: YTDataAPI, channelChip: Boolean = true): HTMLBodyAppendable.() -> Unit {
 
         return {
             div(classes = arrayOf("col", "s12", "m6", "l4"), css = json("height" to "240px", "width" to "214px", "overflow" to "none",
@@ -96,7 +96,13 @@ class UIManager {
                         }
                     }
 
+                    div(classes = arrayOf("row"), css = json("margin-bottom" to "20px")) {
+                        div(classes = arrayOf("col", "s12")) {
+                            if (!channelChip) {
 
+                            }
+                        }
+                    }
                 }
             }
         }
